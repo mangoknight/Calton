@@ -75,10 +75,23 @@ class WebhooksSettings(BaseModel):
 
 
 class DatabaseSettings(BaseModel):
-    """``database.*``. Only SQLite is supported in Phase 1."""
+    """``database.*``. SQLite is the default; MySQL is supported for deployments.
 
-    type: Literal["sqlite"] = "sqlite"
+    The key names match upstream Vikunja's ``database`` section so an existing
+    ``CALTON_DATABASE_*`` environment is understood unchanged: ``type``, ``host``,
+    ``user``, ``password``, ``database``, and ``path`` (sqlite only).
+    """
+
+    type: Literal["sqlite", "mysql"] = "sqlite"
+    #: sqlite only — the database file.
     path: str = "calton.db"
+    #: mysql only.
+    host: str = "localhost"
+    port: int = 3306
+    user: str = "calton"
+    password: str = ""
+    #: mysql schema name (upstream calls this key ``database``).
+    database: str = "calton"
 
 
 class FilesSettings(BaseModel):

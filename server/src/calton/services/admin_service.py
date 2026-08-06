@@ -168,7 +168,7 @@ def delete_user(session: Session, user_id: int) -> None:
 def _is_last_admin(session: Session) -> bool:
     """True if this user is the only admin left, so demoting/deleting is refused."""
     count = int(
-        session.scalar(select(func.count()).select_from(User).where(User.is_admin.is_(True))) or 0
+        session.scalar(select(func.count()).select_from(User).where(User.is_admin == 1)) or 0
     )
     return count <= 1
 

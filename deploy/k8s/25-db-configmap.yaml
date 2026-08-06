@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: calton-db
+  namespace: calton
+data:
+  CALTON_DATABASE_TYPE: "mysql"
+  CALTON_DATABASE_HOST: "MYSQL_HOST"
+  CALTON_DATABASE_PORT: "3306"
+  CALTON_DATABASE_USER: "calton"
+  CALTON_DATABASE_DATABASE: "calton"
+  CALTON_FILES_BASEPATH: "/data/files"

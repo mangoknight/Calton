@@ -50,11 +50,11 @@ def _search_query(term: str) -> Select[tuple[User]]:
                 # knows the username learns nothing new.
                 User.username == term,
                 # Substring over username and name, gated on the name flag.
-                (User.discoverable_by_name.is_(True))
+                (User.discoverable_by_name == 1)
                 & or_(User.username.like(substring), User.name.like(substring)),
                 # Email must match in full. A LIKE here would let an attacker
                 # recover addresses one character at a time.
-                (User.discoverable_by_email.is_(True)) & (User.email == term),
+                (User.discoverable_by_email == 1) & (User.email == term),
             )
         )
         .order_by(User.id)

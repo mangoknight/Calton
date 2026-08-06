@@ -21,8 +21,23 @@ from typing import Annotated, Any
 
 from pydantic import AfterValidator, BeforeValidator, PlainSerializer, WithJsonSchema
 from sqlalchemy import DateTime, Dialect, Integer
+from sqlalchemy import String as _String
+from sqlalchemy import Text as _Text
 from sqlalchemy.dialects import sqlite
 from sqlalchemy.types import TypeDecorator
+
+
+def keyed_text(length: int = 191) -> Any:
+    """TEXT on SQLite, ``VARCHAR(length)`` on MySQL.
+
+    A column that carries an index, unique key or primary key must not be TEXT on
+    MySQL — InnoDB rejects an index on a blob/text column without a prefix length
+    (error 1170). SQLite ignores the length and stores TEXT exactly as before, so
+    this changes nothing on the SQLite path (and nothing on the wire — storage type
+    never reaches the JSON). 191 is the safe utf8mb4 default (191*4 < 767); pass a
+    smaller length for columns that share a composite key.
+    """
+    return _Text().with_variant(_String(length), "mysql")
 
 #: Go's zero ``time.Time``.
 ZERO_TIME = datetime(1, 1, 1, 0, 0, 0, tzinfo=UTC)

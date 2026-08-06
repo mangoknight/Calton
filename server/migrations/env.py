@@ -28,12 +28,18 @@ target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:
     settings = get_settings()
+    if settings.database.type == "mysql":
+        url = build_engine().url.render_as_string(hide_password=False)
+    else:
+        url = f"sqlite+pysqlite:///{settings.database.path}"
     context.configure(
-        url=f"sqlite+pysqlite:///{settings.database.path}",
+        url=url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
-        render_as_batch=True,
+        # batch mode is a SQLite workaround (it cannot ALTER in place); MySQL alters
+        # directly and batch mode would only rewrite tables needlessly.
+        render_as_batch=settings.database.type == "sqlite",
     )
 
     with context.begin_transaction():
@@ -48,7 +54,8 @@ def run_migrations_online() -> None:
             connection=connection,
             target_metadata=target_metadata,
             # SQLite cannot ALTER most things in place; batch mode rewrites the table.
-            render_as_batch=True,
+            # MySQL alters in place, so batch mode is both unnecessary and wrong there.
+            render_as_batch=engine.dialect.name == "sqlite",
         )
 
         with context.begin_transaction():

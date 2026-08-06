@@ -30,9 +30,9 @@ def upgrade() -> None:
     """Upgrade schema."""
     op.create_table(
         "sessions",
-        sa.Column("id", sa.Text(), nullable=False),
+        sa.Column("id", calton.db.types.keyed_text(191), nullable=False),
         sa.Column("user_id", sa.Integer(), nullable=False),
-        sa.Column("token_hash", sa.Text(), nullable=False),
+        sa.Column("token_hash", calton.db.types.keyed_text(191), nullable=False),
         sa.Column("device_info", sa.Text(), nullable=True),
         sa.Column("ip_address", sa.Text(), nullable=True),
         sa.Column(

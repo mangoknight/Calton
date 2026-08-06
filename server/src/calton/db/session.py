@@ -13,7 +13,7 @@ from collections.abc import Generator
 from typing import Any
 
 from fastapi import Request
-from sqlalchemy import Engine, create_engine, event
+from sqlalchemy import URL, Engine, create_engine, event
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -30,6 +30,9 @@ PRAGMAS = {
 
 def build_engine(settings: Settings | None = None, **kwargs: Any) -> Engine:
     settings = settings or get_settings()
+
+    if settings.database.type == "mysql":
+        return _build_mysql_engine(settings, **kwargs)
     if settings.database.type != "sqlite":
         raise ValueError(f"unsupported database type: {settings.database.type}")
 
@@ -51,6 +54,27 @@ def build_engine(settings: Settings | None = None, **kwargs: Any) -> Engine:
             cursor.close()
 
     return engine
+
+
+def _build_mysql_engine(settings: Settings, **kwargs: Any) -> Engine:
+    """A pymysql engine. No SQLite pragmas; InnoDB gives WAL-like concurrency itself.
+
+    ``pool_pre_ping`` drops connections MySQL has closed under ``wait_timeout`` rather
+    than handing a dead one to a request; ``pool_recycle`` keeps them under that timeout.
+    utf8mb4 is set on the connection so text round-trips unchanged.
+    """
+    url = URL.create(
+        "mysql+pymysql",
+        username=settings.database.user,
+        password=settings.database.password,
+        host=settings.database.host,
+        port=settings.database.port,
+        database=settings.database.database,
+        query={"charset": "utf8mb4"},
+    )
+    kwargs.setdefault("pool_pre_ping", True)
+    kwargs.setdefault("pool_recycle", 3600)
+    return create_engine(url, **kwargs)
 
 
 def session_factory(engine: Engine) -> sessionmaker[Session]:

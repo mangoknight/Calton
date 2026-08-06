@@ -1,0 +1,60 @@
+# MySQL 版部署。与 30-deployment.yaml(SQLite)二选一。
+# 数据库外置到 外置 MySQL,持久性由 MySQL 保证;/data 仅存附件。
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calton
+  namespace: calton
+spec:
+  replicas: 1                 # 附件仍在 RWO PVC 上,先不横向扩;DB 已外置,密钥已固定
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: calton
+  template:
+    metadata:
+      labels:
+        app: calton
+    spec:
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+        - name: migrate            # alembic upgrade head 打到外置 MySQL
+          image: REGISTRY/calton:TAG
+          command: ["alembic", "upgrade", "head"]
+          workingDir: /app
+          envFrom:
+            - configMapRef: {name: calton-db}
+          env:
+            - name: CALTON_DATABASE_PASSWORD
+              valueFrom: {secretKeyRef: {name: calton-secrets, key: CALTON_DATABASE_PASSWORD}}
+      containers:
+        - name: calton
+          image: REGISTRY/calton:TAG
+          ports:
+            - {name: http, containerPort: 3456}
+          envFrom:
+            - configMapRef: {name: calton-db}
+          env:
+            - name: CALTON_DATABASE_PASSWORD
+              valueFrom: {secretKeyRef: {name: calton-secrets, key: CALTON_DATABASE_PASSWORD}}
+            - name: CALTON_SERVICE_SECRET
+              valueFrom: {secretKeyRef: {name: calton-secrets, key: CALTON_SERVICE_SECRET}}
+            # ⚠️ CALTON_FILES_BASEPATH 由镜像烤成 /data/files;附件仍落 PVC。
+          readinessProbe:
+            httpGet: {path: /health, port: http}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: {path: /health, port: http}
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests: {cpu: 100m, memory: 256Mi}
+            limits: {cpu: "2", memory: 1Gi}
+          volumeMounts:
+            - {name: data, mountPath: /data}
+      volumes:
+        - name: data
+          persistentVolumeClaim: {claimName: calton-data}

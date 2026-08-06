@@ -501,7 +501,10 @@ def archived_project_ids(session: Session) -> Any:
     """
     archived = (
         select(Project.id.label("id"))
-        .where(Project.is_archived.is_(True))
+        # ``== 1`` not ``.is_(True)``: is_archived is CaltonBoolean (INTEGER 0/1). MySQL's
+        # ``IS`` accepts only NULL/TRUE/FALSE, so ``.is_(True)`` renders ``IS 1`` and is a
+        # syntax error there; ``== 1`` renders ``= 1`` and selects the same rows on both.
+        .where(Project.is_archived == 1)
         .cte("archived_tree", recursive=True)
     )
     child = aliased(Project)
