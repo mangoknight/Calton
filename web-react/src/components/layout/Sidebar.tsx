@@ -1,4 +1,4 @@
-import { CalendarClock, Filter, FolderTree, Home, Tags } from 'lucide-react';
+import { CalendarClock, Filter, FolderTree, Home, KeyRound, Tags } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 import { useSavedFilters } from '@/features/filters/queries';
@@ -21,6 +21,7 @@ const NAV = [
 	{ to: '/projects', labelKey: 'project.projects', icon: FolderTree, end: false },
 	{ to: '/tasks/by/upcoming', labelKey: 'navigation.upcoming', icon: CalendarClock, end: false },
 	{ to: '/labels', labelKey: 'label.title', icon: Tags, end: false },
+	{ to: '/tokens', labelKey: 'user.apiTokens.title', icon: KeyRound, end: false },
 ];
 
 export function Sidebar() {

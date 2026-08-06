@@ -11,6 +11,7 @@ import { NotFound } from '@/routes/NotFound';
 import { Placeholder } from '@/routes/Placeholder';
 import { ProjectsPage } from '@/routes/ProjectsPage';
 import { ProjectViewPage } from '@/routes/ProjectViewPage';
+import { TokensPage } from '@/routes/TokensPage';
 import { RegisterPage } from '@/routes/RegisterPage';
 import { TaskDetailPage } from '@/routes/TaskDetailPage';
 import { RouteError } from '@/routes/RouteError';
@@ -43,6 +44,7 @@ export const routes: RouteObject[] = [
 					{ path: '/tasks/by/upcoming', element: <Placeholder title="即将到期" owner="F12" /> },
 					{ path: '/tasks/:taskId', element: <TaskDetailPage /> },
 					{ path: '/labels', element: <LabelsPage /> },
+					{ path: '/tokens', element: <TokensPage /> },
 					{ path: '/filters/:filterId', element: <FilterPage /> },
 				],
 			},

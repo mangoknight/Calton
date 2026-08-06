@@ -30,4 +30,15 @@ export const defaultHandlers = [
 			headers: { 'x-pagination-result-count': '0', 'x-pagination-total-pages': '0' },
 		}),
 	),
+	/**
+	 * 空 Token 列表。理由同上：`/tokens` 现在是导航项之一，
+	 * 任何渲染到 AppShell 的测试都会真的发这个请求。
+	 *
+	 * ⚠️ 必须带分页头 —— `GET /tokens` 走通用 ReadAll，是**发**分页头的端点。
+	 */
+	http.get('*/api/v1/tokens', () =>
+		HttpResponse.json([], {
+			headers: { 'x-pagination-result-count': '0', 'x-pagination-total-pages': '0' },
+		}),
+	),
 ];
