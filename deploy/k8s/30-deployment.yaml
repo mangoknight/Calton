@@ -1,0 +1,86 @@
+# ⚠️ 表结构由 Alembic 迁移建，而 **应用启动时不会自己跑迁移**
+#    （main.py 里没有任何 upgrade 调用，已实测确认）。
+#    所以空卷第一次挂上来时，没有 initContainer 就是一个能启动、
+#    但每条查询都报 no such table 的 pod —— 它的 /health 还是 200，
+#    因为 /health 不碰数据库。**探针会说它是健康的。**
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calton
+  namespace: calton
+spec:
+  replicas: 1          # ⚠️ 见 20-pvc.yaml：SQLite，不能 >1
+  strategy:
+    type: Recreate     # ⚠️ RWO 卷 + 滚动更新 = 新旧 pod 抢同一个卷，新 pod 卡在 Pending
+  selector:
+    matchLabels:
+      app: calton
+  template:
+    metadata:
+      labels:
+        app: calton
+    spec:
+      securityContext:
+        fsGroup: 1000            # 镜像里以 uid 1000 运行，卷得让它写得进去
+      initContainers:
+        - name: migrate
+          image: REGISTRY/calton:TAG
+          command: ["alembic", "upgrade", "head"]
+          workingDir: /app
+          env:
+            # 前缀在快照间会翻（feat/python=VIKUNJA_，master=CALTON_），两个都设、指同一文件
+            - name: CALTON_DATABASE_PATH
+              value: /data/calton.db
+            - name: VIKUNJA_DATABASE_PATH
+              value: /data/calton.db
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      containers:
+        - name: calton
+          image: REGISTRY/calton:TAG
+          ports:
+            - name: http
+              containerPort: 3456
+          # ⚠️ 配置前缀在快照间会翻：feat/python 用 VIKUNJA_，master 用 CALTON_。
+          #    不赌——每个都设两个前缀、指向同一文件/同一 Secret，哪版都生效。
+          #    DB 固定在 /data/calton.db（PVC 上），不设就会落到 /app 里、重启丢。
+          env:
+            - name: CALTON_DATABASE_PATH
+              value: /data/calton.db
+            - name: VIKUNJA_DATABASE_PATH
+              value: /data/calton.db
+            - name: CALTON_FILES_BASEPATH
+              value: /data/files
+            - name: VIKUNJA_FILES_BASEPATH
+              value: /data/files
+            - name: CALTON_SERVICE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: calton-secrets
+                  key: CALTON_SERVICE_SECRET
+            - name: VIKUNJA_SERVICE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: calton-secrets
+                  key: CALTON_SERVICE_SECRET
+            # ⚠️ VIKUNJA_SERVICE_TESTINGTOKEN 一旦设置，会挂上 /api/v1/test/{table}
+            #    —— 那是对拍台用来重置数据库的路由。**生产环境绝不能设。**
+          readinessProbe:
+            httpGet: {path: /health, port: http}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: {path: /health, port: http}
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests: {cpu: 100m, memory: 256Mi}
+            limits:   {cpu: "2",  memory: 1Gi}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: calton-data

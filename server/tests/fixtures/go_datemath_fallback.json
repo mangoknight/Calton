@@ -1,0 +1,242 @@
+{
+  "_meta": {
+    "how": "Go stdlib time.ParseInLocation with Calton's three layouts, then its manual Y-M-D split",
+    "layouts": [
+      "2006-01-02T15:04:05Z07:00",
+      "2006-01-02 15:04",
+      "2006-01-02",
+      "manual Y-M-D"
+    ],
+    "source": "task_collection_filter.go:79-110"
+  },
+  "cases": [
+    {
+      "in": "2021-01-02T15:04:05Z",
+      "location": "UTC",
+      "step": "rfc3339",
+      "got": "2021-01-02T15:04:05Z"
+    },
+    {
+      "in": "2021-01-02T15:04:05+03:00",
+      "location": "UTC",
+      "step": "rfc3339",
+      "got": "2021-01-02T12:04:05Z"
+    },
+    {
+      "in": "2021-01-02T15:04:05",
+      "location": "UTC",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "2021-01-02 15:04",
+      "location": "UTC",
+      "step": "safari_date_and_time",
+      "got": "2021-01-02T15:04:00Z"
+    },
+    {
+      "in": "2021-01-02 15:04:05",
+      "location": "UTC",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "2021-01-02",
+      "location": "UTC",
+      "step": "safari_date",
+      "got": "2021-01-02T00:00:00Z"
+    },
+    {
+      "in": "2021-1-1",
+      "location": "UTC",
+      "step": "manual",
+      "got": "2021-01-01T00:00:00Z"
+    },
+    {
+      "in": "2022-11-1",
+      "location": "UTC",
+      "step": "manual",
+      "got": "2022-11-01T00:00:00Z"
+    },
+    {
+      "in": "2021-1-1 10:00",
+      "location": "UTC",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "2021-11-31",
+      "location": "UTC",
+      "step": "manual",
+      "got": "2021-12-01T00:00:00Z"
+    },
+    {
+      "in": "no",
+      "location": "UTC",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "nope",
+      "location": "UTC",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "",
+      "location": "UTC",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "12",
+      "location": "UTC",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "2021",
+      "location": "UTC",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "2021-01",
+      "location": "UTC",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "not-a-date-x",
+      "location": "UTC",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "1-2-3",
+      "location": "UTC",
+      "step": "manual",
+      "got": "0001-02-03T00:00:00Z"
+    },
+    {
+      "in": "2021-13-45",
+      "location": "UTC",
+      "step": "manual",
+      "got": "2022-02-14T00:00:00Z"
+    },
+    {
+      "in": "2021-01-02T15:04:05Z",
+      "location": "Asia/Shanghai",
+      "step": "rfc3339",
+      "got": "2021-01-02T15:04:05Z"
+    },
+    {
+      "in": "2021-01-02T15:04:05+03:00",
+      "location": "Asia/Shanghai",
+      "step": "rfc3339",
+      "got": "2021-01-02T12:04:05Z"
+    },
+    {
+      "in": "2021-01-02T15:04:05",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "2021-01-02 15:04",
+      "location": "Asia/Shanghai",
+      "step": "safari_date_and_time",
+      "got": "2021-01-02T07:04:00Z"
+    },
+    {
+      "in": "2021-01-02 15:04:05",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "2021-01-02",
+      "location": "Asia/Shanghai",
+      "step": "safari_date",
+      "got": "2021-01-01T16:00:00Z"
+    },
+    {
+      "in": "2021-1-1",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "got": "2020-12-31T16:00:00Z"
+    },
+    {
+      "in": "2022-11-1",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "got": "2022-10-31T16:00:00Z"
+    },
+    {
+      "in": "2021-1-1 10:00",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "2021-11-31",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "got": "2021-11-30T16:00:00Z"
+    },
+    {
+      "in": "no",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "nope",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "12",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "2021",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "2021-01",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "not-a-date-x",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "err": true
+    },
+    {
+      "in": "1-2-3",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "got": "0001-02-02T15:54:17Z"
+    },
+    {
+      "in": "2021-13-45",
+      "location": "Asia/Shanghai",
+      "step": "manual",
+      "got": "2022-02-13T16:00:00Z"
+    }
+  ]
+}

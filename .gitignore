@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.hypothesis/
+.pytest_cache/
+.mypy_cache/
+
+# Node
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Env / secrets
+.env
+config.yml
+secrets/
+
+# Editor
+.idea/
+.vscode/
+.DS_Store

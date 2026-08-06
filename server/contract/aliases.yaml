@@ -1,0 +1,25 @@
+# Paths Calton serves that upstream 2.4 does not.
+#
+# These exist for compatibility with community clients pinned to older /api/v1
+# generations. They are NOT dead code and NOT accidental leftovers — deleting one
+# breaks a real client with no error message on either side, so each entry names
+# the client that needs it.
+#
+# Registered here so that a future cleanup pass finds the reason before the diff.
+
+aliases:
+  - path: /tasks/all
+    method: GET
+    same_handler_as: {method: GET, path: /tasks}
+    route_registry_key: [tasks, read_all]
+    removed_upstream_in: "2.4"
+    needed_by: >
+      calton-mcp@1.0.4 (unscoped, ~177 downloads/month, unmaintained for 14
+      months). Its list_all_tasks and list_project_tasks tools both call
+      GET /tasks/all; list_project_tasks adds ?filter=project_id=N. The package is
+      dead, so it will never be fixed to use GET /tasks — the alias is the only way
+      those two tools work.
+    delivered_by: T23 (T34 was folded into it)
+    notes: >
+      Must resolve to the same route_registry entry as GET /tasks, so an API token
+      granted only tasks.read_all can use either path.

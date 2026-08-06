@@ -1,0 +1,2003 @@
+{
+  "_meta": {
+    "generated_at": "2026-08-03T08:48:48Z",
+    "source_database": "/tmp/go-ref/calton.db",
+    "schema_source_hash": "e9199e49adf8118c8075484eba9ca3a509c998328110006ba64b0973690e2675",
+    "commit": "078f21c18be2cfc05ce0970557bd91b60ec011c0",
+    "version": "Calton api version dev",
+    "built_at": "2026-08-03T08:45:14Z"
+  },
+  "tables": {
+    "users": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "name",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "username",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "password",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "email",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "status",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "is_admin",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "avatar_provider",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "avatar_file_id",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "issuer",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "subject",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "email_reminders_enabled",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": "1",
+          "primary_key": false
+        },
+        {
+          "name": "discoverable_by_name",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "discoverable_by_email",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "overdue_tasks_reminders_enabled",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": "1",
+          "primary_key": false
+        },
+        {
+          "name": "overdue_tasks_reminders_time",
+          "type": "TEXT",
+          "notnull": true,
+          "default": "'09:00'",
+          "primary_key": false
+        },
+        {
+          "name": "default_project_id",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "bot_owner_id",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "week_start",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "language",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "timezone",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "deletion_scheduled_at",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "deletion_last_reminder_sent",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "frontend_settings",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "extra_settings_links",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "export_file_id",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_users_bot_owner_id",
+          "unique": false,
+          "columns": [
+            "bot_owner_id"
+          ]
+        },
+        {
+          "name": "IDX_users_default_project_id",
+          "unique": false,
+          "columns": [
+            "default_project_id"
+          ]
+        },
+        {
+          "name": "IDX_users_discoverable_by_email",
+          "unique": false,
+          "columns": [
+            "discoverable_by_email"
+          ]
+        },
+        {
+          "name": "IDX_users_discoverable_by_name",
+          "unique": false,
+          "columns": [
+            "discoverable_by_name"
+          ]
+        },
+        {
+          "name": "IDX_users_overdue_tasks_reminders_enabled",
+          "unique": false,
+          "columns": [
+            "overdue_tasks_reminders_enabled"
+          ]
+        },
+        {
+          "name": "UQE_users_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "UQE_users_username",
+          "unique": true,
+          "columns": [
+            "username"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NULL, `username` TEXT NOT NULL, `password` TEXT NULL, `email` TEXT NULL, `status` INTEGER DEFAULT 0 NULL, `is_admin` INTEGER DEFAULT 0 NOT NULL, `avatar_provider` TEXT NULL, `avatar_file_id` INTEGER NULL, `issuer` TEXT NULL, `subject` TEXT NULL, `email_reminders_enabled` INTEGER DEFAULT 1 NULL, `discoverable_by_name` INTEGER DEFAULT 0 NULL, `discoverable_by_email` INTEGER DEFAULT 0 NULL, `overdue_tasks_reminders_enabled` INTEGER DEFAULT 1 NULL, `overdue_tasks_reminders_time` TEXT DEFAULT '09:00' NOT NULL, `default_project_id` INTEGER NULL, `bot_owner_id` INTEGER NULL, `week_start` INTEGER NULL, `language` TEXT NULL, `timezone` TEXT NULL, `deletion_scheduled_at` DATETIME NULL, `deletion_last_reminder_sent` DATETIME NULL, `frontend_settings` TEXT NULL, `extra_settings_links` TEXT NULL, `export_file_id` INTEGER NULL, `created` DATETIME NOT NULL, `updated` DATETIME NOT NULL)"
+    },
+    "user_tokens": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "token",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "kind",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_user_tokens_token",
+          "unique": false,
+          "columns": [
+            "token"
+          ]
+        },
+        {
+          "name": "UQE_user_tokens_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `user_tokens` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `user_id` INTEGER NOT NULL, `token` TEXT NOT NULL, `kind` INTEGER NOT NULL, `created` DATETIME NOT NULL)"
+    },
+    "projects": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "identifier",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "hex_color",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "owner_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "parent_project_id",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "is_archived",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "background_file_id",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "background_blur_hash",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "position",
+          "type": "REAL",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_projects_owner_id",
+          "unique": false,
+          "columns": [
+            "owner_id"
+          ]
+        },
+        {
+          "name": "IDX_projects_parent_project_id",
+          "unique": false,
+          "columns": [
+            "parent_project_id"
+          ]
+        },
+        {
+          "name": "UQE_projects_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `projects` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NULL, `identifier` TEXT NULL, `hex_color` TEXT NULL, `owner_id` INTEGER NOT NULL, `parent_project_id` INTEGER NULL, `is_archived` INTEGER DEFAULT 0 NOT NULL, `background_file_id` INTEGER NULL, `background_blur_hash` TEXT NULL, `position` REAL NULL, `created` DATETIME NOT NULL, `updated` DATETIME NOT NULL)"
+    },
+    "project_views": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "project_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "view_kind",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "filter",
+          "type": "TEXT",
+          "notnull": false,
+          "default": "null",
+          "primary_key": false
+        },
+        {
+          "name": "position",
+          "type": "REAL",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "bucket_configuration_mode",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "bucket_configuration",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "default_bucket_id",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "done_bucket_id",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_project_views_default_bucket_id",
+          "unique": false,
+          "columns": [
+            "default_bucket_id"
+          ]
+        },
+        {
+          "name": "IDX_project_views_done_bucket_id",
+          "unique": false,
+          "columns": [
+            "done_bucket_id"
+          ]
+        },
+        {
+          "name": "IDX_project_views_project_id",
+          "unique": false,
+          "columns": [
+            "project_id"
+          ]
+        },
+        {
+          "name": "UQE_project_views_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `project_views` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `project_id` INTEGER NOT NULL, `view_kind` INTEGER NOT NULL, `filter` TEXT DEFAULT null NULL, `position` REAL NULL, `bucket_configuration_mode` INTEGER DEFAULT 0 NULL, `bucket_configuration` TEXT NULL, `default_bucket_id` INTEGER NULL, `done_bucket_id` INTEGER NULL, `updated` DATETIME NOT NULL, `created` DATETIME NOT NULL)"
+    },
+    "tasks": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "done",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "done_at",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "due_date",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "project_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "repeat_after",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "repeat_mode",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "priority",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "start_date",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "end_date",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "hex_color",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "percent_done",
+          "type": "REAL",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "index",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "uid",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "cover_image_attachment_id",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "deleted_at",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created_by_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_tasks_deleted_at",
+          "unique": false,
+          "columns": [
+            "deleted_at"
+          ]
+        },
+        {
+          "name": "IDX_tasks_done",
+          "unique": false,
+          "columns": [
+            "done"
+          ]
+        },
+        {
+          "name": "IDX_tasks_done_at",
+          "unique": false,
+          "columns": [
+            "done_at"
+          ]
+        },
+        {
+          "name": "IDX_tasks_due_date",
+          "unique": false,
+          "columns": [
+            "due_date"
+          ]
+        },
+        {
+          "name": "IDX_tasks_end_date",
+          "unique": false,
+          "columns": [
+            "end_date"
+          ]
+        },
+        {
+          "name": "IDX_tasks_project_id",
+          "unique": false,
+          "columns": [
+            "project_id"
+          ]
+        },
+        {
+          "name": "IDX_tasks_repeat_after",
+          "unique": false,
+          "columns": [
+            "repeat_after"
+          ]
+        },
+        {
+          "name": "IDX_tasks_start_date",
+          "unique": false,
+          "columns": [
+            "start_date"
+          ]
+        },
+        {
+          "name": "UQE_tasks_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "UQE_tasks_tasks_project_index",
+          "unique": true,
+          "columns": [
+            "project_id",
+            "index"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `tasks` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NULL, `done` INTEGER NULL, `done_at` DATETIME NULL, `due_date` DATETIME NULL, `project_id` INTEGER NOT NULL, `repeat_after` INTEGER NULL, `repeat_mode` INTEGER DEFAULT 0 NOT NULL, `priority` INTEGER NULL, `start_date` DATETIME NULL, `end_date` DATETIME NULL, `hex_color` TEXT NULL, `percent_done` REAL NULL, `index` INTEGER DEFAULT 0 NOT NULL, `uid` TEXT NULL, `cover_image_attachment_id` INTEGER DEFAULT 0 NULL, `created` DATETIME NOT NULL, `updated` DATETIME NOT NULL, `deleted_at` DATETIME NULL, `created_by_id` INTEGER NOT NULL)"
+    },
+    "task_positions": {
+      "columns": [
+        {
+          "name": "task_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "project_view_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "position",
+          "type": "REAL",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_task_positions_project_view_id",
+          "unique": false,
+          "columns": [
+            "project_view_id"
+          ]
+        },
+        {
+          "name": "IDX_task_positions_task_id",
+          "unique": false,
+          "columns": [
+            "task_id"
+          ]
+        },
+        {
+          "name": "IDX_task_positions_view_position",
+          "unique": false,
+          "columns": [
+            "project_view_id",
+            "position"
+          ]
+        },
+        {
+          "name": "UQE_task_positions_task_view",
+          "unique": true,
+          "columns": [
+            "task_id",
+            "project_view_id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `task_positions` (`task_id` INTEGER NOT NULL, `project_view_id` INTEGER NOT NULL, `position` REAL NOT NULL)"
+    },
+    "buckets": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "project_view_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "limit",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "position",
+          "type": "REAL",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created_by_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "UQE_buckets_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `buckets` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `project_view_id` INTEGER NOT NULL, `limit` INTEGER DEFAULT 0 NULL, `position` REAL NULL, `created` DATETIME NOT NULL, `updated` DATETIME NOT NULL, `created_by_id` INTEGER NOT NULL)"
+    },
+    "task_buckets": {
+      "columns": [
+        {
+          "name": "bucket_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "task_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "project_view_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_task_buckets_bucket_id",
+          "unique": false,
+          "columns": [
+            "bucket_id"
+          ]
+        },
+        {
+          "name": "IDX_task_buckets_project_view_id",
+          "unique": false,
+          "columns": [
+            "project_view_id"
+          ]
+        },
+        {
+          "name": "IDX_task_buckets_task_id",
+          "unique": false,
+          "columns": [
+            "task_id"
+          ]
+        },
+        {
+          "name": "UQE_task_buckets_task_view",
+          "unique": true,
+          "columns": [
+            "task_id",
+            "project_view_id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `task_buckets` (`bucket_id` INTEGER NOT NULL, `task_id` INTEGER NOT NULL, `project_view_id` INTEGER NOT NULL)"
+    },
+    "labels": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "hex_color",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created_by_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "UQE_labels_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `labels` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NULL, `hex_color` TEXT NULL, `created_by_id` INTEGER NOT NULL, `created` DATETIME NOT NULL, `updated` DATETIME NOT NULL)"
+    },
+    "label_tasks": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "task_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "label_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_label_tasks_label_id",
+          "unique": false,
+          "columns": [
+            "label_id"
+          ]
+        },
+        {
+          "name": "IDX_label_tasks_task_id",
+          "unique": false,
+          "columns": [
+            "task_id"
+          ]
+        },
+        {
+          "name": "UQE_label_tasks_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `label_tasks` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `task_id` INTEGER NOT NULL, `label_id` INTEGER NOT NULL, `created` DATETIME NOT NULL)"
+    },
+    "task_assignees": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "task_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_task_assignees_task_id",
+          "unique": false,
+          "columns": [
+            "task_id"
+          ]
+        },
+        {
+          "name": "IDX_task_assignees_user_id",
+          "unique": false,
+          "columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "UQE_task_assignees_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `task_assignees` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `task_id` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, `created` DATETIME NOT NULL)"
+    },
+    "files": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "name",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "mime",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "size",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created_by_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "UQE_files_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `files` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `mime` TEXT NULL, `size` INTEGER NOT NULL, `created` DATETIME NULL, `created_by_id` INTEGER NOT NULL)"
+    },
+    "task_relations": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "task_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "other_task_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "relation_kind",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created_by_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "UQE_task_relations_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `task_relations` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `task_id` INTEGER NOT NULL, `other_task_id` INTEGER NOT NULL, `relation_kind` TEXT NOT NULL, `created_by_id` INTEGER NOT NULL, `created` DATETIME NOT NULL)"
+    },
+    "task_reminders": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "task_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "reminder",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "relative_period",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "relative_to",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_task_reminders_reminder",
+          "unique": false,
+          "columns": [
+            "reminder"
+          ]
+        },
+        {
+          "name": "IDX_task_reminders_task_id",
+          "unique": false,
+          "columns": [
+            "task_id"
+          ]
+        },
+        {
+          "name": "UQE_task_reminders_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `task_reminders` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `task_id` INTEGER NOT NULL, `reminder` DATETIME NOT NULL, `created` DATETIME NOT NULL, `relative_period` INTEGER NULL, `relative_to` TEXT NULL)"
+    },
+    "task_comments": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "comment",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "author_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "task_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_task_comments_task_id",
+          "unique": false,
+          "columns": [
+            "task_id"
+          ]
+        },
+        {
+          "name": "UQE_task_comments_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `task_comments` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `comment` TEXT NOT NULL, `author_id` INTEGER NOT NULL, `task_id` INTEGER NOT NULL, `created` DATETIME NULL, `updated` DATETIME NULL)"
+    },
+    "task_attachments": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "task_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "file_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created_by_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "UQE_task_attachments_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `task_attachments` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `task_id` INTEGER NOT NULL, `file_id` INTEGER NOT NULL, `created_by_id` INTEGER NOT NULL, `created` DATETIME NULL)"
+    },
+    "teams": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "name",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created_by_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "external_id",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "issuer",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated",
+          "type": "DATETIME",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "is_public",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": "0",
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_teams_created_by_id",
+          "unique": false,
+          "columns": [
+            "created_by_id"
+          ]
+        },
+        {
+          "name": "UQE_teams_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `teams` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NULL, `created_by_id` INTEGER NOT NULL, `external_id` TEXT NULL, `issuer` TEXT NULL, `created` DATETIME NULL, `updated` DATETIME NULL, `is_public` INTEGER DEFAULT 0 NOT NULL)"
+    },
+    "team_members": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "team_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "admin",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_team_members_team_id",
+          "unique": false,
+          "columns": [
+            "team_id"
+          ]
+        },
+        {
+          "name": "IDX_team_members_user_id",
+          "unique": false,
+          "columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "UQE_team_members_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `team_members` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `team_id` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, `admin` INTEGER NULL, `created` DATETIME NOT NULL)"
+    },
+    "team_projects": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "team_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "project_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "permission",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_team_projects_permission",
+          "unique": false,
+          "columns": [
+            "permission"
+          ]
+        },
+        {
+          "name": "IDX_team_projects_project_id",
+          "unique": false,
+          "columns": [
+            "project_id"
+          ]
+        },
+        {
+          "name": "IDX_team_projects_team_id",
+          "unique": false,
+          "columns": [
+            "team_id"
+          ]
+        },
+        {
+          "name": "UQE_team_projects_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `team_projects` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `team_id` INTEGER NOT NULL, `project_id` INTEGER NOT NULL, `permission` INTEGER DEFAULT 0 NOT NULL, `created` DATETIME NOT NULL, `updated` DATETIME NOT NULL)"
+    },
+    "users_projects": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "project_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "permission",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_users_projects_permission",
+          "unique": false,
+          "columns": [
+            "permission"
+          ]
+        },
+        {
+          "name": "IDX_users_projects_project_id",
+          "unique": false,
+          "columns": [
+            "project_id"
+          ]
+        },
+        {
+          "name": "IDX_users_projects_user_id",
+          "unique": false,
+          "columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "UQE_users_projects_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `users_projects` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `user_id` INTEGER NOT NULL, `project_id` INTEGER NOT NULL, `permission` INTEGER DEFAULT 0 NOT NULL, `created` DATETIME NOT NULL, `updated` DATETIME NOT NULL)"
+    },
+    "saved_filters": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "filters",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "notnull": false,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "owner_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "is_favorite",
+          "type": "INTEGER",
+          "notnull": false,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_saved_filters_owner_id",
+          "unique": false,
+          "columns": [
+            "owner_id"
+          ]
+        },
+        {
+          "name": "UQE_saved_filters_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `saved_filters` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `filters` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NULL, `owner_id` INTEGER NOT NULL, `is_favorite` INTEGER DEFAULT 0 NULL, `created` DATETIME NOT NULL, `updated` DATETIME NOT NULL)"
+    },
+    "favorites": {
+      "columns": [
+        {
+          "name": "entity_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "kind",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        }
+      ],
+      "indexes": [],
+      "ddl": "CREATE TABLE `favorites` (`entity_id` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, `kind` INTEGER NOT NULL, PRIMARY KEY (`entity_id`,`user_id`,`kind`))"
+    },
+    "subscriptions": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "entity_type",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "entity_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "user_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_subscriptions_entity_id",
+          "unique": false,
+          "columns": [
+            "entity_id"
+          ]
+        },
+        {
+          "name": "IDX_subscriptions_entity_type",
+          "unique": false,
+          "columns": [
+            "entity_type"
+          ]
+        },
+        {
+          "name": "IDX_subscriptions_user_id",
+          "unique": false,
+          "columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "UQE_subscriptions_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `subscriptions` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entity_type` INTEGER NOT NULL, `entity_id` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, `created` DATETIME NOT NULL)"
+    },
+    "api_tokens": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "token_salt",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "token_hash",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "token_last_eight",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "permissions",
+          "type": "TEXT",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "expires_at",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created",
+          "type": "DATETIME",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "owner_id",
+          "type": "INTEGER",
+          "notnull": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "IDX_api_tokens_token_last_eight",
+          "unique": false,
+          "columns": [
+            "token_last_eight"
+          ]
+        },
+        {
+          "name": "UQE_api_tokens_id",
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "UQE_api_tokens_token_hash",
+          "unique": true,
+          "columns": [
+            "token_hash"
+          ]
+        }
+      ],
+      "ddl": "CREATE TABLE `api_tokens` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `token_salt` TEXT NOT NULL, `token_hash` TEXT NOT NULL, `token_last_eight` TEXT NOT NULL, `permissions` TEXT NOT NULL, `expires_at` DATETIME NOT NULL, `created` DATETIME NOT NULL, `owner_id` INTEGER NOT NULL)"
+    }
+  }
+}

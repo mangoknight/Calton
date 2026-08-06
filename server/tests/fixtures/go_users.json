@@ -1,0 +1,320 @@
+{
+  "_meta": {
+    "base": "http://localhost:3499",
+    "go_reference_built_at": "2026-08-03T08:45:14Z",
+    "go_reference_commit": "078f21c18be2cfc05ce0970557bd91b60ec011c0",
+    "go_reference_version": "Calton api version dev",
+    "probe": "dump_go_users.py"
+  },
+  "current_user": {
+    "body_keys": [
+      "auth_provider",
+      "created",
+      "deletion_scheduled_at",
+      "id",
+      "is_admin",
+      "is_local_user",
+      "name",
+      "settings",
+      "updated",
+      "username"
+    ],
+    "body_sample": {
+      "auth_provider": "local",
+      "created": "2026-01-01T00:00:00Z",
+      "deletion_scheduled_at": "0001-01-01T00:00:00Z",
+      "id": 900,
+      "is_admin": false,
+      "is_local_user": true,
+      "name": "",
+      "settings": {
+        "default_project_id": 0,
+        "discoverable_by_email": false,
+        "discoverable_by_name": false,
+        "email_reminders_enabled": true,
+        "extra_settings_links": null,
+        "frontend_settings": null,
+        "language": "",
+        "name": "",
+        "overdue_tasks_reminders_enabled": true,
+        "overdue_tasks_reminders_time": "09:00",
+        "timezone": "",
+        "week_start": 0
+      },
+      "updated": "2026-01-01T00:00:00Z",
+      "username": "alice"
+    },
+    "settings_keys": [
+      "default_project_id",
+      "discoverable_by_email",
+      "discoverable_by_name",
+      "email_reminders_enabled",
+      "extra_settings_links",
+      "frontend_settings",
+      "language",
+      "name",
+      "overdue_tasks_reminders_enabled",
+      "overdue_tasks_reminders_time",
+      "timezone",
+      "week_start"
+    ],
+    "status": 200
+  },
+  "logout": {
+    "access_token_still_valid": 200,
+    "clears_cookie": "calton_refresh_token=; Path=/api/v1/user/token/refresh; Max-Age=0; HttpOnly; SameSite=Lax",
+    "deletes_session_row_without_cookie": true,
+    "ok": {
+      "body": {
+        "message": "Successfully logged out."
+      },
+      "status": 200
+    },
+    "unauthenticated": {
+      "body": {
+        "code": 11,
+        "message": "missing, malformed, expired or otherwise invalid token provided"
+      },
+      "status": 401
+    }
+  },
+  "register": {
+    "can_log_in_immediately": true,
+    "duplicate_email": {
+      "body": {
+        "code": 1002,
+        "message": "A user with this email address already exists."
+      },
+      "status": 400
+    },
+    "duplicate_username": {
+      "body": {
+        "code": 1001,
+        "message": "A user with this username already exists."
+      },
+      "status": 400
+    },
+    "empty_body": {
+      "body": {
+        "code": 1004,
+        "message": "Please specify a username and a password."
+      },
+      "status": 400
+    },
+    "missing_email": {
+      "body": {
+        "code": 1004,
+        "message": "Please specify a username and a password."
+      },
+      "status": 400
+    },
+    "ok": {
+      "body_keys": [
+        "created",
+        "email",
+        "id",
+        "name",
+        "updated",
+        "username"
+      ],
+      "status": 200
+    },
+    "short_password": {
+      "body": {
+        "code": 2002,
+        "invalid_fields": [
+          "password: 1 does not validate as bcrypt_password"
+        ],
+        "message": "Invalid Data"
+      },
+      "status": 412
+    },
+    "validation": {
+      "passwords": {
+        "1": {
+          "accepted": false,
+          "invalid_fields": [
+            "password: 1 does not validate as bcrypt_password"
+          ],
+          "status": 412
+        },
+        "xxxx": {
+          "accepted": false,
+          "invalid_fields": [
+            "password: xxxx does not validate as bcrypt_password"
+          ],
+          "status": 412
+        },
+        "xxxxxxx": {
+          "accepted": false,
+          "invalid_fields": [
+            "password: xxxxxxx does not validate as bcrypt_password"
+          ],
+          "status": 412
+        },
+        "xxxxxxxx": {
+          "accepted": true,
+          "invalid_fields": null,
+          "status": 200
+        }
+      },
+      "usernames": {
+        "UpperUser": {
+          "accepted": true,
+          "invalid_fields": null,
+          "status": 200
+        },
+        "bad\tuser": {
+          "accepted": false,
+          "invalid_fields": [
+            "username: 757f11bad\tuser does not validate as username"
+          ],
+          "status": 412
+        },
+        "bad user": {
+          "accepted": false,
+          "invalid_fields": [
+            "username: 5e549cbad user does not validate as username"
+          ],
+          "status": 412
+        },
+        "bad.user": {
+          "accepted": false,
+          "invalid_fields": [
+            "username: 922e37bad.user does not validate as username"
+          ],
+          "status": 412
+        },
+        "plainuser": {
+          "accepted": true,
+          "invalid_fields": null,
+          "status": 200
+        },
+        "user#hash": {
+          "accepted": true,
+          "invalid_fields": null,
+          "status": 200
+        },
+        "user+plus": {
+          "accepted": true,
+          "invalid_fields": null,
+          "status": 200
+        },
+        "user-dash": {
+          "accepted": true,
+          "invalid_fields": null,
+          "status": 200
+        },
+        "user/slash": {
+          "accepted": true,
+          "invalid_fields": null,
+          "status": 200
+        },
+        "user12345": {
+          "accepted": true,
+          "invalid_fields": null,
+          "status": 200
+        },
+        "user:colon": {
+          "accepted": true,
+          "invalid_fields": null,
+          "status": 200
+        },
+        "user@host": {
+          "accepted": true,
+          "invalid_fields": null,
+          "status": 200
+        },
+        "user_score": {
+          "accepted": true,
+          "invalid_fields": null,
+          "status": 200
+        },
+        "\u7528\u6237\u540d": {
+          "accepted": true,
+          "invalid_fields": null,
+          "status": 200
+        }
+      }
+    }
+  },
+  "user_list": {
+    "header_names": [
+      "cache-control",
+      "content-length",
+      "content-type",
+      "date",
+      "vary",
+      "x-request-id"
+    ],
+    "no_query": {
+      "body_raw": "null",
+      "status": 200
+    },
+    "pagination_ignored": {
+      "header_names": [
+        "cache-control",
+        "content-length",
+        "content-type",
+        "date",
+        "vary",
+        "x-request-id"
+      ],
+      "same_body": true
+    },
+    "search": {
+      "": {
+        "body_raw": "null",
+        "usernames": []
+      },
+      "Carol": {
+        "body_raw": "[{\"id\":902,\"name\":\"Carol Danvers\",\"username\":\"carol\",\"created\":\"2026-01-01T00:00:00Z\",\"updated\":\"2026-01-01T00:00:00Z\"}]",
+        "usernames": [
+          "carol"
+        ]
+      },
+      "Danvers": {
+        "body_raw": "[{\"id\":902,\"name\":\"Carol Danvers\",\"username\":\"carol\",\"created\":\"2026-01-01T00:00:00Z\",\"updated\":\"2026-01-01T00:00:00Z\"}]",
+        "usernames": [
+          "carol"
+        ]
+      },
+      "ali": {
+        "body_raw": "null",
+        "usernames": []
+      },
+      "alice": {
+        "body_raw": "[{\"id\":900,\"name\":\"\",\"username\":\"alice\",\"created\":\"2026-01-01T00:00:00Z\",\"updated\":\"2026-01-01T00:00:00Z\"}]",
+        "usernames": [
+          "alice"
+        ]
+      },
+      "car": {
+        "body_raw": "[{\"id\":902,\"name\":\"Carol Danvers\",\"username\":\"carol\",\"created\":\"2026-01-01T00:00:00Z\",\"updated\":\"2026-01-01T00:00:00Z\"}]",
+        "usernames": [
+          "carol"
+        ]
+      },
+      "carol": {
+        "body_raw": "[{\"id\":902,\"name\":\"Carol Danvers\",\"username\":\"carol\",\"created\":\"2026-01-01T00:00:00Z\",\"updated\":\"2026-01-01T00:00:00Z\"}]",
+        "usernames": [
+          "carol"
+        ]
+      },
+      "carol@example.com": {
+        "body_raw": "null",
+        "usernames": []
+      },
+      "dave@": {
+        "body_raw": "null",
+        "usernames": []
+      },
+      "dave@example.com": {
+        "body_raw": "[{\"id\":903,\"name\":\"\",\"username\":\"dave\",\"created\":\"2026-01-01T00:00:00Z\",\"updated\":\"2026-01-01T00:00:00Z\"}]",
+        "usernames": [
+          "dave"
+        ]
+      }
+    }
+  }
+}

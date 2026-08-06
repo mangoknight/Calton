@@ -1,0 +1,173 @@
+{
+  "_meta": {
+    "base": "http://localhost:3499",
+    "go_reference_built_at": "2026-08-03T08:45:14Z",
+    "go_reference_commit": "078f21c18be2cfc05ce0970557bd91b60ec011c0",
+    "go_reference_version": "Calton api version dev",
+    "probe": "dump_go_api_tokens.py"
+  },
+  "acceptance_matrix": {
+    "other_logout_only": {
+      "GET /api/v1/labels": 401,
+      "GET /api/v1/projects": 401,
+      "GET /api/v1/routes": 401,
+      "GET /api/v1/tasks": 401,
+      "GET /api/v1/token/test": 200,
+      "GET /api/v1/tokens": 401,
+      "GET /api/v1/user": 401,
+      "GET /api/v1/users": 401,
+      "POST /api/v1/user/logout": 401
+    },
+    "other_routes_only": {
+      "GET /api/v1/labels": 401,
+      "GET /api/v1/projects": 401,
+      "GET /api/v1/routes": 200,
+      "GET /api/v1/tasks": 401,
+      "GET /api/v1/token/test": 200,
+      "GET /api/v1/tokens": 401,
+      "GET /api/v1/user": 401,
+      "GET /api/v1/users": 401,
+      "POST /api/v1/user/logout": 401
+    },
+    "other_user_only": {
+      "GET /api/v1/labels": 401,
+      "GET /api/v1/projects": 401,
+      "GET /api/v1/routes": 401,
+      "GET /api/v1/tasks": 401,
+      "GET /api/v1/token/test": 200,
+      "GET /api/v1/tokens": 401,
+      "GET /api/v1/user": 200,
+      "GET /api/v1/users": 401,
+      "POST /api/v1/user/logout": 401
+    },
+    "other_users_only": {
+      "GET /api/v1/labels": 401,
+      "GET /api/v1/projects": 401,
+      "GET /api/v1/routes": 401,
+      "GET /api/v1/tasks": 401,
+      "GET /api/v1/token/test": 200,
+      "GET /api/v1/tokens": 401,
+      "GET /api/v1/user": 401,
+      "GET /api/v1/users": 200,
+      "POST /api/v1/user/logout": 401
+    },
+    "resources_only": {
+      "GET /api/v1/labels": 200,
+      "GET /api/v1/projects": 200,
+      "GET /api/v1/routes": 401,
+      "GET /api/v1/tasks": 200,
+      "GET /api/v1/token/test": 200,
+      "GET /api/v1/tokens": 401,
+      "GET /api/v1/user": 401,
+      "GET /api/v1/users": 401,
+      "POST /api/v1/user/logout": 401
+    },
+    "tasks_read_all_only": {
+      "GET /api/v1/labels": 401,
+      "GET /api/v1/projects": 401,
+      "GET /api/v1/routes": 401,
+      "GET /api/v1/tasks": 200,
+      "GET /api/v1/token/test": 200,
+      "GET /api/v1/tokens": 401,
+      "GET /api/v1/user": 401,
+      "GET /api/v1/users": 401,
+      "POST /api/v1/user/logout": 401
+    }
+  },
+  "create": {
+    "body_keys": [
+      "created",
+      "expires_at",
+      "id",
+      "owner_id",
+      "permissions",
+      "title",
+      "token"
+    ],
+    "status": 201,
+    "token_length": 43,
+    "token_prefix": "tk_"
+  },
+  "delete": {
+    "body": {
+      "message": "Successfully deleted."
+    },
+    "status": 200
+  },
+  "delete_missing": {
+    "body": {
+      "code": 0,
+      "message": "Forbidden"
+    },
+    "status": 403
+  },
+  "expired": {
+    "body": {
+      "code": 11,
+      "message": "missing, malformed, expired or otherwise invalid token provided"
+    },
+    "status": 401
+  },
+  "hashing": {
+    "dklen": 50,
+    "hash_length": 100,
+    "iterations": 10000,
+    "last_eight_is_plaintext_suffix": true,
+    "matches": {
+      "full_plaintext_with_prefix_salt_raw": true,
+      "without_tk_prefix_salt_raw": false
+    },
+    "salt_is_hex": false,
+    "salt_length": 10
+  },
+  "known_vector": {
+    "hash": "6fe9a5700a1435c7be5355808ee6ecd33860ac4374f0bcbc2f7afd355d4b1d57dc96a5cd85ee8df129a0f768a4b1fafd13b2",
+    "plaintext": "tk_0cba9b802e89e272c1158f6beda1e8bdcf8014be",
+    "salt": "uNLbUudfp2"
+  },
+  "list": {
+    "header_names": [
+      "access-control-expose-headers",
+      "cache-control",
+      "content-type",
+      "date",
+      "transfer-encoding",
+      "vary",
+      "x-pagination-result-count",
+      "x-pagination-total-pages",
+      "x-request-id"
+    ],
+    "plaintext_present": false,
+    "status": 200
+  },
+  "rejections": {
+    "no_bearer_prefix": {
+      "body": {
+        "code": 11,
+        "message": "missing, malformed, expired or otherwise invalid token provided"
+      },
+      "status": 401
+    },
+    "short_token": {
+      "body": {
+        "code": 11,
+        "message": "missing, malformed, expired or otherwise invalid token provided"
+      },
+      "status": 401
+    },
+    "unknown_token": {
+      "body": {
+        "code": 11,
+        "message": "missing, malformed, expired or otherwise invalid token provided"
+      },
+      "status": 401
+    },
+    "wrong_group": {
+      "body": {
+        "code": 11,
+        "message": "missing, malformed, expired or otherwise invalid token provided"
+      },
+      "status": 401
+    }
+  }
+}

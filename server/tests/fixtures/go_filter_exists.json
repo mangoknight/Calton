@@ -1,0 +1,219 @@
+{
+  "cases": [
+    {
+      "id": "filter.exists.labels_and_two_values",
+      "filter": "labels = 910 && labels = 911",
+      "http_status": 200,
+      "task_titles": [
+        "A-both"
+      ]
+    },
+    {
+      "id": "filter.exists.labels_or_two_values",
+      "filter": "labels = 910 || labels = 911",
+      "http_status": 200,
+      "task_titles": [
+        "A-both",
+        "A-only-alpha",
+        "A-only-beta"
+      ]
+    },
+    {
+      "id": "filter.exists.labels_in_list",
+      "filter": "labels in 910,911",
+      "http_status": 200,
+      "task_titles": [
+        "A-both",
+        "A-only-alpha",
+        "A-only-beta"
+      ]
+    },
+    {
+      "id": "filter.exists.reminders_range_merged",
+      "filter": "reminders > '2026-06-01' && reminders < '2026-07-01'",
+      "http_status": 200,
+      "task_titles": [
+        "B-inside"
+      ]
+    },
+    {
+      "id": "filter.exists.reminders_single_bound",
+      "filter": "reminders > '2026-06-01'",
+      "http_status": 200,
+      "task_titles": [
+        "B-inside",
+        "B-straddle"
+      ]
+    },
+    {
+      "id": "filter.exists.reminders_range_broken_by_other_table",
+      "filter": "reminders > '2026-06-01' && labels = 912 && reminders < '2026-07-01'",
+      "http_status": 200,
+      "task_titles": [
+        "B-straddle"
+      ]
+    },
+    {
+      "id": "filter.exists.reminders_range_broken_by_or",
+      "filter": "reminders > '2026-06-01' || reminders < '2026-07-01'",
+      "http_status": 200,
+      "task_titles": [
+        "B-inside",
+        "B-outside",
+        "B-straddle"
+      ]
+    },
+    {
+      "id": "filter.exists.equality_then_range_not_merged",
+      "filter": "reminders = '2026-05-01' && reminders > '2026-06-01'",
+      "http_status": 200,
+      "task_titles": [
+        "B-straddle"
+      ]
+    },
+    {
+      "id": "filter.exists.labels_not_equals_is_not_exists",
+      "filter": "labels != 910",
+      "http_status": 200,
+      "task_titles": [
+        "A-no-labels",
+        "A-only-beta",
+        "B-inside",
+        "B-outside",
+        "B-straddle",
+        "G-both-assignees",
+        "G-only-alice"
+      ]
+    },
+    {
+      "id": "filter.exists.labels_not_in_is_not_exists",
+      "filter": "labels not in 910,911",
+      "http_status": 200,
+      "task_titles": [
+        "A-no-labels",
+        "B-inside",
+        "B-outside",
+        "B-straddle",
+        "G-both-assignees",
+        "G-only-alice"
+      ]
+    },
+    {
+      "id": "filter.exists.assignees_and_two_values",
+      "filter": "assignees = alice && assignees = bob",
+      "http_status": 200,
+      "task_titles": [
+        "G-both-assignees"
+      ]
+    },
+    {
+      "id": "filter.exists.assignees_like_is_silently_dropped",
+      "filter": "assignees like 'ali'",
+      "http_status": 200,
+      "task_titles": [
+        "A-both",
+        "A-no-labels",
+        "A-only-alpha",
+        "A-only-beta",
+        "B-inside",
+        "B-outside",
+        "B-straddle",
+        "G-both-assignees",
+        "G-only-alice"
+      ]
+    },
+    {
+      "id": "filter.exists.baseline_no_filter",
+      "filter": null,
+      "http_status": 200,
+      "task_titles": [
+        "A-both",
+        "A-no-labels",
+        "A-only-alpha",
+        "A-only-beta",
+        "B-inside",
+        "B-outside",
+        "B-straddle",
+        "G-both-assignees",
+        "G-only-alice"
+      ]
+    },
+    {
+      "id": "extra.three_range_all_merged",
+      "filter": "reminders > '2026-04-15' && reminders < '2026-07-01' && reminders > '2026-06-01'",
+      "http_status": 200,
+      "task_titles": [
+        "B-inside"
+      ]
+    },
+    {
+      "id": "extra.range_then_equality_breaks",
+      "filter": "reminders > '2026-06-01' && reminders = '2026-08-01'",
+      "http_status": 200,
+      "task_titles": [
+        "B-straddle"
+      ]
+    },
+    {
+      "id": "extra.labels_gte_lte_merged",
+      "filter": "labels >= 910 && labels <= 911",
+      "http_status": 200,
+      "task_titles": [
+        "A-both",
+        "A-only-alpha",
+        "A-only-beta"
+      ]
+    },
+    {
+      "id": "extra.mixed_tables_adjacent",
+      "filter": "labels = 910 && assignees = alice",
+      "http_status": 200,
+      "task_titles": []
+    },
+    {
+      "id": "extra.include_nulls_reminders",
+      "filter": "reminders > '2026-06-01'",
+      "http_status": 200,
+      "task_titles": [
+        "A-both",
+        "A-no-labels",
+        "A-only-alpha",
+        "A-only-beta",
+        "B-inside",
+        "B-straddle",
+        "G-both-assignees",
+        "G-only-alice"
+      ]
+    },
+    {
+      "id": "extra.not_equals_then_range",
+      "filter": "reminders != '2026-05-01' && reminders > '2026-06-01'",
+      "http_status": 200,
+      "task_titles": [
+        "B-inside"
+      ]
+    },
+    {
+      "id": "extra.range_across_two_subtables",
+      "filter": "reminders > '2026-06-01' && labels > 910",
+      "http_status": 200,
+      "task_titles": [
+        "B-straddle"
+      ]
+    },
+    {
+      "id": "extra.range_then_equality_below_bound",
+      "filter": "reminders > '2026-06-01' && reminders = '2026-05-01'",
+      "http_status": 200,
+      "task_titles": [
+        "B-straddle"
+      ]
+    },
+    {
+      "id": "extra.bucket_id_leaf",
+      "filter": "bucket_id = 3",
+      "http_status": 200,
+      "task_titles": []
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+*.local
+.vite/
+.cache/
+
+# 仓库根 .gitignore 有 `Test_*` 规则，macOS 的 git 忽略匹配大小写不敏感，
+# 任何 test_* 开头的文件会被静默忽略、不入库。这里反选兜底。
+# （本目录统一用 xxx.test.tsx 后缀式命名，不受影响；这条是防手滑。）
+!test_*

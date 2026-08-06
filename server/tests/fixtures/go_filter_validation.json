@@ -1,0 +1,231 @@
+{
+  "_meta": {
+    "how": "GET /api/v1/tasks?filter=... against the reference server from build_go_reference.sh",
+    "version": "dev",
+    "source": "task_collection_filter.go, task_collection.go, task_collection_sort.go",
+    "note": "cases flagged decided_after_parsing are accepted by the parse/validate layer and rejected later when the value is cast, which is the compiler's job (T21/T22)"
+  },
+  "cases": [
+    {
+      "filter": "",
+      "http_status": 200
+    },
+    {
+      "filter": "done = false",
+      "http_status": 200
+    },
+    {
+      "filter": "done = false && priority > 3",
+      "http_status": 200
+    },
+    {
+      "filter": "done = false || priority >= 4",
+      "http_status": 200
+    },
+    {
+      "filter": "priority in 3,4,5",
+      "http_status": 200
+    },
+    {
+      "filter": "priority not in 3,4",
+      "http_status": 200
+    },
+    {
+      "filter": "title like 'stuff in progress'",
+      "http_status": 200
+    },
+    {
+      "filter": "title = it's cool && done = false",
+      "http_status": 200
+    },
+    {
+      "filter": "(done = false || priority > 3) && title = x",
+      "http_status": 200
+    },
+    {
+      "filter": "((done = false || done = true) && (priority = 1))",
+      "http_status": 200
+    },
+    {
+      "filter": "labels = 4 && labels = 5",
+      "http_status": 200
+    },
+    {
+      "filter": "assignees = 1",
+      "http_status": 200
+    },
+    {
+      "filter": "reminders > now",
+      "http_status": 200
+    },
+    {
+      "filter": "project = 1",
+      "http_status": 200
+    },
+    {
+      "filter": "done != false",
+      "http_status": 200
+    },
+    {
+      "filter": "priority < 3",
+      "http_status": 200
+    },
+    {
+      "filter": "priority <= 3",
+      "http_status": 200
+    },
+    {
+      "filter": "nonexistent = 1",
+      "http_status": 400,
+      "code": 4016,
+      "message": "The task field 'nonexistent' is invalid."
+    },
+    {
+      "filter": "relevance = 1",
+      "http_status": 400,
+      "code": 4016,
+      "message": "The task field 'relevance' is invalid."
+    },
+    {
+      "filter": "project_view_id = 1",
+      "http_status": 400,
+      "code": 4016,
+      "message": "The task field 'project_view_id' is invalid."
+    },
+    {
+      "filter": "(done = false && bogus = 1)",
+      "http_status": 400,
+      "code": 4016,
+      "message": "The task field 'bogus' is invalid."
+    },
+    {
+      "filter": "title !~ 'x'",
+      "http_status": 400,
+      "code": 4017,
+      "message": "The task filter comparator '!~' is invalid."
+    },
+    {
+      "filter": "title ?~ 'x'",
+      "http_status": 400,
+      "code": 4017,
+      "message": "The task filter comparator '?~' is invalid."
+    },
+    {
+      "filter": "title ?!~ 'x'",
+      "http_status": 400,
+      "code": 4017,
+      "message": "The task filter comparator '?!~' is invalid."
+    },
+    {
+      "filter": "priority ?> '1'",
+      "http_status": 400,
+      "code": 4017,
+      "message": "The task filter comparator '?>' is invalid."
+    },
+    {
+      "filter": "priority ?>= '1'",
+      "http_status": 400,
+      "code": 4017,
+      "message": "The task filter comparator '?>=' is invalid."
+    },
+    {
+      "filter": "priority ?< '1'",
+      "http_status": 400,
+      "code": 4017,
+      "message": "The task filter comparator '?<' is invalid."
+    },
+    {
+      "filter": "priority ?<= '1'",
+      "http_status": 400,
+      "code": 4017,
+      "message": "The task filter comparator '?<=' is invalid."
+    },
+    {
+      "filter": "nonexistent !~ 'x'",
+      "http_status": 400,
+      "code": 4017,
+      "message": "The task filter comparator '!~' is invalid."
+    },
+    {
+      "filter": "   ",
+      "http_status": 400,
+      "code": 4024,
+      "message": "The filter expression '   ' is invalid: empty filter expression"
+    },
+    {
+      "filter": "done = false &&",
+      "http_status": 400,
+      "code": 4024,
+      "message": "The filter expression 'done = 'false'&&' is invalid: invalid or incomplete filter expression"
+    },
+    {
+      "filter": "title = '",
+      "http_status": 400,
+      "code": 4024,
+      "message": "The filter expression 'title = '' is invalid: invalid quoted text \"'\""
+    },
+    {
+      "filter": "title = \"",
+      "http_status": 400,
+      "code": 4024,
+      "message": "The filter expression 'title = \"' is invalid: invalid quoted text \"\\\"\""
+    },
+    {
+      "filter": "title = ''",
+      "http_status": 200
+    },
+    {
+      "filter": "title = \"\"",
+      "http_status": 200
+    },
+    {
+      "filter": "title = 'x",
+      "http_status": 200
+    },
+    {
+      "filter": "done = false && title = '",
+      "http_status": 400,
+      "code": 4024,
+      "message": "The filter expression 'done = 'false'&& title = '' is invalid: invalid quoted text \"'\""
+    },
+    {
+      "filter": "(done = false",
+      "http_status": 400,
+      "code": 4024,
+      "message": "The filter expression '(done = 'false'' is invalid: invalid formatted group - missing 1 closing bracket(s)"
+    },
+    {
+      "filter": "done = false)",
+      "http_status": 400,
+      "code": 4024,
+      "message": "The filter expression 'done = 'false')' is invalid: unexpected character ')'"
+    },
+    {
+      "filter": "&& done = false",
+      "http_status": 400,
+      "code": 4024,
+      "message": "The filter expression '&& done = 'false'' is invalid: expected left operand (identifier, function, text or number), got \"&&\" (join)"
+    },
+    {
+      "filter": "due_date > 'no'",
+      "http_status": 400,
+      "code": 4019,
+      "message": "The task filter value 'no' for field 'due_date' is invalid.",
+      "decided_after_parsing": true
+    },
+    {
+      "filter": "done > 'notabool'",
+      "http_status": 400,
+      "code": 4019,
+      "message": "The task filter value 'notabool' for field 'done' is invalid.",
+      "decided_after_parsing": true
+    },
+    {
+      "filter": "done == = false",
+      "http_status": 400,
+      "code": 4019,
+      "message": "The task filter value '= = false' for field 'done' is invalid.",
+      "decided_after_parsing": true
+    }
+  ]
+}

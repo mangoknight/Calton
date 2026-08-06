@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	/* :root 默认亮色；.dark 由 ThemeProvider 挂在 <html> 上（Radix Portal 渲染到 body，
+     只有挂在 <html> 上才对 Portal 生效 —— Nexus 已踩过这个坑）。 */
+	:root {
+		/* ---- XYZ blue ---- */
+		--color-blue-1: #f0f5ff;
+		--color-blue-2: #e6edff;
+		--color-blue-3: #bdceff;
+		--color-blue-4: #94adff;
+		--color-blue-5: #6b89ff;
+		--color-blue-6: #4362ff;
+		--color-blue-6h: #3451e6;
+		--color-blue-7: #2e44d9;
+		--color-blue-8: #1d2cb3;
+		--color-blue-9: #0f188c;
+		--color-blue-10: #0a0d66;
+
+		/* ---- XYZ gray ---- */
+		--color-gray-1: #f8fafc;
+		--color-gray-2: #f1f5f9;
+		--color-gray-3: #e1e7ef;
+		--color-gray-4: #c8d5e5;
+		--color-gray-5: #9eacbf;
+		--color-gray-6: #65758b;
+		--color-gray-7: #48566a;
+		--color-gray-8: #344256;
+		--color-gray-9: #0f1728;
+		--color-gray-10: #090e1a;
+		--color-gray-11: #060a10;
+
+		/* ---- accent ---- */
+		--color-orange-6: #ff8400;
+		--color-surface-1: #ffffff;
+
+		/* ---- shadcn 语义（亮色） ---- */
+		--background: 0 0% 100%;
+		--foreground: 222 47% 7%;
+		--card: 0 0% 100%;
+		--card-foreground: 222 47% 7%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 222 47% 7%;
+		--primary: 231 100% 63%;
+		--primary-foreground: 0 0% 100%;
+		--secondary: 210 40% 96%;
+		--secondary-foreground: 222 47% 11%;
+		--muted: 210 40% 96%;
+		--muted-foreground: 215 16% 55%;
+		--accent: 220 60% 97%;
+		--accent-foreground: 222 47% 11%;
+		--destructive: 0 72% 51%;
+		--destructive-foreground: 0 0% 100%;
+		--border: 214 27% 83%;
+		--input: 214 27% 83%;
+		--ring: 231 100% 63%;
+		--radius: 0px;
+
+		--sidebar-background: 0 0% 100%;
+		--sidebar-foreground: 222 47% 7%;
+		--sidebar-primary: 231 100% 63%;
+		--sidebar-primary-foreground: 0 0% 100%;
+		--sidebar-accent: 220 60% 97%;
+		--sidebar-accent-foreground: 222 47% 11%;
+		--sidebar-border: 214 27% 83%;
+		--sidebar-ring: 231 100% 63%;
+	}
+
+	.dark {
+		--color-gray-1: #1a2332;
+		--color-gray-2: #0c101c;
+		--color-gray-3: #242e3c;
+		--color-gray-4: #313b48;
+		--color-gray-5: #5e6d81;
+		--color-gray-6: #8a9ab1;
+		--color-gray-7: #b1c0d2;
+		--color-gray-8: #d3dce7;
+		--color-gray-9: #e2eaf2;
+		--color-gray-10: #f8fafc;
+		--color-gray-11: #feffff;
+
+		--color-blue-1: #15182c;
+		--color-blue-2: #1b2045;
+		--color-blue-3: #222b5b;
+		--color-blue-4: #29377e;
+		--color-blue-5: #3347ad;
+		--color-blue-6: #3c56dc;
+		--color-blue-6h: #627de8;
+		--color-blue-7: #627de8;
+		--color-blue-8: #8ea5f3;
+		--color-blue-9: #b8c8f8;
+		--color-blue-10: #e2e9fa;
+
+		--color-orange-6: #dc7303;
+		--color-surface-1: #111827;
+
+		--background: 225 40% 8%;
+		--foreground: 210 40% 98%;
+		--card: 225 40% 8%;
+		--card-foreground: 210 40% 98%;
+		--popover: 218 28% 15%;
+		--popover-foreground: 210 40% 98%;
+		--primary: 231 65% 55%;
+		--primary-foreground: 0 0% 100%;
+		--secondary: 215 25% 15%;
+		--secondary-foreground: 210 30% 90%;
+		--muted: 215 25% 15%;
+		--muted-foreground: 213 16% 44%;
+		--accent: 215 25% 15%;
+		--accent-foreground: 210 40% 98%;
+		--destructive: 0 65% 52%;
+		--destructive-foreground: 0 0% 100%;
+		--border: 213 16% 24%;
+		--input: 213 16% 24%;
+		--ring: 231 65% 55%;
+		--radius: 0px;
+
+		--sidebar-background: 225 40% 8%;
+		--sidebar-foreground: 210 40% 98%;
+		--sidebar-primary: 231 65% 55%;
+		--sidebar-primary-foreground: 0 0% 100%;
+		--sidebar-accent: 215 25% 15%;
+		--sidebar-accent-foreground: 210 40% 98%;
+		--sidebar-border: 213 16% 24%;
+		--sidebar-ring: 231 65% 55%;
+	}
+
+	* {
+		@apply border-border;
+	}
+
+	body {
+		@apply bg-background text-foreground;
+		font-feature-settings:
+			'rlig' 1,
+			'calt' 1;
+	}
+}

@@ -1,0 +1,258 @@
+{
+  "add": {
+    "body": {
+      "created": "0001-01-01T00:00:00Z",
+      "user_id": 902
+    },
+    "body_keys": [
+      "created",
+      "user_id"
+    ],
+    "status": 201
+  },
+  "add_duplicate": {
+    "body": {
+      "code": 4021,
+      "message": "This user is already assigned to that task."
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 400
+  },
+  "add_forbidden_task": {
+    "body": {
+      "code": 0,
+      "message": "Forbidden"
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 403
+  },
+  "add_missing_user": {
+    "body": {
+      "code": 1005,
+      "message": "The user does not exist."
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 404
+  },
+  "add_no_access": {
+    "body": {
+      "code": 7003,
+      "message": "This user does not have access to the project."
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 403
+  },
+  "add_no_user_id": {
+    "body": {
+      "code": 1005,
+      "message": "The user does not exist."
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 404
+  },
+  "bulk": {
+    "body": {
+      "assignees": [
+        {
+          "created": "0001-01-01T00:00:00Z",
+          "id": 902,
+          "name": "",
+          "updated": "0001-01-01T00:00:00Z",
+          "username": ""
+        }
+      ]
+    },
+    "body_keys": [
+      "assignees"
+    ],
+    "status": 201
+  },
+  "bulk_absent_key": {
+    "body": {
+      "assignees": null
+    },
+    "body_keys": [
+      "assignees"
+    ],
+    "status": 201
+  },
+  "bulk_duplicate_in_request": {
+    "body": {
+      "code": 4021,
+      "message": "This user is already assigned to that task."
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 400
+  },
+  "bulk_empty": {
+    "body": {
+      "assignees": []
+    },
+    "body_keys": [
+      "assignees"
+    ],
+    "status": 201
+  },
+  "bulk_keeps_existing_rows_then_list": [
+    901,
+    902
+  ],
+  "bulk_missing_user": {
+    "body": {
+      "code": 1005,
+      "message": "The user does not exist."
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 404
+  },
+  "bulk_no_access": {
+    "body": {
+      "code": 7003,
+      "message": "This user does not have access to the project."
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 403
+  },
+  "bulk_then_list": [
+    {
+      "created": "2026-01-01T00:00:00Z",
+      "id": 902,
+      "name": "",
+      "updated": "2026-01-01T00:00:00Z",
+      "username": "carol"
+    }
+  ],
+  "delete": {
+    "body": {
+      "message": "Successfully deleted."
+    },
+    "body_keys": [
+      "message"
+    ],
+    "status": 200
+  },
+  "delete_forbidden_task": {
+    "body": {
+      "code": 0,
+      "message": "Forbidden"
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 403
+  },
+  "delete_missing_task": {
+    "body": {
+      "code": 3001,
+      "message": "This project does not exist."
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 404
+  },
+  "delete_missing_user": {
+    "body": {
+      "message": "Successfully deleted."
+    },
+    "body_keys": [
+      "message"
+    ],
+    "status": 200
+  },
+  "delete_never_assigned": {
+    "body": {
+      "message": "Successfully deleted."
+    },
+    "body_keys": [
+      "message"
+    ],
+    "status": 200
+  },
+  "read_all": {
+    "body": [
+      {
+        "created": "2026-01-01T00:00:00Z",
+        "id": 901,
+        "name": "",
+        "updated": "2026-01-01T00:00:00Z",
+        "username": "bob"
+      }
+    ],
+    "item_keys": [
+      "created",
+      "id",
+      "name",
+      "updated",
+      "username"
+    ],
+    "status": 200,
+    "x-pagination-result-count": "1",
+    "x-pagination-total-pages": "1"
+  },
+  "read_all_anonymous": {
+    "body": {
+      "code": 11,
+      "message": "missing, malformed, expired or otherwise invalid token provided"
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 401
+  },
+  "read_all_empty": {
+    "body": [],
+    "status": 200,
+    "x-pagination-result-count": "0",
+    "x-pagination-total-pages": "0"
+  },
+  "read_all_forbidden": {
+    "body": {
+      "code": 1,
+      "message": "You're not allowed to do this."
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 403
+  },
+  "read_all_missing_task": {
+    "body": {
+      "code": 3001,
+      "message": "This project does not exist."
+    },
+    "body_keys": [
+      "code",
+      "message"
+    ],
+    "status": 404
+  }
+}

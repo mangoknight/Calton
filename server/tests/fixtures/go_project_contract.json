@@ -1,0 +1,491 @@
+{
+  "_meta": {
+    "how": "recorded from the Go reference server: PUT /api/v1/projects for the validation shapes, one successful create, then a full read-modify-write echo of that object back to POST /projects/{id}",
+    "source": "project.go, project_view.go",
+    "note": "request_body is recorded for every case. The RMW case is defined by what is sent -- a body carrying views[] with view_kind as a string -- so a reader can reproduce it without inventing one."
+  },
+  "validation": [
+    {
+      "case": "empty_title",
+      "request_body": {
+        "title": ""
+      },
+      "http_status": 412,
+      "response": {
+        "code": 2002,
+        "message": "Invalid Data",
+        "invalid_fields": [
+          "title: non zero value required"
+        ]
+      }
+    },
+    {
+      "case": "missing_title",
+      "request_body": {},
+      "http_status": 412,
+      "response": {
+        "code": 2002,
+        "message": "Invalid Data",
+        "invalid_fields": [
+          "title: non zero value required"
+        ]
+      }
+    },
+    {
+      "case": "whitespace_title",
+      "request_body": {
+        "title": "   "
+      },
+      "http_status": 201,
+      "response": {
+        "id": 911,
+        "title": "   ",
+        "description": "",
+        "identifier": "",
+        "hex_color": "",
+        "parent_project_id": 0,
+        "owner": {
+          "id": 900,
+          "name": "",
+          "username": "alice",
+          "created": "0001-01-01T00:00:00Z",
+          "updated": "0001-01-01T00:00:00Z"
+        },
+        "is_archived": false,
+        "background_information": null,
+        "background_blur_hash": "",
+        "is_favorite": false,
+        "position": 59703296,
+        "views": [
+          {
+            "id": 29,
+            "title": "List",
+            "project_id": 911,
+            "view_kind": "list",
+            "filter": {
+              "s": "",
+              "sort_by": null,
+              "order_by": null,
+              "filter": "done = false",
+              "filter_include_nulls": false
+            },
+            "position": 100,
+            "bucket_configuration_mode": "none",
+            "bucket_configuration": null,
+            "default_bucket_id": 0,
+            "done_bucket_id": 0,
+            "updated": "2026-08-03T14:43:13.18191Z",
+            "created": "2026-08-03T14:43:13.181883Z"
+          },
+          {
+            "id": 30,
+            "title": "Gantt",
+            "project_id": 911,
+            "view_kind": "gantt",
+            "filter": null,
+            "position": 200,
+            "bucket_configuration_mode": "none",
+            "bucket_configuration": null,
+            "default_bucket_id": 0,
+            "done_bucket_id": 0,
+            "updated": "2026-08-03T14:43:13.182305Z",
+            "created": "2026-08-03T14:43:13.182289Z"
+          },
+          {
+            "id": 31,
+            "title": "Table",
+            "project_id": 911,
+            "view_kind": "table",
+            "filter": null,
+            "position": 300,
+            "bucket_configuration_mode": "none",
+            "bucket_configuration": null,
+            "default_bucket_id": 0,
+            "done_bucket_id": 0,
+            "updated": "2026-08-03T14:43:13.182524Z",
+            "created": "2026-08-03T14:43:13.182511Z"
+          },
+          {
+            "id": 32,
+            "title": "Kanban",
+            "project_id": 911,
+            "view_kind": "kanban",
+            "filter": null,
+            "position": 400,
+            "bucket_configuration_mode": "manual",
+            "bucket_configuration": null,
+            "default_bucket_id": 22,
+            "done_bucket_id": 24,
+            "updated": "2026-08-03T14:43:13.1829Z",
+            "created": "2026-08-03T14:43:13.182694Z"
+          }
+        ],
+        "max_permission": 0,
+        "created": "2026-08-03T14:43:13.181749Z",
+        "updated": "2026-08-03T14:43:13.181813Z"
+      }
+    },
+    {
+      "case": "hash_prefixed_hex_color",
+      "request_body": {
+        "title": "HexProbe",
+        "hex_color": "#ff0000"
+      },
+      "http_status": 201,
+      "response": {
+        "id": 912,
+        "title": "HexProbe",
+        "description": "",
+        "identifier": "",
+        "hex_color": "ff0000",
+        "parent_project_id": 0,
+        "owner": {
+          "id": 900,
+          "name": "",
+          "username": "alice",
+          "created": "0001-01-01T00:00:00Z",
+          "updated": "0001-01-01T00:00:00Z"
+        },
+        "is_archived": false,
+        "background_information": null,
+        "background_blur_hash": "",
+        "is_favorite": false,
+        "position": 59768832,
+        "views": [
+          {
+            "id": 33,
+            "title": "List",
+            "project_id": 912,
+            "view_kind": "list",
+            "filter": {
+              "s": "",
+              "sort_by": null,
+              "order_by": null,
+              "filter": "done = false",
+              "filter_include_nulls": false
+            },
+            "position": 100,
+            "bucket_configuration_mode": "none",
+            "bucket_configuration": null,
+            "default_bucket_id": 0,
+            "done_bucket_id": 0,
+            "updated": "2026-08-03T14:43:13.184815Z",
+            "created": "2026-08-03T14:43:13.1848Z"
+          },
+          {
+            "id": 34,
+            "title": "Gantt",
+            "project_id": 912,
+            "view_kind": "gantt",
+            "filter": null,
+            "position": 200,
+            "bucket_configuration_mode": "none",
+            "bucket_configuration": null,
+            "default_bucket_id": 0,
+            "done_bucket_id": 0,
+            "updated": "2026-08-03T14:43:13.185081Z",
+            "created": "2026-08-03T14:43:13.185063Z"
+          },
+          {
+            "id": 35,
+            "title": "Table",
+            "project_id": 912,
+            "view_kind": "table",
+            "filter": null,
+            "position": 300,
+            "bucket_configuration_mode": "none",
+            "bucket_configuration": null,
+            "default_bucket_id": 0,
+            "done_bucket_id": 0,
+            "updated": "2026-08-03T14:43:13.185299Z",
+            "created": "2026-08-03T14:43:13.185285Z"
+          },
+          {
+            "id": 36,
+            "title": "Kanban",
+            "project_id": 912,
+            "view_kind": "kanban",
+            "filter": null,
+            "position": 400,
+            "bucket_configuration_mode": "manual",
+            "bucket_configuration": null,
+            "default_bucket_id": 25,
+            "done_bucket_id": 27,
+            "updated": "2026-08-03T14:43:13.185665Z",
+            "created": "2026-08-03T14:43:13.185477Z"
+          }
+        ],
+        "max_permission": 0,
+        "created": "2026-08-03T14:43:13.184742Z",
+        "updated": "2026-08-03T14:43:13.184769Z"
+      }
+    }
+  ],
+  "created": {
+    "http_status": 201,
+    "response": {
+      "id": 913,
+      "title": "ContractShape",
+      "description": "",
+      "identifier": "",
+      "hex_color": "",
+      "parent_project_id": 0,
+      "owner": {
+        "id": 900,
+        "name": "",
+        "username": "alice",
+        "created": "0001-01-01T00:00:00Z",
+        "updated": "0001-01-01T00:00:00Z"
+      },
+      "is_archived": false,
+      "background_information": null,
+      "background_blur_hash": "",
+      "is_favorite": false,
+      "position": 59834368,
+      "views": [
+        {
+          "id": 37,
+          "title": "List",
+          "project_id": 913,
+          "view_kind": "list",
+          "filter": {
+            "s": "",
+            "sort_by": null,
+            "order_by": null,
+            "filter": "done = false",
+            "filter_include_nulls": false
+          },
+          "position": 100,
+          "bucket_configuration_mode": "none",
+          "bucket_configuration": null,
+          "default_bucket_id": 0,
+          "done_bucket_id": 0,
+          "updated": "2026-08-03T14:43:13.187338Z",
+          "created": "2026-08-03T14:43:13.187322Z"
+        },
+        {
+          "id": 38,
+          "title": "Gantt",
+          "project_id": 913,
+          "view_kind": "gantt",
+          "filter": null,
+          "position": 200,
+          "bucket_configuration_mode": "none",
+          "bucket_configuration": null,
+          "default_bucket_id": 0,
+          "done_bucket_id": 0,
+          "updated": "2026-08-03T14:43:13.187592Z",
+          "created": "2026-08-03T14:43:13.187574Z"
+        },
+        {
+          "id": 39,
+          "title": "Table",
+          "project_id": 913,
+          "view_kind": "table",
+          "filter": null,
+          "position": 300,
+          "bucket_configuration_mode": "none",
+          "bucket_configuration": null,
+          "default_bucket_id": 0,
+          "done_bucket_id": 0,
+          "updated": "2026-08-03T14:43:13.187794Z",
+          "created": "2026-08-03T14:43:13.187782Z"
+        },
+        {
+          "id": 40,
+          "title": "Kanban",
+          "project_id": 913,
+          "view_kind": "kanban",
+          "filter": null,
+          "position": 400,
+          "bucket_configuration_mode": "manual",
+          "bucket_configuration": null,
+          "default_bucket_id": 28,
+          "done_bucket_id": 30,
+          "updated": "2026-08-03T14:43:13.188125Z",
+          "created": "2026-08-03T14:43:13.187949Z"
+        }
+      ],
+      "max_permission": 0,
+      "created": "2026-08-03T14:43:13.187263Z",
+      "updated": "2026-08-03T14:43:13.187292Z"
+    }
+  },
+  "rmw_echo": {
+    "request_body": {
+      "id": 913,
+      "title": "ContractShape",
+      "description": "",
+      "identifier": "",
+      "hex_color": "",
+      "parent_project_id": 0,
+      "owner": {
+        "id": 900,
+        "name": "",
+        "username": "alice",
+        "created": "0001-01-01T00:00:00Z",
+        "updated": "0001-01-01T00:00:00Z"
+      },
+      "is_archived": false,
+      "background_information": null,
+      "background_blur_hash": "",
+      "is_favorite": false,
+      "position": 59834368,
+      "views": [
+        {
+          "id": 37,
+          "title": "List",
+          "project_id": 913,
+          "view_kind": "list",
+          "filter": {
+            "s": "",
+            "sort_by": null,
+            "order_by": null,
+            "filter": "done = false",
+            "filter_include_nulls": false
+          },
+          "position": 100,
+          "bucket_configuration_mode": "none",
+          "bucket_configuration": null,
+          "default_bucket_id": 0,
+          "done_bucket_id": 0,
+          "updated": "2026-08-03T14:43:13.187338Z",
+          "created": "2026-08-03T14:43:13.187322Z"
+        },
+        {
+          "id": 38,
+          "title": "Gantt",
+          "project_id": 913,
+          "view_kind": "gantt",
+          "filter": null,
+          "position": 200,
+          "bucket_configuration_mode": "none",
+          "bucket_configuration": null,
+          "default_bucket_id": 0,
+          "done_bucket_id": 0,
+          "updated": "2026-08-03T14:43:13.187592Z",
+          "created": "2026-08-03T14:43:13.187574Z"
+        },
+        {
+          "id": 39,
+          "title": "Table",
+          "project_id": 913,
+          "view_kind": "table",
+          "filter": null,
+          "position": 300,
+          "bucket_configuration_mode": "none",
+          "bucket_configuration": null,
+          "default_bucket_id": 0,
+          "done_bucket_id": 0,
+          "updated": "2026-08-03T14:43:13.187794Z",
+          "created": "2026-08-03T14:43:13.187782Z"
+        },
+        {
+          "id": 40,
+          "title": "Kanban",
+          "project_id": 913,
+          "view_kind": "kanban",
+          "filter": null,
+          "position": 400,
+          "bucket_configuration_mode": "manual",
+          "bucket_configuration": null,
+          "default_bucket_id": 28,
+          "done_bucket_id": 30,
+          "updated": "2026-08-03T14:43:13.188125Z",
+          "created": "2026-08-03T14:43:13.187949Z"
+        }
+      ],
+      "max_permission": 0,
+      "created": "2026-08-03T14:43:13.187263Z",
+      "updated": "2026-08-03T14:43:13.187292Z"
+    },
+    "http_status": 200,
+    "response": {
+      "id": 913,
+      "title": "ContractShape",
+      "description": "",
+      "identifier": "",
+      "hex_color": "",
+      "parent_project_id": 0,
+      "owner": {
+        "id": 900,
+        "name": "",
+        "username": "alice",
+        "created": "2026-01-01T00:00:00Z",
+        "updated": "2026-01-01T00:00:00Z"
+      },
+      "is_archived": false,
+      "background_information": null,
+      "background_blur_hash": "",
+      "is_favorite": false,
+      "position": 59834368,
+      "views": [
+        {
+          "id": 37,
+          "title": "List",
+          "project_id": 913,
+          "view_kind": "list",
+          "filter": {
+            "s": "",
+            "sort_by": null,
+            "order_by": null,
+            "filter": "done = false",
+            "filter_include_nulls": false
+          },
+          "position": 100,
+          "bucket_configuration_mode": "none",
+          "bucket_configuration": null,
+          "default_bucket_id": 0,
+          "done_bucket_id": 0,
+          "updated": "2026-08-03T14:43:13Z",
+          "created": "2026-08-03T14:43:13Z"
+        },
+        {
+          "id": 38,
+          "title": "Gantt",
+          "project_id": 913,
+          "view_kind": "gantt",
+          "filter": null,
+          "position": 200,
+          "bucket_configuration_mode": "none",
+          "bucket_configuration": null,
+          "default_bucket_id": 0,
+          "done_bucket_id": 0,
+          "updated": "2026-08-03T14:43:13Z",
+          "created": "2026-08-03T14:43:13Z"
+        },
+        {
+          "id": 39,
+          "title": "Table",
+          "project_id": 913,
+          "view_kind": "table",
+          "filter": null,
+          "position": 300,
+          "bucket_configuration_mode": "none",
+          "bucket_configuration": null,
+          "default_bucket_id": 0,
+          "done_bucket_id": 0,
+          "updated": "2026-08-03T14:43:13Z",
+          "created": "2026-08-03T14:43:13Z"
+        },
+        {
+          "id": 40,
+          "title": "Kanban",
+          "project_id": 913,
+          "view_kind": "kanban",
+          "filter": null,
+          "position": 400,
+          "bucket_configuration_mode": "manual",
+          "bucket_configuration": null,
+          "default_bucket_id": 28,
+          "done_bucket_id": 30,
+          "updated": "2026-08-03T14:43:13Z",
+          "created": "2026-08-03T14:43:13Z"
+        }
+      ],
+      "max_permission": 0,
+      "created": "2026-08-03T14:43:13Z",
+      "updated": "2026-08-03T14:43:13Z"
+    }
+  }
+}

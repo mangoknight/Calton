@@ -1,0 +1,10 @@
+{
+	"_note": "由 npm run gen:api 生成，勿手改。patch 警告清单入库是为了让\"转换器补的东西变了\"在 code review 里成为 diff。",
+	"source": "server/contract/calton-v1-corrected.json",
+	"source_sha256": "8f51607005721d55bce8d4f6de824a6cc1eaa20b28d2a520580c4e63af19ab57",
+	"generated_on": "2026-08-03",
+	"is_corrected_contract": true,
+	"path_count": 129,
+	"swagger2openapi_patch_warnings": [],
+	"swagger2openapi_info_patches": {}
+}

@@ -1,0 +1,2368 @@
+{
+  "_meta": {
+    "calton_case_count": 28,
+    "how": "case table extracted from the library's own parser_test.go via go/ast (not retyped), then run through fexpr.Parse; Calton-shaped inputs appended",
+    "library": "github.com/ganigeorgiev/fexpr v0.6.0",
+    "source": "parser.go / scanner.go",
+    "upstream_case_count": 103
+  },
+  "cases": [
+    {
+      "input": "\u003e 1",
+      "upstream_expects_error": true,
+      "error": "expected left operand (identifier, function, text or number), got \"\u003e\" (sign)"
+    },
+    {
+      "input": "a \u003e",
+      "upstream_expects_error": true,
+      "error": "invalid or incomplete filter expression"
+    },
+    {
+      "input": "a \u003e \u003e",
+      "upstream_expects_error": true,
+      "error": "expected right operand (identifier, function text or number), got \"\u003e\" (sign)"
+    },
+    {
+      "input": "a \u003e %",
+      "upstream_expects_error": true,
+      "error": "unexpected character '%'"
+    },
+    {
+      "input": "a ! 1",
+      "upstream_expects_error": true,
+      "error": "invalid sign operator \"!\""
+    },
+    {
+      "input": "a - 1",
+      "upstream_expects_error": true,
+      "error": "invalid number \"-\""
+    },
+    {
+      "input": "a + 1",
+      "upstream_expects_error": true,
+      "error": "unexpected character '+'"
+    },
+    {
+      "input": "1 - 1",
+      "upstream_expects_error": true,
+      "error": "invalid number \"-\""
+    },
+    {
+      "input": "1 + 1",
+      "upstream_expects_error": true,
+      "error": "unexpected character '+'"
+    },
+    {
+      "input": "\u003e a 1",
+      "upstream_expects_error": true,
+      "error": "expected left operand (identifier, function, text or number), got \"\u003e\" (sign)"
+    },
+    {
+      "input": "a || 1",
+      "upstream_expects_error": true,
+      "error": "expected a sign operator, got \"||\" (join)"
+    },
+    {
+      "input": "a \u0026\u0026 1",
+      "upstream_expects_error": true,
+      "error": "expected a sign operator, got \"\u0026\u0026\" (join)"
+    },
+    {
+      "input": "test \u003e 1 \u0026\u0026",
+      "upstream_expects_error": true,
+      "error": "invalid or incomplete filter expression"
+    },
+    {
+      "input": "|| test = 1",
+      "upstream_expects_error": true,
+      "error": "expected left operand (identifier, function, text or number), got \"||\" (join)"
+    },
+    {
+      "input": "test = 1 \u0026\u0026 ||",
+      "upstream_expects_error": true,
+      "error": "expected left operand (identifier, function, text or number), got \"||\" (join)"
+    },
+    {
+      "input": "test = 1 \u0026\u0026 a",
+      "upstream_expects_error": true,
+      "error": "invalid or incomplete filter expression"
+    },
+    {
+      "input": "test = 1 \u0026\u0026 a",
+      "upstream_expects_error": true,
+      "error": "invalid or incomplete filter expression"
+    },
+    {
+      "input": "test = 1 \u0026\u0026 \"a\"",
+      "upstream_expects_error": true,
+      "error": "invalid or incomplete filter expression"
+    },
+    {
+      "input": "test = 1 a",
+      "upstream_expects_error": true,
+      "error": "expected \u0026\u0026 or ||, got \"a\" (identifier)"
+    },
+    {
+      "input": "test = 1 a",
+      "upstream_expects_error": true,
+      "error": "expected \u0026\u0026 or ||, got \"a\" (identifier)"
+    },
+    {
+      "input": "test = 1 \"a\"",
+      "upstream_expects_error": true,
+      "error": "expected \u0026\u0026 or ||, got \"a\" (text)"
+    },
+    {
+      "input": "test = 1@test",
+      "upstream_expects_error": true,
+      "error": "expected \u0026\u0026 or ||, got \"@test\" (identifier)"
+    },
+    {
+      "input": "test = .@test",
+      "upstream_expects_error": true,
+      "error": "unexpected character '.'"
+    },
+    {
+      "input": "test = \"demo'",
+      "upstream_expects_error": true,
+      "error": "invalid quoted text \"\\\"demo'\""
+    },
+    {
+      "input": "test = 'demo\"",
+      "upstream_expects_error": true,
+      "error": "invalid quoted text \"'demo\\\"\""
+    },
+    {
+      "input": "test = 'demo'\"",
+      "upstream_expects_error": true,
+      "error": "invalid quoted text \"\\\"\""
+    },
+    {
+      "input": "test = 'demo''",
+      "upstream_expects_error": true,
+      "error": "invalid quoted text \"'\""
+    },
+    {
+      "input": "test = \"demo\"'",
+      "upstream_expects_error": true,
+      "error": "invalid quoted text \"'\""
+    },
+    {
+      "input": "test = \"demo\"\"",
+      "upstream_expects_error": true,
+      "error": "invalid quoted text \"\\\"\""
+    },
+    {
+      "input": "test = \"\"demo\"\"",
+      "upstream_expects_error": true,
+      "error": "expected \u0026\u0026 or ||, got \"demo\" (identifier)"
+    },
+    {
+      "input": "test = ''demo''",
+      "upstream_expects_error": true,
+      "error": "expected \u0026\u0026 or ||, got \"demo\" (identifier)"
+    },
+    {
+      "input": "test = `demo`",
+      "upstream_expects_error": true,
+      "error": "unexpected character '`'"
+    },
+    {
+      "input": "demo='a\\b\\c\\d'",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "a\\b\\c\\d"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "demo='a\\n'",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "a\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "demo='a\\r'",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "a\r"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "demo='a\\t'",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "a\t"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "demo='a\\r\\n'",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "a\r\n"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "demo='a\\nb'",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "a\nb"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "demo='a\\tb'",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "a\tb"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "demo='te\\'st'",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "te'st"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "(demo='te\\'st')",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "demo"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "te'st"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "demo='te\\\\'st'",
+      "upstream_expects_error": true,
+      "error": "expected \u0026\u0026 or ||, got \"st\" (identifier)"
+    },
+    {
+      "input": "(demo='te\\\\'st')",
+      "upstream_expects_error": true,
+      "error": "invalid quoted text \"')\""
+    },
+    {
+      "input": "demo=\"te\\\"st\"",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "te\"st"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "(demo=\"te\\\"st\")",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "demo"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "te\"st"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "demo=\"te\\\\\\\"st\"",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "te\\\"st"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "demo=\"te\\\\\"st\"",
+      "upstream_expects_error": true,
+      "error": "expected \u0026\u0026 or ||, got \"st\" (identifier)"
+    },
+    {
+      "input": "demo=\"te\\\\\\\\\"st\"",
+      "upstream_expects_error": true,
+      "error": "expected \u0026\u0026 or ||, got \"st\" (identifier)"
+    },
+    {
+      "input": "(demo=\"te\\\\\"st\")",
+      "upstream_expects_error": true,
+      "error": "invalid quoted text \"\\\")\""
+    },
+    {
+      "input": "demo=\"te\\'st\"",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "te'st"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "(demo=\"te\\'st\")",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "demo"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "te'st"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "demo=\"te\\\\'st\"",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "te\\'st"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "(demo=\"te\\\\'st\")",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "demo"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "te\\'st"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "demo=\"te\\\\\\'st\"",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "te\\'st"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "demo = 'a\\\\'",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "a\\"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "(demo = 'a\\\\')",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "demo"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "a\\"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "demo = 'a\\'\\\\'",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "a'\\"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "demo1 = 'a\\' \u0026\u0026 demo2 = 2",
+      "upstream_expects_error": true,
+      "error": "invalid quoted text \"'a' \u0026\u0026 demo2 = 2\""
+    },
+    {
+      "input": "(demo1 = 'a\\' \u0026\u0026 demo2 = 2)",
+      "upstream_expects_error": true,
+      "error": "invalid quoted text \"'a\\\\' \u0026\u0026 demo2 = 2)\""
+    },
+    {
+      "input": "demo1 = 'a\\\\' \u0026\u0026 demo2 = 2",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo1"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "a\\"
+            }
+          }
+        },
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo2"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "(demo1 = 'a\\\\' \u0026\u0026 demo2 = 2)",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "demo1"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "a\\"
+                }
+              }
+            },
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "demo2"
+                },
+                "op": "=",
+                "right": {
+                  "type": "number",
+                  "literal": "2"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "demo1 = 'a\\\\\\\\' \u0026\u0026 demo2 = 2",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo1"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "a\\\\"
+            }
+          }
+        },
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "demo2"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "(demo1 = 'a\\\\\\\\' \u0026\u0026 demo2 = 2)",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "demo1"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "a\\\\"
+                }
+              }
+            },
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "demo2"
+                },
+                "op": "=",
+                "right": {
+                  "type": "number",
+                  "literal": "2"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "test = / demo",
+      "upstream_expects_error": true,
+      "error": "invalid comment"
+    },
+    {
+      "input": "test = // demo",
+      "upstream_expects_error": true,
+      "error": "invalid or incomplete filter expression"
+    },
+    {
+      "input": "// demo",
+      "upstream_expects_error": true,
+      "error": "empty filter expression"
+    },
+    {
+      "input": "test = 123 // demo (1, 2, 3, '')",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "test"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "123"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "// demo (1, 2, 3, '')\ntest = 123",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "test"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "123"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "test = // demo\n123",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "test"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "123"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "\n\t\t\ta = 123 \u0026\u0026\n\t\t\t// demo\n\t\t\tb = 456\n\t\t",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "a"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "123"
+            }
+          }
+        },
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "b"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "456"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "test() = 12",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "function",
+              "literal": "test",
+              "args": []
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "12"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "(a.b.c(1) = d.e.f(2)) || 1=2",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "function",
+                  "literal": "a.b.c",
+                  "args": [
+                    {
+                      "type": "number",
+                      "literal": "1"
+                    }
+                  ]
+                },
+                "op": "=",
+                "right": {
+                  "type": "function",
+                  "literal": "d.e.f",
+                  "args": [
+                    {
+                      "type": "number",
+                      "literal": "2"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "join": "||",
+          "expr": {
+            "left": {
+              "type": "number",
+              "literal": "1"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "1=12",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "number",
+              "literal": "1"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "12"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "   1    =    12    ",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "number",
+              "literal": "1"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "12"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "\"demo\" != test",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "text",
+              "literal": "demo"
+            },
+            "op": "!=",
+            "right": {
+              "type": "identifier",
+              "literal": "test"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "a~1",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "a"
+            },
+            "op": "~",
+            "right": {
+              "type": "number",
+              "literal": "1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "a !~ 1",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "a"
+            },
+            "op": "!~",
+            "right": {
+              "type": "number",
+              "literal": "1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "test\u003e12",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "test"
+            },
+            "op": "\u003e",
+            "right": {
+              "type": "number",
+              "literal": "12"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "test \u003e 12",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "test"
+            },
+            "op": "\u003e",
+            "right": {
+              "type": "number",
+              "literal": "12"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "test \u003e=\"test\"",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "test"
+            },
+            "op": "\u003e=",
+            "right": {
+              "type": "text",
+              "literal": "test"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "test\u003c@demo.test2",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "test"
+            },
+            "op": "\u003c",
+            "right": {
+              "type": "identifier",
+              "literal": "@demo.test2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "1\u003c=\"test\"",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "number",
+              "literal": "1"
+            },
+            "op": "\u003c=",
+            "right": {
+              "type": "text",
+              "literal": "test"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "1\u003c=\"te'st\"",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "number",
+              "literal": "1"
+            },
+            "op": "\u003c=",
+            "right": {
+              "type": "text",
+              "literal": "te'st"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "(a=1",
+      "upstream_expects_error": true,
+      "error": "invalid formatted group - missing 1 closing bracket(s)"
+    },
+    {
+      "input": "a=1)",
+      "upstream_expects_error": true,
+      "error": "unexpected character ')'"
+    },
+    {
+      "input": "((a=1)",
+      "upstream_expects_error": true,
+      "error": "invalid formatted group - missing 1 closing bracket(s)"
+    },
+    {
+      "input": "{a=1}",
+      "upstream_expects_error": true,
+      "error": "unexpected character '{'"
+    },
+    {
+      "input": "[a=1]",
+      "upstream_expects_error": true,
+      "error": "unexpected character '['"
+    },
+    {
+      "input": "((a=1 || a=2) \u0026\u0026 c=1))",
+      "upstream_expects_error": true,
+      "error": "unexpected character ')'"
+    },
+    {
+      "input": "()",
+      "upstream_expects_error": true,
+      "error": "empty filter expression"
+    },
+    {
+      "input": "(a=1)",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "a"
+                },
+                "op": "=",
+                "right": {
+                  "type": "number",
+                  "literal": "1"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "(a=\"test(\")",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "a"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "test("
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "(a=\"test)\")",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "a"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "test)"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "((a=1))",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "groups": [
+                {
+                  "join": "\u0026\u0026",
+                  "expr": {
+                    "left": {
+                      "type": "identifier",
+                      "literal": "a"
+                    },
+                    "op": "=",
+                    "right": {
+                      "type": "number",
+                      "literal": "1"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "a=1 || 2!=3",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "a"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "1"
+            }
+          }
+        },
+        {
+          "join": "||",
+          "expr": {
+            "left": {
+              "type": "number",
+              "literal": "2"
+            },
+            "op": "!=",
+            "right": {
+              "type": "number",
+              "literal": "3"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "a=1 \u0026\u0026 2!=3",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "a"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "1"
+            }
+          }
+        },
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "number",
+              "literal": "2"
+            },
+            "op": "!=",
+            "right": {
+              "type": "number",
+              "literal": "3"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "a=1 \u0026\u0026 2!=3 || \"b\"=a",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "a"
+            },
+            "op": "=",
+            "right": {
+              "type": "number",
+              "literal": "1"
+            }
+          }
+        },
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "number",
+              "literal": "2"
+            },
+            "op": "!=",
+            "right": {
+              "type": "number",
+              "literal": "3"
+            }
+          }
+        },
+        {
+          "join": "||",
+          "expr": {
+            "left": {
+              "type": "text",
+              "literal": "b"
+            },
+            "op": "=",
+            "right": {
+              "type": "identifier",
+              "literal": "a"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "(a=1 \u0026\u0026 2!=3) || \"b\"=a",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "a"
+                },
+                "op": "=",
+                "right": {
+                  "type": "number",
+                  "literal": "1"
+                }
+              }
+            },
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "number",
+                  "literal": "2"
+                },
+                "op": "!=",
+                "right": {
+                  "type": "number",
+                  "literal": "3"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "join": "||",
+          "expr": {
+            "left": {
+              "type": "text",
+              "literal": "b"
+            },
+            "op": "=",
+            "right": {
+              "type": "identifier",
+              "literal": "a"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "((a=1 || a=2) \u0026\u0026 (c=1))",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "groups": [
+                {
+                  "join": "\u0026\u0026",
+                  "expr": {
+                    "left": {
+                      "type": "identifier",
+                      "literal": "a"
+                    },
+                    "op": "=",
+                    "right": {
+                      "type": "number",
+                      "literal": "1"
+                    }
+                  }
+                },
+                {
+                  "join": "||",
+                  "expr": {
+                    "left": {
+                      "type": "identifier",
+                      "literal": "a"
+                    },
+                    "op": "=",
+                    "right": {
+                      "type": "number",
+                      "literal": "2"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "join": "\u0026\u0026",
+              "groups": [
+                {
+                  "join": "\u0026\u0026",
+                  "expr": {
+                    "left": {
+                      "type": "identifier",
+                      "literal": "c"
+                    },
+                    "op": "=",
+                    "right": {
+                      "type": "number",
+                      "literal": "1"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "(a='\"')",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "a"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "\""
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "(a='\\'')",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "a"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "'"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "(a=\"'\")",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "a"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "'"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "(a=\"\\\"\")",
+      "upstream_expects_error": false,
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "a"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "\""
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "",
+      "error": "empty filter expression"
+    },
+    {
+      "input": "   ",
+      "error": "empty filter expression"
+    },
+    {
+      "input": "done = 'false'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "done"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "false"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "done = 'false'\u0026\u0026 priority \u003e '3'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "done"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "false"
+            }
+          }
+        },
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "priority"
+            },
+            "op": "\u003e",
+            "right": {
+              "type": "text",
+              "literal": "3"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "done = 'false'|| priority \u003e= '4'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "done"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "false"
+            }
+          }
+        },
+        {
+          "join": "||",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "priority"
+            },
+            "op": "\u003e=",
+            "right": {
+              "type": "text",
+              "literal": "4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "priority ?= '3,4,5'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "priority"
+            },
+            "op": "?=",
+            "right": {
+              "type": "text",
+              "literal": "3,4,5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "priority ?!= '3,4'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "priority"
+            },
+            "op": "?!=",
+            "right": {
+              "type": "text",
+              "literal": "3,4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "title ~ 'foo'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "title"
+            },
+            "op": "~",
+            "right": {
+              "type": "text",
+              "literal": "foo"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "assignees ?= 'user1,user2'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "assignees"
+            },
+            "op": "?=",
+            "right": {
+              "type": "text",
+              "literal": "user1,user2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "labels = '4'\u0026\u0026 labels = '5'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "labels"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "4"
+            }
+          }
+        },
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "labels"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "due_date \u003e 'now/d'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "due_date"
+            },
+            "op": "\u003e",
+            "right": {
+              "type": "text",
+              "literal": "now/d"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "(a = '1'\u0026\u0026 b = '2') || c = '3'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "a"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "1"
+                }
+              }
+            },
+            {
+              "join": "\u0026\u0026",
+              "expr": {
+                "left": {
+                  "type": "identifier",
+                  "literal": "b"
+                },
+                "op": "=",
+                "right": {
+                  "type": "text",
+                  "literal": "2"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "join": "||",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "c"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "3"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "title = 'it\\'s cool'\u0026\u0026 done = 'false'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "title"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "it's cool"
+            }
+          }
+        },
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "done"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "false"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "reminders \u003e 'now'\u0026\u0026 labels = '1'\u0026\u0026 reminders \u003c 'now+30d'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "reminders"
+            },
+            "op": "\u003e",
+            "right": {
+              "type": "text",
+              "literal": "now"
+            }
+          }
+        },
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "labels"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "1"
+            }
+          }
+        },
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "reminders"
+            },
+            "op": "\u003c",
+            "right": {
+              "type": "text",
+              "literal": "now+30d"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "title !~ 'foo'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "title"
+            },
+            "op": "!~",
+            "right": {
+              "type": "text",
+              "literal": "foo"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "title ?~ 'foo'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "title"
+            },
+            "op": "?~",
+            "right": {
+              "type": "text",
+              "literal": "foo"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "title ?!~ 'foo'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "title"
+            },
+            "op": "?!~",
+            "right": {
+              "type": "text",
+              "literal": "foo"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "priority ?\u003e '3'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "priority"
+            },
+            "op": "?\u003e",
+            "right": {
+              "type": "text",
+              "literal": "3"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "priority ?\u003e= '3'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "priority"
+            },
+            "op": "?\u003e=",
+            "right": {
+              "type": "text",
+              "literal": "3"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "priority ?\u003c '3'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "priority"
+            },
+            "op": "?\u003c",
+            "right": {
+              "type": "text",
+              "literal": "3"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "priority ?\u003c= '3'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "priority"
+            },
+            "op": "?\u003c=",
+            "right": {
+              "type": "text",
+              "literal": "3"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "relevance = '1'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "relevance"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "project_view_id = '1'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "project_view_id"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "nonexistent_field = '1'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "nonexistent_field"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "project = '1'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "project"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "((a = '1'|| a = '2') \u0026\u0026 (c = '1'))",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "groups": [
+            {
+              "join": "\u0026\u0026",
+              "groups": [
+                {
+                  "join": "\u0026\u0026",
+                  "expr": {
+                    "left": {
+                      "type": "identifier",
+                      "literal": "a"
+                    },
+                    "op": "=",
+                    "right": {
+                      "type": "text",
+                      "literal": "1"
+                    }
+                  }
+                },
+                {
+                  "join": "||",
+                  "expr": {
+                    "left": {
+                      "type": "identifier",
+                      "literal": "a"
+                    },
+                    "op": "=",
+                    "right": {
+                      "type": "text",
+                      "literal": "2"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "join": "\u0026\u0026",
+              "groups": [
+                {
+                  "join": "\u0026\u0026",
+                  "expr": {
+                    "left": {
+                      "type": "identifier",
+                      "literal": "c"
+                    },
+                    "op": "=",
+                    "right": {
+                      "type": "text",
+                      "literal": "1"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input": "a = '1'\u0026\u0026 b = '2'|| c = '3'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "a"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "1"
+            }
+          }
+        },
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "b"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "2"
+            }
+          }
+        },
+        {
+          "join": "||",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "c"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "3"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": "a = '1'|| b = '2'\u0026\u0026 c = '3'",
+      "groups": [
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "a"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "1"
+            }
+          }
+        },
+        {
+          "join": "||",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "b"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "2"
+            }
+          }
+        },
+        {
+          "join": "\u0026\u0026",
+          "expr": {
+            "left": {
+              "type": "identifier",
+              "literal": "c"
+            },
+            "op": "=",
+            "right": {
+              "type": "text",
+              "literal": "3"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

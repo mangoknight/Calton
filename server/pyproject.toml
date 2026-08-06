@@ -1,0 +1,85 @@
+[project]
+name = "calton"
+version = "0.1.0"
+description = "Calton — a Python/FastAPI reimplementation of the Calton v1 API"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "sqlalchemy>=2.0.36",
+    "alembic>=1.14",
+    "pyjwt>=2.10",
+    "bcrypt>=4.2",
+    "python-multipart>=0.0.20",
+    # contract/*.yaml loading for the T06 diff framework
+    "pyyaml>=6.0.2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    # starlette's TestClient requires httpx2; plain httpx is deprecated there.
+    "httpx2>=2.9",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    # fifth line of defence: fuzz the golden contract (T06)
+    "schemathesis>=4.24",
+    "types-pyyaml>=6.0.12.20260724",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/calton"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = [
+    "error",
+    # schemathesis's ASGI transport hands anyio memory streams to the garbage
+    # collector. They surface at interpreter shutdown as an unraisable
+    # ResourceWarning, which "error" turns into a non-zero exit for the whole
+    # session even when every test passed. Third-party leak, unreachable from
+    # Calton's own code.
+    "ignore:Unclosed <MemoryObject:ResourceWarning",
+]
+markers = [
+    "contract: contract diff / schemathesis suite (T06)",
+    "parity: differential suite against the Go implementation (T10)",
+]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# The permission CTE is transcribed character for character from the Go source so the two
+# can be diffed by eye. Reflowing it to the line limit would defeat that.
+"src/calton/permissions/project.py" = ["E501"]
+# The mutation entries embed source fragments verbatim so they can be matched
+# against the files they patch. Reflowing them would stop them matching.
+"scripts/mutation_check_auth.py" = ["E501"]
+
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI's dependency injection puts these calls in argument defaults, which B008
+# otherwise flags on every path operation.
+extend-immutable-calls = [
+    "fastapi.Depends",
+    "fastapi.Query",
+    "fastapi.Path",
+    "fastapi.Body",
+    "fastapi.Header",
+]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src", "tests"]
+strict = true

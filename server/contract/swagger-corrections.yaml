@@ -1,0 +1,316 @@
+# Where pkg/swagger/swagger.json disagrees with pkg/routes/routes.go.
+#
+# The swagger is generated from @Router annotations. Annotations drift; the route
+# table does not. Clients talk to the route table, so the route table wins. These
+# corrections are applied to the golden contract before any diffing, so that the
+# contract tests hold us to what the server actually serves.
+#
+# Each entry must cite the routes.go line that justifies it. Do not add an entry
+# without one — "the swagger looks wrong" is not evidence.
+#
+# Three kinds:
+#   add             a real route with no annotation at all
+#   replace         the annotation names the wrong method or path
+#   response_fields the annotation names the wrong response *body*
+
+add:
+  # Real routes with no @Router annotation, so they never reached the swagger.
+  - method: GET
+    path: /token/test
+    evidence: pkg/routes/routes.go:545
+    reason: >
+      Registered as a.GET("/token/test", apiv1.TestToken) but carries no @Router
+      annotation. The route table is what clients talk to, so a route that is
+      served is in the contract whether or not it is documented — that alone
+      justifies this entry.
+
+      An earlier version of this entry justified it instead by saying eargollo's
+      MCP client calls it to validate its API token. That is not true: no
+      published version of either client we track calls GET /token/test —
+      measured against calton-mcp@1.0.4 and @eargollo/calton-mcp 0.1.1, 0.5.0,
+      1.0.0 and 1.2.1 (T36, harness/mcp/). The conclusion was right and the
+      stated reason was wrong, which is the harder failure to notice: nobody
+      re-checks the evidence for a claim that is already true.
+
+  - method: POST
+    path: /token/test
+    evidence: pkg/routes/routes.go:546
+    reason: >
+      Registered as a.POST("/token/test", apiv1.CheckToken) on the line after the
+      GET above — a different handler, not the same one under two verbs. Measured:
+      POST with credentials answers
+      418 and the teapot body, POST without credentials answers 401 — auth runs
+      before the handler. Both verbs are served, so both are in the contract.
+
+      Worth stating why the 401 case exists: returning a 418 constant straight
+      from the route is the obvious implementation, it satisfies the 418 case,
+      and it hands 418 to unauthenticated callers. Only the 401 case can tell
+      the two apart.
+
+  - method: GET
+    path: "/projects/{project}/tasks"
+    evidence: pkg/routes/routes.go:650
+    reason: >
+      Registered as a.GET("/projects/:project/tasks", taskCollectionHandler.ReadAllWeb)
+      but undocumented. One of the three TaskCollection entry points (T23), so it
+      cannot be dropped just because the annotation is missing.
+
+replace:
+  # A wrong verb in the annotation. This one is dangerous: implementing the
+  # documented verb rather than the served one yields a 404, with nothing in any
+  # log to say the route was misdeclared.
+  - from: {method: PUT, path: "/labels/{id}"}
+    to: {method: POST, path: "/labels/{label}"}
+    evidence: pkg/routes/routes.go:784
+    reason: >
+      pkg/models/label.go:99 annotates Update as `@Router /labels/{id} [put]`, but
+      routes.go registers a.POST("/labels/:label", labelHandler.UpdateWeb). POST is
+      also what v1's verb inversion requires (PUT creates, POST updates), which is
+      what makes the annotation, not the route, the thing that is wrong.
+
+no_documented_body:
+  # The route still exists, but this fork no longer returns what the annotation
+  # documents. Only the body is dropped — the operation stays in the contract, so
+  # the route's existence is still asserted.
+  - method: POST
+    path: /user/token
+    evidence: measured against the reference server; see tests/fixtures/go_jwt.json
+    reason: >
+      The swagger documents a {token} body, inherited from upstream where this
+      endpoint renewed a user token. The fork has replaced it with a refusal:
+      400 {"message": "User tokens cannot be renewed via this endpoint. Use POST
+      /user/token/refresh with a refresh token."}. Recorded from a running server
+      rather than read off the source. Implementing the documented body would
+      mean serving a token from an endpoint that upstream refuses, so measurement
+      wins over the annotation, as it does for every other entry in this file.
+
+  - method: POST
+    path: /tasks/{task}/assignees/bulk
+    evidence: go_assignees.json bulk.body_keys
+    reason: >
+      The swagger annotates this operation with models.TaskAssginee (upstream's
+      typo), i.e. the {user_id, created} object the single-assign endpoint
+      returns. The running server answers something else entirely: a one-key
+      object {"assignees": [...]} echoing the request's users, unhydrated. This
+      is not a field the fork dropped — the annotation never described this
+      endpoint correctly — so there is no subset of it to keep, and the recorded
+      shape is asserted in tests/unit/test_assignees.py instead.
+      ⚠ Note {} and {"assignees": []} are different responses here (null vs []),
+      which is why the body is pinned by tests rather than by a schema that
+      would have to make one of the two canonical.
+
+response_fields_not_returned:
+  # Fields the swagger declares because they exist on the Go struct, but which
+  # the running server never actually sends. All measured, not reasoned about:
+  # see tests/fixtures/go_users.json, where the recorded body_keys for each of
+  # these endpoints omits them.
+  #
+  # These are dropped from the golden rather than added to our schemas, because
+  # declaring a field we never populate is the same divergence in the other
+  # direction — the generated client would type it as always-present.
+  - method: POST
+    path: /register
+    fields: [bot_owner_id]
+    evidence: go_users.json register.ok.body_keys
+    reason: >
+      Bot users are a fork-only feature Calton does not implement (deviation D5).
+      The field is `omitempty` and always zero here, so it never reaches the wire.
+
+  - method: GET
+    path: /user
+    fields: [bot_owner_id, email]
+    evidence: go_users.json current_user.body_keys
+    reason: >
+      bot_owner_id as above. `email` is the surprising one: the endpoint omits it
+      **even for a user who has an address set** — verified by registering a user
+      with an email and reading its /user body, which still has ten keys and no
+      email. So this is not an omitempty accident, it is the endpoint's shape.
+
+  - method: GET
+    path: /users
+    fields: [bot_owner_id, email]
+    evidence: go_users.json user_list.search
+    reason: >
+      Entries in the search result are five keys — id, name, username, created,
+      updated. Returning email here would leak addresses to any authenticated
+      user who can search, which is precisely what the discoverable_by_email flag
+      exists to gate.
+
+  - method: POST
+    path: /user/logout
+    fields: [oidc_logout_url]
+    evidence: go_users.json logout.ok.body
+    reason: >
+      Only present when the session was opened through an OIDC provider. Calton
+      does not implement OIDC (deviation D5), so the measured body is exactly
+      {"message": "Successfully logged out."}.
+
+  - method: GET
+    path: /tokens
+    fields: [token]
+    evidence: go_api_tokens.json list.plaintext_present is false
+    reason: >
+      The swagger's list response reuses the same definition as the creation
+      response, which does carry the plaintext. The listing does not: only the
+      PBKDF2 digest is stored, so the plaintext is unrecoverable after creation.
+      Declaring it would promise a field that could only be delivered by storing
+      tokens reversibly, which is the whole thing the hashing prevents.
+
+  - method: GET
+    path: /tasks/{task}/assignees
+    fields: [bot_owner_id, email]
+    evidence: go_assignees.json read_all.item_keys
+    reason: >
+      Recorded entries are five keys — id, name, username, created, updated. Same
+      omission as GET /users and for the same reason, but the exposure here is
+      wider: the assignee list is readable by every collaborator on the project,
+      not only by someone running a deliberate user search. bot_owner_id is the
+      fork-only bot feature (deviation D5) and is never populated.
+
+response_fields:
+  # The annotation names the resource; the route serves the generic delete body.
+  #
+  # `Label.Delete` is annotated `@Success 200 {object} models.Label`, but
+  # routes.go registers `labelHandler.DeleteWeb` — the shared WebHandler — and
+  # `pkg/web/handler/delete.go:79` answers `models.Message` for every resource
+  # that goes through it. Measured on the reference server: DELETE
+  # /api/v1/labels/952 returns exactly `{"message":"Successfully deleted."}`
+  # (corpus `label.delete.ok`, asserted `body_exact`). Without this correction the
+  # diff demands we declare `models.Label` on a route that serves a message, which
+  # would put the wrong type in the generated TypeScript for the frontend.
+  #
+  # ⚠️ Same defect, same cause, on two more operations that are not built yet —
+  # DELETE /subscriptions/{entity}/{entityID} and DELETE /projects/{id}/background.
+  # They will need entries here too rather than a rediscovery each time; every one
+  # of them is registered as a `DeleteWeb`. (DELETE /filters/{id} was the third and
+  # is now done, immediately below.)
+  - method: DELETE
+    path: "/labels/{label}"
+    fields: [message]
+    evidence: pkg/routes/routes.go:783
+    reason: >
+      routes.go registers a.DELETE("/labels/:label", labelHandler.DeleteWeb), the
+      generic handler, whose delete.go:79 writes models.Message. The @Success
+      annotation on pkg/models/label.go claims models.Label and is what is wrong.
+
+  # ⚠️ The annotation names the *element* type, not the body. `BulkTask.Update`
+  # (pkg/models/bulk_task.go:82) is annotated `@Success 200 {array} models.Task`,
+  # but routes.go registers it as `bulkTaskHandler.UpdateWeb` — the shared
+  # WebHandler — and `pkg/web/handler/update.go` serialises the **bound struct**,
+  # which here is `BulkTask` itself. So the wire body is the request envelope with
+  # `tasks` filled in, not a bare array of tasks.
+  #
+  # Measured on the reference server: POST /api/v1/tasks/bulk answers
+  # {"task_ids": [...], "fields": [...] | null, "values": {…a whole Task…},
+  #  "tasks": [ …the updated tasks… ]} — four top-level keys, 200.
+  #
+  # Without this correction the diff demands 36 Task fields at the top level of a
+  # body that has four keys, and "fixing" it the other way would mean returning a
+  # bare array, which no client of the real server would parse.
+  - method: POST
+    path: /tasks/bulk
+    fields: [task_ids, fields, values, tasks]
+    evidence: pkg/routes/routes.go:708
+    reason: >
+      routes.go registers a.POST("/tasks/bulk", bulkTaskHandler.UpdateWeb). UpdateWeb
+      writes the bound CObject back, and the bound object is models.BulkTask, whose
+      json tags are task_ids / fields / values / tasks. The `{array} models.Task`
+      annotation describes the `tasks` member, not the response. Measured, and pinned
+      in tests/unit/test_task_bulk.py::TestResponseShape.
+
+  # The upload handler is hand-written, and the annotation was never updated for it.
+  #
+  # `UploadTaskAttachment` (pkg/routes/api/v1/task_attachment.go) is annotated
+  # `@Success 200 {object} models.Message`, i.e. {"message": …}. The handler's last
+  # line is `c.JSON(http.StatusOK, webfiles.BuildUploadResult(success, …))`, which
+  # writes `AttachmentUploadResult` — {errors, success}. There is no `message` key
+  # in it at all.
+  #
+  # Measured: PUT /api/v1/tasks/924/attachments answers
+  # {"errors": null, "success": [{…attachment…}]}, and an upload whose form field is
+  # not called `files` answers {"errors": null, "success": null} — still a 200.
+  #
+  # Kept as response_fields rather than no_documented_body (which is what the
+  # assignees bulk entry above uses) because this body *does* have a stable, fully
+  # measured shape worth asserting; there is no null-vs-[] ambiguity in which keys
+  # exist, only in their values.
+  - method: PUT
+    path: "/tasks/{task}/attachments"
+    fields: [errors, success]
+    evidence: pkg/routes/routes.go:758
+    reason: >
+      routes.go registers a.PUT("/tasks/:task/attachments", apiv1.UploadTaskAttachment),
+      whose handler returns webfiles.BuildUploadResult — {errors, success}. The
+      models.Message annotation describes neither key. Pinned in
+      tests/unit/test_attachments.py::TestUpload::test_the_body_shape.
+
+  - method: DELETE
+    path: "/filters/{id}"
+    fields: [message]
+    evidence: pkg/routes/routes.go:813
+    reason: >
+      routes.go registers a.DELETE("/filters/:filter", savedFiltersHandler.DeleteWeb),
+      the generic handler, whose delete.go:79 writes models.Message. The @Success
+      annotation on pkg/models/saved_filters.go claims models.SavedFilter, which is
+      the thing that is wrong — same defect and same cause as the label entry above.
+      Measured on the reference server: DELETE /api/v1/filters/951 (a filter created
+      through the API in the same session) returns exactly
+      `{"message":"Successfully deleted."}`, and a subsequent GET of it is
+      404/11001. Corpus `filter.delete.ok` asserts both, `body_exact`.
+      Without this correction the diff demands models.SavedFilter — eight fields —
+      on a route that serves one, so the generated TypeScript would tell the
+      frontend a delete returns the filter it just removed.
+
+  # The annotation names the generic message; the route serves the membership row.
+  #
+  # `TeamMember.Update` is annotated `@Success 200 {object} models.Message`, but the
+  # route is registered as `teamMemberHandler.UpdateWeb` — the shared WebHandler — and
+  # `pkg/web/handler/update.go` serialises the **bound struct**, which here is the
+  # TeamMember itself. Measured on the reference server: POST
+  # /api/v1/teams/1/members/user3/admin returns
+  # {"id":55,"username":"user3","admin":true,"created":"2026-08-04T07:39:43Z"} — four
+  # keys, no `message` anywhere.
+  #
+  # ⚠️ The same annotation is right about its *sibling*: DELETE
+  # /teams/{id}/members/{username} really does answer {"message":"Successfully
+  # deleted."}, because that one is a DeleteWeb. Two routes on one handler struct, two
+  # different bodies, one shared and half-wrong annotation.
+  - method: POST
+    path: "/teams/{id}/members/{userID}/admin"
+    fields: [id, username, admin, created]
+    evidence: pkg/routes/routes.go:834
+    reason: >
+      routes.go registers a.POST("/teams/:team/members/:user/admin",
+      teamMemberHandler.UpdateWeb), the generic update handler, which writes back the
+      struct it bound rather than a models.Message. The @Success annotation on
+      pkg/models/team_members.go is what is wrong.
+
+response_field_types:
+  # Where the annotation names the wrong *type* for a field that is served. Same
+  # kind of drift as the wrong-verb corrections above: swaggo reads the Go type,
+  # and a type whose JSON form comes from a custom marshaller is invisible to it.
+  #
+  # Evidence for these entries cites the marshaller, not routes.go. The route
+  # table proves a path is served; it says nothing about how a field is encoded,
+  # and citing it here would attach a true conclusion to an irrelevant line.
+  - method: GET
+    path: /info
+    field: enabled_pro_features
+    type: ["array<string>"]
+    go_type: Feature
+    evidence: pkg/license/license.go:92
+    reason: >
+      The swagger declares `[]license.Feature` as an array of integers, because
+      `type Feature uint` is what swaggo sees. But `Feature` defines
+      `MarshalJSON` on a pointer receiver returning `f.String()`, and slice
+      elements are addressable, so the wire format is an array of *strings*.
+
+      Measured rather than reasoned about — whether a pointer-receiver marshaller
+      applies depends on addressability, which is not something to infer. The
+      running server cannot settle it (the field is `[]` on both sides because
+      neither instance is licensed), so `server/scripts/dump_go_pro_features.go`
+      marshals a populated `shared.CaltonInfos` directly:
+
+        []license.Feature{1,2,3} -> ["admin_panel","time_tracking","audit_logs"]
+
+      So Calton's `array<string>` is correct and the annotation is not.

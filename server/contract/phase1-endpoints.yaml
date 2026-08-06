@@ -1,0 +1,160 @@
+# Phase 1 承诺的 operation 白名单。对拍台（AC-1）与契约 diff（AC-2）都以本表为范围。
+#
+# 键是 method + path，不是 operationId —— 上游 169 个 operation 里只有 1 个有
+# operationId，用它做键会漏掉 168 个。path 拼写与修正后的黄金契约逐字一致，
+# 包括上游各不相同的参数名（{id} / {project} / {projectID} / {taskID} 混用）。
+#
+# 合计 87 个 = 上游 86 + Calton 新增别名 1。
+#   Phase 1: 69（上游 68 + 别名 1）
+#   Phase 2: +8 团队，+5 webhook，+2 通知，+3 共享 = 18
+#
+# ⚠️ 总数写死在 tests/contract/test_contract.py 里，加一行必须同步改那个数字——
+# 这是有意的：让"加端点"成为一个需要解释的决定，而不是副作用。
+
+operations:
+  # --- 认证与元信息（10） ---
+  - {method: POST, path: "/login", group: auth_meta}
+  - {method: POST, path: "/register", group: auth_meta}
+  - {method: POST, path: "/user/token", group: auth_meta}
+  - {method: POST, path: "/user/token/refresh", group: auth_meta}
+  - {method: GET, path: "/user", group: auth_meta}
+  - {method: GET, path: "/users", group: auth_meta}
+  - {method: POST, path: "/user/logout", group: auth_meta}
+  - {method: GET, path: "/info", group: auth_meta}
+  - {method: GET, path: "/token/test", group: auth_meta, note: "上游有路由无 @Router 注解；见 swagger-corrections.yaml"}
+  - {method: POST, path: "/token/test", group: auth_meta, note: "同上，无注解。实测 POST + 凭据 -> 418 🍵，而 POST 无凭据 -> 401：鉴权跑在处理器之前。直接在路由上返回 418 常量会让未认证请求也拿到 418，只有那条 401 用例抓得到。"}
+  - {method: GET, path: "/routes", group: auth_meta}
+
+  # --- API token（3） ---
+  - {method: GET, path: "/tokens", group: api_tokens}
+  - {method: PUT, path: "/tokens", group: api_tokens}
+  - {method: DELETE, path: "/tokens/{tokenID}", group: api_tokens}
+
+  # --- 项目（6） ---
+  - {method: GET, path: "/projects", group: projects}
+  - {method: PUT, path: "/projects", group: projects}
+  - {method: GET, path: "/projects/{id}", group: projects}
+  - {method: POST, path: "/projects/{id}", group: projects}
+  - {method: DELETE, path: "/projects/{id}", group: projects}
+  - {method: GET, path: "/projects/{id}/projectusers", group: projects}
+
+  # --- 视图（5） ---
+  - {method: GET, path: "/projects/{project}/views", group: views}
+  - {method: PUT, path: "/projects/{project}/views", group: views}
+  - {method: GET, path: "/projects/{project}/views/{id}", group: views}
+  - {method: POST, path: "/projects/{project}/views/{id}", group: views}
+  - {method: DELETE, path: "/projects/{project}/views/{id}", group: views}
+
+  # --- 看板（5） ---
+  - {method: GET, path: "/projects/{id}/views/{view}/buckets", group: buckets}
+  - {method: PUT, path: "/projects/{id}/views/{view}/buckets", group: buckets}
+  - {method: POST, path: "/projects/{projectID}/views/{view}/buckets/{bucketID}", group: buckets}
+  - {method: DELETE, path: "/projects/{projectID}/views/{view}/buckets/{bucketID}", group: buckets}
+  - {method: POST, path: "/projects/{project}/views/{view}/buckets/{bucket}/tasks", group: buckets}
+
+  # --- 任务（10） ---
+  - {method: GET, path: "/tasks", group: tasks}
+  - {method: GET, path: "/tasks/all", group: tasks, note: "Calton 新增别名，不在上游 swagger 内；见 aliases.yaml"}
+  - {method: GET, path: "/projects/{project}/tasks", group: tasks, note: "上游有路由无 @Router 注解；见 swagger-corrections.yaml"}
+  - {method: GET, path: "/projects/{id}/views/{view}/tasks", group: tasks}
+  - {method: PUT, path: "/projects/{id}/tasks", group: tasks}
+  - {method: GET, path: "/tasks/{id}", group: tasks}
+  - {method: POST, path: "/tasks/{id}", group: tasks}
+  - {method: DELETE, path: "/tasks/{id}", group: tasks}
+  - {method: GET, path: "/projects/{project}/tasks/by-index/{index}", group: tasks}
+  - {method: POST, path: "/tasks/bulk", group: tasks}
+
+  # --- 任务关联（9） ---
+  - {method: GET, path: "/tasks/{taskID}/assignees", group: task_relations_assoc}
+  - {method: PUT, path: "/tasks/{taskID}/assignees", group: task_relations_assoc}
+  - {method: DELETE, path: "/tasks/{taskID}/assignees/{userID}", group: task_relations_assoc}
+  - {method: POST, path: "/tasks/{taskID}/assignees/bulk", group: task_relations_assoc}
+  - {method: GET, path: "/tasks/{task}/labels", group: task_relations_assoc}
+  - {method: PUT, path: "/tasks/{task}/labels", group: task_relations_assoc}
+  - {method: DELETE, path: "/tasks/{task}/labels/{label}", group: task_relations_assoc}
+  - {method: POST, path: "/tasks/{taskID}/labels/bulk", group: task_relations_assoc}
+  - {method: POST, path: "/tasks/{id}/position", group: task_relations_assoc}
+
+  # --- 标签（5） ---
+  - {method: GET, path: "/labels", group: labels}
+  - {method: PUT, path: "/labels", group: labels}
+  - {method: GET, path: "/labels/{id}", group: labels}
+  - {method: POST, path: "/labels/{label}", group: labels, note: "上游注解误写成 PUT /labels/{id}；见 swagger-corrections.yaml"}
+  - {method: DELETE, path: "/labels/{id}", group: labels}
+
+  # --- saved filter（4） ---
+  - {method: PUT, path: "/filters", group: saved_filters}
+  - {method: GET, path: "/filters/{id}", group: saved_filters}
+  - {method: POST, path: "/filters/{id}", group: saved_filters}
+  - {method: DELETE, path: "/filters/{id}", group: saved_filters}
+
+  # --- 评论（5） ---
+  - {method: GET, path: "/tasks/{taskID}/comments", group: comments}
+  - {method: PUT, path: "/tasks/{taskID}/comments", group: comments}
+  - {method: GET, path: "/tasks/{taskID}/comments/{commentID}", group: comments}
+  - {method: POST, path: "/tasks/{taskID}/comments/{commentID}", group: comments}
+  - {method: DELETE, path: "/tasks/{taskID}/comments/{commentID}", group: comments}
+
+  # --- 关系（2） ---
+  - {method: PUT, path: "/tasks/{taskID}/relations", group: relations}
+  - {method: DELETE, path: "/tasks/{taskID}/relations/{relationKind}/{otherTaskID}", group: relations}
+
+  # --- 附件（4） ---
+  - {method: GET, path: "/tasks/{id}/attachments", group: attachments}
+  - {method: PUT, path: "/tasks/{id}/attachments", group: attachments}
+  - {method: GET, path: "/tasks/{id}/attachments/{attachmentID}", group: attachments}
+  - {method: DELETE, path: "/tasks/{id}/attachments/{attachmentID}", group: attachments}
+
+  # --- 团队（8） ---
+  # 8 条，不是任务书上的 7 条：DELETE /teams/{id} 在上游路由表和 API token 注册表里
+  # 都有（routes.go:825，GET /routes 的 teams.delete），实测 200 {"message":...}。
+  #
+  # {username} / {userID} 两个参数名都是**用户名**，不是数字 id。上游 swagger 把 admin
+  # 那条写成 {userID} 是文档错误——实测 DELETE /teams/1/members/3 是 404/1005
+  # "The user does not exist."，因为没有名叫 "3" 的用户。参数名在契约 diff 里会被归一化，
+  # 所以这里逐字照抄黄金契约的拼写，代码里则用 {username} 让语义留在签名上。
+  - {method: GET, path: "/teams", group: teams}
+  - {method: PUT, path: "/teams", group: teams}
+  - {method: GET, path: "/teams/{id}", group: teams}
+  - {method: POST, path: "/teams/{id}", group: teams}
+  - {method: DELETE, path: "/teams/{id}", group: teams}
+  - {method: PUT, path: "/teams/{id}/members", group: teams}
+  - {method: DELETE, path: "/teams/{id}/members/{username}", group: teams}
+  - {method: POST, path: "/teams/{id}/members/{userID}/admin", group: teams, note: "上游注解声明 models.Message，实测返回 TeamMember；见 swagger-corrections.yaml"}
+
+  # --- Webhook（4） ---
+  # ⚠️ 权限组是 projects_webhooks，不是 webhooks。`webhooks` 组确实存在但只有一条
+  # `events`（GET /webhooks/events，未实现），据此推出"这四条 token 够不着"是错的——
+  # coder-h 拿全量授权的 token 直接打，四条全通。路由与组名不是一一对应。
+  #
+  # ⚠️ 这四条**受 webhooks.enabled 门控**（默认 true，同上游）。对拍台目前把 Go 侧关着、
+  # MCP 闸门开着，所以 Calton 也读这个开关：两个面上都对，而不是选一个面对、另一个面错。
+  - {method: GET, path: "/projects/{id}/webhooks", group: webhooks}
+  - {method: PUT, path: "/projects/{id}/webhooks", group: webhooks}
+  - {method: POST, path: "/projects/{id}/webhooks/{webhookID}", group: webhooks}
+  - {method: DELETE, path: "/projects/{id}/webhooks/{webhookID}", group: webhooks}
+  # ⚠️ 这一条的权限组是 `webhooks`，上面四条是 `projects_webhooks` —— 首段不同，组就不同。
+  # 它是 `webhooks` 组的**唯一**成员，而把它误当成那四条所在的组，正是"这四条 token
+  # 够不着"那个错误结论的来源。
+  #
+  # 补它是 team-lead 明确批准的一次加端点：一个资源的 5 条做了 4 条，比 5 条都不做更糟
+  # —— 留一条不做，下一个人得先花时间确认那是不是有意的。
+  - {method: GET, path: "/webhooks/events", group: webhooks}
+
+  # --- 通知（2） ---
+  # ⚠️ 原任务清单给的是 `GET /notifications` + `POST /notifications/{id}`，实测把两半都
+  # 反过来了：**per-id 那条不在上游的 API token 注册表里**（授满通知权限仍 401/11），
+  # 而**可达的写操作是集合级 mark-all**，它当初不在清单上。所以这里收的是 GET + 集合 POST。
+  - {method: GET, path: "/notifications", group: notifications}
+  - {method: POST, path: "/notifications", group: notifications}
+
+  # --- 共享（6）：§1.1 PUT 三条 + §8 GET 三条 ---------------------------
+  # ⚠ /shares PUT 是 write、GET 是 admin —— 同一条路由两种权限 Requirement。
+  # /users 与 /teams 两半 GET 要的是 read；PUT 那侧 /users /teams 要 admin，
+ # /shares PUT 需要 write。三个动词都不一样，正是对拍台想钉的"动作=契约"边界。
+  - {method: PUT, path: "/projects/{id}/users", group: sharing}
+  - {method: GET, path: "/projects/{id}/users", group: sharing}
+  - {method: PUT, path: "/projects/{id}/teams", group: sharing}
+  - {method: GET, path: "/projects/{id}/teams", group: sharing}
+  - {method: PUT, path: "/projects/{id}/shares", group: sharing}
+  - {method: GET, path: "/projects/{id}/shares", group: sharing}

@@ -1,0 +1,33 @@
+{
+  "_meta": {
+    "commit": "078f21c18be2cfc05ce0970557bd91b60ec011c0",
+    "version": "Calton api version dev",
+    "captured_at": "2026-08-03T08:45:14Z",
+    "how": "PUT /api/v1/projects/1/tasks against the reference server, then read the row back with sqlite3 and the object back through GET /api/v1/tasks/{id}"
+  },
+  "storage": {
+    "column_type": "DATETIME",
+    "sqlite_type": "text",
+    "format": "%Y-%m-%d %H:%M:%S",
+    "timezone": "UTC",
+    "note": "the engine runs with SetTZDatabase(GMT), so stored values are UTC with no offset suffix"
+  },
+  "zero": {
+    "stored": null,
+    "json": "0001-01-01T00:00:00Z",
+    "note": "an unset time is SQL NULL and comes back as Go's zero time, never as JSON null"
+  },
+  "round_trips": [
+    {
+      "sent": "2026-08-03T10:30:00Z",
+      "stored": "2026-08-03 10:30:00",
+      "returned": "2026-08-03T10:30:00Z"
+    },
+    {
+      "sent": "2026-12-31T23:59:59.123456Z",
+      "stored": "2026-12-31 23:59:59",
+      "returned": "2026-12-31T23:59:59Z",
+      "note": "sub-second precision is discarded on write"
+    }
+  ]
+}

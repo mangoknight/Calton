@@ -1,0 +1,21 @@
+# 可选。集群没装 ingress controller 就别 apply，改用：
+#   kubectl -n calton port-forward svc/calton 8080:80
+# 或把 40-service.yaml 的 type 改成 NodePort。
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: calton
+  namespace: calton
+spec:
+  # ingressClassName: <集群实际的 class 名>
+  rules:
+    - host: calton.REPLACE_ME
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: calton
+                port:
+                  name: http

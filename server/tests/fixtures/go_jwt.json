@@ -1,0 +1,182 @@
+{
+  "_meta": {
+    "base": "http://localhost:3499",
+    "go_reference_built_at": "2026-08-03T08:45:14Z",
+    "go_reference_commit": "078f21c18be2cfc05ce0970557bd91b60ec011c0",
+    "go_reference_version": "Calton api version dev",
+    "probe": "dump_go_jwt.py"
+  },
+  "link_share_token": {
+    "auth_body_keys": [
+      "created",
+      "hash",
+      "id",
+      "name",
+      "password",
+      "permission",
+      "project_id",
+      "shared_by",
+      "sharing_type",
+      "token",
+      "updated"
+    ],
+    "auth_status": 200,
+    "claim_keys": [
+      "exp",
+      "hash",
+      "id",
+      "permission",
+      "project_id",
+      "sharedByID",
+      "type"
+    ],
+    "claims_sample": {
+      "exp": 1786024276,
+      "hash": "Ct0IhAcsaCINzODZdoYWiw3JVUlkz7gZ9ZgtjB2B",
+      "id": 8,
+      "permission": 0,
+      "project_id": 900,
+      "sharedByID": 900,
+      "type": 2
+    },
+    "ttl_seconds_approx": 259200
+  },
+  "login_failures": {
+    "empty_body": {
+      "body": {
+        "code": 1004,
+        "message": "Please specify a username and a password."
+      },
+      "status": 400
+    },
+    "missing_password": {
+      "body": {
+        "code": 1004,
+        "message": "Please specify a username and a password."
+      },
+      "status": 400
+    },
+    "unknown_user": {
+      "body": {
+        "code": 1011,
+        "message": "Wrong username or password."
+      },
+      "status": 403
+    },
+    "wrong_password": {
+      "body": {
+        "code": 1011,
+        "message": "Wrong username or password."
+      },
+      "status": 403
+    }
+  },
+  "login_ok": {
+    "body_keys": [
+      "token"
+    ],
+    "cache_control": "no-store",
+    "set_cookie": "calton_refresh_token=25f5a40c610dde6d53317fa49d4e4135659cae963c9d5627e65ed14af2729452ecd6c4a8a0989a7558ca0b707fbfa2d72dc9c105fc2ca9769f4fae8ccba62400445eb4f46f56bcef7e9a77c2c6f88c73d3f7f2aa073f1a25db34c85c309ee9546ec01a0ab01583cacdea83d7d1f5e90a734608172a40d98a814e4b72a326c1fd; Path=/api/v1/user/token/refresh; Max-Age=259200; HttpOnly; SameSite=Lax",
+    "status": 200
+  },
+  "long_token": {
+    "access_ttl_seconds_approx": 600,
+    "set_cookie": "calton_refresh_token=51625aa657b17d2bf99e5ba0bf6b289c6bba98b6b072c3dd2b37b4facd0c293fc060593ccfc55d69507ea237d50c1afe4bfc536c6ce47ac98b79d00e4503476b7567565a5ca23867961290a727a7e2f100c32438efbc0542d3239826c458dc2b2732a8f3bdc516e3f0626472dcf1078218580ae51149fa22d5dcf67033ee32c8; Path=/api/v1/user/token/refresh; Max-Age=2592000; HttpOnly; SameSite=Lax"
+  },
+  "refresh": {
+    "garbage_cookie": {
+      "body": {
+        "message": "Invalid or expired refresh token."
+      },
+      "status": 401
+    },
+    "keeps_sid": true,
+    "no_cookie": {
+      "body": {
+        "message": "No refresh token provided."
+      },
+      "status": 401
+    },
+    "reissues_jti": true,
+    "replayed_cookie": {
+      "body": {
+        "message": "Invalid or expired refresh token."
+      },
+      "status": 401
+    },
+    "with_cookie": {
+      "body_keys": [
+        "token"
+      ],
+      "rotates_cookie": true,
+      "set_cookie": "calton_refresh_token=9d06db9bfc6d2b69fa6cb25b220fc85eb69813b4f24c045ff564cd27a3a54a71039e203afa5fa740f8d57ca4e0d6c84d6028c8169d21f93ab3fe08d7ce6289d6ee8760a0026ff875977ed1e191136f47e057e82444893ba0ba05a6f537ed0a19cb3c618e3e4e890b540392cba6a41f3eb82bf671746fdea8443b60a2b74a9288; Path=/api/v1/user/token/refresh; Max-Age=259200; HttpOnly; SameSite=Lax",
+      "status": 200
+    }
+  },
+  "session_store": {
+    "cookie_length": 256,
+    "is_sha256_of_ascii": true,
+    "is_sha256_of_decoded_hex": false,
+    "stored_hash_length": 64
+  },
+  "token_test": {
+    "no_header": {
+      "body": {
+        "code": 11,
+        "message": "missing, malformed, expired or otherwise invalid token provided"
+      },
+      "status": 401
+    },
+    "not_bearer": {
+      "body": {
+        "code": 11,
+        "message": "missing, malformed, expired or otherwise invalid token provided"
+      },
+      "status": 401
+    },
+    "tampered_signature": {
+      "body": {
+        "code": 11,
+        "message": "missing, malformed, expired or otherwise invalid token provided"
+      },
+      "status": 401
+    },
+    "with_jwt": {
+      "body": {
+        "message": "ok"
+      },
+      "status": 200
+    }
+  },
+  "user_token": {
+    "claim_keys": [
+      "exp",
+      "id",
+      "is_admin",
+      "jti",
+      "sid",
+      "type",
+      "username"
+    ],
+    "claims_sample": {
+      "exp": 1785765676,
+      "id": 900,
+      "is_admin": false,
+      "jti": "58bdf759-24b8-48f1-bbfb-52d38a1e7efc",
+      "sid": "f16b1112-1ea4-4627-8944-ceca5547f14b",
+      "type": 1,
+      "username": "alice"
+    },
+    "header": {
+      "alg": "HS256",
+      "typ": "JWT"
+    },
+    "ttl_seconds_approx": 600
+  },
+  "user_token_endpoint": {
+    "body": {
+      "message": "User tokens cannot be renewed via this endpoint. Use POST /user/token/refresh with a refresh token."
+    },
+    "status": 400
+  }
+}

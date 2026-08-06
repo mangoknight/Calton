@@ -1,0 +1,12 @@
+# The root .gitignore has `Test_*`, which matches our `test_*.py` files on
+# case-insensitive filesystems (macOS). Re-include them.
+!test_*.py
+
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
