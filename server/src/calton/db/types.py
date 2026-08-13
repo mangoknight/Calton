@@ -61,9 +61,21 @@ def format_rfc3339(value: datetime) -> str:
 
     Go trims trailing zeros from the fractional part and omits it entirely when zero,
     so ``.120000`` is written ``.12`` and ``.000000`` is written not at all.
+
+    ⚠️ The year is formatted by hand (``{year:04d}``) rather than with ``strftime``.
+    ``strftime("%Y")`` does **not** zero-pad years below 1000 on glibc (Linux) —
+    ``datetime(1,1,1).strftime("%Y")`` returns ``"1"`` there while returning ``"0001"``
+    on macOS. That makes the Go zero time ``0001-01-01T00:00:00Z`` render as
+    ``1-01-01T00:00:00Z`` in the Linux container only: a byte difference from Go, and
+    worse, a value that ``datetime.fromisoformat`` cannot re-parse — so any read-modify-write
+    carrying a zero date (every task with an unset due/start/end date) 400s on write.
+    Tests passed on macOS and the bug shipped. Hand-formatting is platform-independent.
     """
     value = as_utc(value)
-    rendered = value.strftime("%Y-%m-%dT%H:%M:%S")
+    rendered = (
+        f"{value.year:04d}-{value.month:02d}-{value.day:02d}"
+        f"T{value.hour:02d}:{value.minute:02d}:{value.second:02d}"
+    )
     if value.microsecond:
         rendered += "." + f"{value.microsecond:06d}".rstrip("0")
     return rendered + "Z"

@@ -18,7 +18,13 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from pydantic import ConfigDict
 
-from calton.db.types import ZERO_TIME, OmitZeroTimestamp, OptionalTimestamp, Timestamp
+from calton.db.types import (
+    ZERO_TIME,
+    OmitZeroTimestamp,
+    OptionalTimestamp,
+    Timestamp,
+    format_rfc3339,
+)
 from calton.schemas.base import CaltonModel
 
 
@@ -51,6 +57,20 @@ def test_zero_datetime_round_trips() -> None:
 )
 def test_non_zero_datetimes_use_rfc3339(value: datetime, expected: str) -> None:
     assert f'"due_date":"{expected}"' in Model(due_date=value).model_dump_json()
+
+
+@pytest.mark.parametrize(
+    ("year", "expected"),
+    [(1, "0001"), (9, "0009"), (99, "0099"), (789, "0789"), (2026, "2026")],
+)
+def test_year_is_zero_padded_to_four_digits(year: int, expected: str) -> None:
+    """Regression: ``strftime("%Y")`` does not zero-pad years < 1000 on glibc (Linux),
+    so the zero time ``0001-01-01T00:00:00Z`` rendered as ``1-01-01T00:00:00Z`` in the
+    container while every test passed on macOS. It also broke every read-modify-write of a
+    task with an unset date, since the malformed value cannot be re-parsed. See
+    ``format_rfc3339`` — the year is hand-formatted for exactly this reason."""
+    rendered = format_rfc3339(datetime(year, 1, 1, tzinfo=UTC))
+    assert rendered == f"{expected}-01-01T00:00:00Z"
 
 
 def test_naive_datetimes_are_treated_as_utc() -> None:
