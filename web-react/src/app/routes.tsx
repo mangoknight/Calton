@@ -3,6 +3,7 @@ import type { RouteObject } from 'react-router-dom';
 import { RequireAuth } from '@/components/auth/RequireAuth';
 import { AppShell } from '@/components/layout/AppShell';
 import { AuthLayout } from '@/components/layout/AuthLayout';
+import { BoardPage } from '@/routes/BoardPage';
 import { HomePage } from '@/routes/HomePage';
 import { LabelsPage } from '@/routes/LabelsPage';
 import { LoginPage } from '@/routes/LoginPage';
@@ -39,6 +40,7 @@ export const routes: RouteObject[] = [
 				element: <AppShell />,
 				children: [
 					{ index: true, element: <HomePage /> },
+					{ path: '/board', element: <BoardPage /> },
 					{ path: '/projects', element: <ProjectsPage /> },
 					{ path: '/projects/:projectId/:view', element: <ProjectViewPage /> },
 					{ path: '/tasks/by/upcoming', element: <Placeholder title="即将到期" owner="F12" /> },

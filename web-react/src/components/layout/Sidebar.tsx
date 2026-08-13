@@ -1,4 +1,4 @@
-import { CalendarClock, Filter, FolderTree, Home, KeyRound, Tags } from 'lucide-react';
+import { CalendarClock, Columns3, Filter, FolderTree, Home, KeyRound, Tags } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 import { useSavedFilters } from '@/features/filters/queries';
@@ -16,9 +16,20 @@ import { useUIStore } from '@/store/ui';
  * key 一律照抄上游（`frontend/src/i18n/lang/`），不自己起名 ——
  * 界面文案是用户可见契约的一部分。
  */
-const NAV = [
+/**
+ * `labelKey` 走 i18n；`label` 是字面量（用于上游没有对应 key 的 Calton 自有页面 ——
+ * 全局看板不是上游概念，硬造一个 i18n key 得同步所有语言包，得不偿失）。
+ */
+const NAV: {
+	to: string;
+	icon: typeof Home;
+	end: boolean;
+	labelKey?: string;
+	label?: string;
+}[] = [
 	{ to: '/', labelKey: 'navigation.overview', icon: Home, end: true },
 	{ to: '/projects', labelKey: 'project.projects', icon: FolderTree, end: false },
+	{ to: '/board', label: '看板', icon: Columns3, end: false },
 	{ to: '/tasks/by/upcoming', labelKey: 'navigation.upcoming', icon: CalendarClock, end: false },
 	{ to: '/labels', labelKey: 'label.title', icon: Tags, end: false },
 	{ to: '/tokens', labelKey: 'user.apiTokens.title', icon: KeyRound, end: false },
@@ -38,10 +49,10 @@ export function Sidebar() {
 			)}
 		>
 			<ul className="space-y-1 px-2">
-				{NAV.map(({ to, labelKey, icon: Icon, end }) => (
+				{NAV.map(({ to, labelKey, label, icon: Icon, end }) => (
 					<li key={to}>
 						{/*
-						 * `data-nav` 是给测试用的稳定抓手，值取 i18n key。
+						 * `data-nav` 是给测试用的稳定抓手，值取 i18n key（没有 key 的用路径）。
 						 *
 						 * ⚠️ 测试**不要按可见文案定位导航项**：那样的用例在任何一次纯文案调整下
 						 * 都会红，而文案调整不改变任何行为。F13 迁移时这批测试就红过一轮，
@@ -51,7 +62,7 @@ export function Sidebar() {
 						<NavLink
 							to={to}
 							data-testid="nav-link"
-							data-nav={labelKey}
+							data-nav={labelKey ?? to}
 							end={end}
 							className={({ isActive }) =>
 								cn(
@@ -61,7 +72,7 @@ export function Sidebar() {
 							}
 						>
 							<Icon aria-hidden />
-							<span className={cn(collapsed && 'sr-only')}>{t(labelKey)}</span>
+							<span className={cn(collapsed && 'sr-only')}>{label ?? t(labelKey!)}</span>
 						</NavLink>
 					</li>
 				))}

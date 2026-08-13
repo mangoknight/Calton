@@ -19,7 +19,13 @@ import { renderApp } from '@/test/render';
  */
 
 /** 导航项的稳定标识：`data-nav` 存的是 i18n key（见 Sidebar.tsx）。 */
-const NAV_KEYS = ['navigation.overview', 'project.projects', 'navigation.upcoming', 'label.title'];
+const NAV_KEYS = [
+	'navigation.overview',
+	'project.projects',
+	'/board', // 全局看板：Calton 自有页，无 i18n key，data-nav 取路径（见 Sidebar.tsx）
+	'navigation.upcoming',
+	'label.title',
+];
 
 describe('AppShell 骨架', () => {
 	it('侧边栏列出 Phase 1 导航项，当前路由项标为激活', async () => {
