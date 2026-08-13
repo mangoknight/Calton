@@ -121,6 +121,13 @@ export function statusOf(task: Task): BoardStatus {
  * - → 待办：`done = false, percent_done = 0`
  * - → 进行中：`done = false`，进度设成一个非零值（已在 1–99 之间则保留，否则给 50）——
  *   "进行中"没有天然的百分比，拖进来只能给个约定值，这一列的拖拽语义天生是模糊的。
+ *
+ * ⚠️ **必须回传 assignees**：POST /tasks/{id} 是全量替换，而 `assignees` 是被
+ * "acted on" 的字段 —— 省略它 = 清空指派（忠实对齐 Go 的 `updateTaskAssignees`，
+ * 见 server `task_service._apply_assignees` 的注释）。所以不只发 `buildTaskUpdatePayload`
+ * （它只含 tasks 表的可写列，不含 assignees），还要把任务当前的 assignees 一并带上，
+ * 否则拖一下状态、指派就没了。这也正是真实客户端"GET 整个任务再原样 POST 回去"的做法。
+ * labels/reminders 在写路径上是只读的（不 acted on），无需回传。
  */
 export function useSetTaskStatus() {
 	const queryClient = useQueryClient();
@@ -139,7 +146,14 @@ export function useSetTaskStatus() {
 										? task.percent_done
 										: 50,
 							};
-			await updateTask(task.id, buildTaskUpdatePayload(task, patch));
+			const payload = buildTaskUpdatePayload(task, patch);
+			// 回传当前 assignees（UserEcho：只有 id 被 acted on，其余无关紧要）
+			payload.assignees = (task.assignees ?? []).map((a) => ({
+				id: a.id,
+				username: a.username ?? '',
+				name: a.name ?? '',
+			}));
+			await updateTask(task.id, payload);
 		},
 		onSuccess: () => {
 			void queryClient.invalidateQueries({ queryKey: boardKeys.allTasks });
