@@ -17,7 +17,7 @@ describe('Phase 1 路由骨架', () => {
 	it.each([
 		['/', 'home-page'],
 		['/projects', 'projects-page'],
-		['/tasks/by/upcoming', 'placeholder'],
+		['/tasks/by/upcoming', 'due-soon-page'],
 		['/labels', 'labels-page'],
 	])('%s 渲染在 AppShell 内', (path, testId) => {
 		renderApp(path);

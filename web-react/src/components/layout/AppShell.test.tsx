@@ -21,8 +21,9 @@ import { renderApp } from '@/test/render';
 /** 导航项的稳定标识：`data-nav` 存的是 i18n key（见 Sidebar.tsx）。 */
 const NAV_KEYS = [
 	'navigation.overview',
+	'/dashboard', // 管理面板 & 看板：Calton 自有页，无 i18n key，data-nav 取路径（见 Sidebar.tsx）
 	'project.projects',
-	'/board', // 全局看板：Calton 自有页，无 i18n key，data-nav 取路径（见 Sidebar.tsx）
+	'/board',
 	'navigation.upcoming',
 	'label.title',
 ];

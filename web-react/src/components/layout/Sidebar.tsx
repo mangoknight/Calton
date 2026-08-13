@@ -1,4 +1,4 @@
-import { CalendarClock, Columns3, Filter, FolderTree, Home, KeyRound, Tags } from 'lucide-react';
+import { CalendarClock, Columns3, Filter, FolderTree, Home, KeyRound, LayoutDashboard, Tags } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 import { useSavedFilters } from '@/features/filters/queries';
@@ -28,6 +28,7 @@ const NAV: {
 	label?: string;
 }[] = [
 	{ to: '/', labelKey: 'navigation.overview', icon: Home, end: true },
+	{ to: '/dashboard', label: '管理面板', icon: LayoutDashboard, end: false },
 	{ to: '/projects', labelKey: 'project.projects', icon: FolderTree, end: false },
 	{ to: '/board', label: '看板', icon: Columns3, end: false },
 	{ to: '/tasks/by/upcoming', labelKey: 'navigation.upcoming', icon: CalendarClock, end: false },

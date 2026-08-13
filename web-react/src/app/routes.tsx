@@ -4,12 +4,13 @@ import { RequireAuth } from '@/components/auth/RequireAuth';
 import { AppShell } from '@/components/layout/AppShell';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { BoardPage } from '@/routes/BoardPage';
+import { DashboardPage } from '@/routes/DashboardPage';
+import { DueSoonPage } from '@/routes/DueSoonPage';
 import { HomePage } from '@/routes/HomePage';
 import { LabelsPage } from '@/routes/LabelsPage';
 import { LoginPage } from '@/routes/LoginPage';
 import { FilterPage } from '@/routes/FilterPage';
 import { NotFound } from '@/routes/NotFound';
-import { Placeholder } from '@/routes/Placeholder';
 import { ProjectsPage } from '@/routes/ProjectsPage';
 import { ProjectViewPage } from '@/routes/ProjectViewPage';
 import { TokensPage } from '@/routes/TokensPage';
@@ -40,10 +41,11 @@ export const routes: RouteObject[] = [
 				element: <AppShell />,
 				children: [
 					{ index: true, element: <HomePage /> },
+					{ path: '/dashboard', element: <DashboardPage /> },
 					{ path: '/board', element: <BoardPage /> },
 					{ path: '/projects', element: <ProjectsPage /> },
 					{ path: '/projects/:projectId/:view', element: <ProjectViewPage /> },
-					{ path: '/tasks/by/upcoming', element: <Placeholder title="即将到期" owner="F12" /> },
+					{ path: '/tasks/by/upcoming', element: <DueSoonPage /> },
 					{ path: '/tasks/:taskId', element: <TaskDetailPage /> },
 					{ path: '/labels', element: <LabelsPage /> },
 					{ path: '/tokens', element: <TokensPage /> },
