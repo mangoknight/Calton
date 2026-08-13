@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { assignUser, unassignUser } from '@/api/assignees';
-import type { CaltonError } from '@/api/errors';
+import { CaltonError } from '@/api/errors';
 import { buildTaskUpdatePayload, listTasks, updateTask, type Task, type TaskPatch } from '@/api/tasks';
 
 /**
@@ -77,7 +77,16 @@ export function useReassignTask() {
 	return useMutation<void, CaltonError, ReassignArgs>({
 		mutationFn: async ({ taskId, fromUserId, toUserId }) => {
 			if (fromUserId === toUserId) return;
-			if (toUserId !== null) await assignUser(taskId, toUserId);
+			if (toUserId !== null) {
+				try {
+					await assignUser(taskId, toUserId);
+				} catch (err) {
+					// 4021 = "已指派给该任务"。多 assignee 的任务在每个人列都出现，把 A 的卡
+					// 拖到「本来就是 assignee 的 B」列时会撞这个 —— 那正好等价于"只删 A"，
+					// 忽略即可继续。其它错误照抛。
+					if (!(err instanceof CaltonError && err.code === 4021)) throw err;
+				}
+			}
 			if (fromUserId !== null) await unassignUser(taskId, fromUserId);
 		},
 		onSuccess: () => {
