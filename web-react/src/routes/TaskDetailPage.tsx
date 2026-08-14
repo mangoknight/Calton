@@ -147,7 +147,7 @@ function TaskDetail({ taskId }: { taskId: number }) {
 
 			<div className="grid max-w-2xl gap-6 md:grid-cols-2">
 				<LabelSelector taskId={taskId} disabled={readOnly} />
-				<AssigneeSelector taskId={taskId} disabled={readOnly} />
+				<AssigneeSelector taskId={taskId} projectId={task.project_id} disabled={readOnly} />
 			</div>
 
 			{/* 评论的改/删 = 作者 且 对任务有写权限，两个条件的与（见 comment-permissions.ts） */}

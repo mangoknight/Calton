@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
 	assignUser,
+	listProjectUsers,
 	listTaskAssignees,
 	searchUsers,
 	unassignUser,
@@ -67,6 +68,23 @@ export function useUserSearch(search: string) {
 		queryKey: relationKeys.userSearch(search),
 		queryFn: () => searchUsers(search),
 		enabled: search.trim().length > 0,
+	});
+}
+
+/**
+ * 项目成员，作为任务指派的候选来源。
+ *
+ * ⚠️ 为什么不用全局 `GET /users` 搜索：那个端点受**可发现性**限制 —— 只有精确
+ * 用户名不受限，子串匹配要 `discoverable_by_name=1`（默认 0），所以打"don"搜不到
+ * "dongxp"，用户得记住完整用户名才能指派（这是忠实对齐 Go 的行为，见后端
+ * `user_service.search_users`）。而 `projectusers` 列出的是项目全部成员、不受该限制，
+ * 正是任务指派该看的人群 —— 点一下就能选，不用记全名。
+ */
+export function useProjectMembers(projectId: number | undefined) {
+	return useQuery<Paginated<AssignableUser>, CaltonError>({
+		queryKey: ['project-members', projectId] as const,
+		queryFn: () => listProjectUsers(projectId!),
+		enabled: typeof projectId === 'number' && projectId > 0,
 	});
 }
 
