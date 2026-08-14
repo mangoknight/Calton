@@ -26,6 +26,7 @@ const NAV_KEYS = [
 	'/board',
 	'navigation.upcoming',
 	'label.title',
+	'user.apiTokens.title', // 远程合入的 API Token 管理页（/tokens）
 ];
 
 describe('AppShell 骨架', () => {
