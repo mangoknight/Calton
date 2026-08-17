@@ -37,7 +37,7 @@ export function Pagination({
 		<nav
 			aria-label="分页"
 			data-testid="pagination"
-			className="flex shrink-0 items-center justify-between gap-4 border-t px-1 pt-3"
+			className="flex shrink-0 items-center justify-between gap-4 border-t border-border px-1 pt-3"
 		>
 			<p className="text-sm text-muted-foreground" data-testid="pagination-status">
 				第 {page} / {totalPages} 页{resultCount === undefined ? null : `（本页 ${resultCount} 条）`}

@@ -53,8 +53,8 @@ export function LoginPage() {
 	});
 
 	return (
-		<form onSubmit={onSubmit} className="space-y-4" data-testid="login-page" noValidate>
-			<h1 className="text-lg font-semibold text-foreground">{t('user.auth.login')}</h1>
+		<form onSubmit={onSubmit} className="space-y-5" data-testid="login-page" noValidate>
+			<h1 className="ink-heading text-2xl">{t('user.auth.login')}</h1>
 
 			<Field
 				label={t('user.auth.username')}

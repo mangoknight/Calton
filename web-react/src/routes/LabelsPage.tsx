@@ -47,7 +47,7 @@ export function LabelsPage() {
 	return (
 		<section className="p-6" data-testid="labels-page">
 			<div className="flex items-center justify-between">
-				<h1 className="text-lg font-semibold text-foreground">{t('label.title')}</h1>
+				<h1 className="ink-heading text-2xl">{t('label.title')}</h1>
 				<Button size="sm" data-testid="new-label" onClick={openCreate}>
 					<Plus aria-hidden />
 					{t('label.create.title')}
@@ -110,7 +110,7 @@ function LabelRow({
 	const swatch = toCssColor(label.hex_color);
 
 	return (
-		<li className="flex items-center gap-3 border border-border bg-card p-3">
+		<li className="ink-card flex items-center gap-3 p-3 transition-colors hover:bg-accent/40">
 			{swatch ? (
 				<span
 					data-testid={`label-swatch-${label.id}`}

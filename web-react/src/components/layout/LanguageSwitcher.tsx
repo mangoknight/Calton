@@ -30,7 +30,7 @@ export function LanguageSwitcher() {
 					// 表里来的值本来就合法，这层是防"有人往 option 里塞了表外的值"
 					if (isSupportedLocale(next)) setLocale(next);
 				}}
-				className="h-9 border border-input bg-background px-2 text-sm"
+				className="h-9 rounded-md border border-input bg-background px-2 text-sm transition-colors hover:border-primary/40 focus:outline-none focus:ring-1 focus:ring-primary"
 			>
 				{(Object.entries(SUPPORTED_LOCALES) as [SupportedLocale, string][]).map(([code, label]) => (
 					<option key={code} value={code}>

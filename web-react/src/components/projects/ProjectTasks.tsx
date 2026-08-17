@@ -75,7 +75,8 @@ function TaskTreeItem({ node, baseDepth }: { node: TaskNode; baseDepth: number }
 
 	return (
 		<li role="treeitem" aria-expanded={hasChildren ? expanded : undefined}>
-			<div className="flex items-center gap-1 py-0.5" style={{ paddingLeft: `${pad}px` }}>
+			<div className="flex items-center gap-1 rounded-md py-0.5 pr-1 transition-colors hover:bg-accent/60"
+					style={{ paddingLeft: `${pad}px` }}>
 				{hasChildren ? (
 					<button
 						type="button"

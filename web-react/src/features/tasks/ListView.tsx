@@ -47,7 +47,7 @@ export function ListView({ projectId, viewId }: { projectId: number; viewId: num
 			{items.length === 0 ? (
 				<EmptyState page={page} onBackToFirstPage={() => goToPage(1)} />
 			) : (
-				<ul className="min-h-0 flex-1 divide-y overflow-y-auto" data-testid="task-list">
+				<ul className="min-h-0 flex-1 divide-border divide-y overflow-y-auto" data-testid="task-list">
 					{items.map((task) => (
 						<TaskRow key={task.id} task={task} />
 					))}
@@ -112,7 +112,11 @@ function TaskRow({ task }: { task: Task }) {
 	const priority = task.priority ?? 0;
 
 	return (
-		<li className="flex items-center gap-3 py-2" data-testid="task-row" data-task-id={task.id}>
+		<li
+			className="flex items-center gap-3 rounded-md px-2 py-2 transition-colors hover:bg-accent/60"
+			data-testid="task-row"
+			data-task-id={task.id}
+		>
 			{/* 勾选框此处只读：改 done 是 F08a 的事，这里给个假的可点控件会让人以为已经能改 */}
 			<input
 				type="checkbox"

@@ -152,6 +152,17 @@ export const borderRadius = {
 } as const;
 
 export const fontFamily: Record<string, string[]> = {
+	// 正文：Instrument Sans（自托管可变字），中文回退系统 CJK
+	sans: [
+		"'Instrument Sans'",
+		'system-ui',
+		'-apple-system',
+		"'PingFang SC'",
+		"'Microsoft YaHei'",
+		'sans-serif',
+	],
+	// 标题/大号数字：Fraunces 展示衬线（自托管可变字），中文回退系统 CJK
+	display: ["'Fraunces'", "'PingFang SC'", "'Songti SC'", 'Georgia', 'serif'],
 	mono: ["'JetBrains Mono'", 'monospace'],
 	code: ["'Courier Prime'", "'JetBrains Mono'", 'monospace'],
 };

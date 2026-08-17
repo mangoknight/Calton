@@ -21,12 +21,12 @@ import { renderApp } from '@/test/render';
 /** 导航项的稳定标识：`data-nav` 存的是 i18n key（见 Sidebar.tsx）。 */
 const NAV_KEYS = [
 	'navigation.overview',
-	'/dashboard', // 管理面板 & 看板：Calton 自有页，无 i18n key，data-nav 取路径（见 Sidebar.tsx）
+	'navigation.dashboard', // 管理面板 & 看板：已补 i18n key，data-nav 取 key（见 Sidebar.tsx）
 	'project.projects',
-	'/board',
+	'navigation.board',
 	'navigation.upcoming',
 	'label.title',
-	'user.apiTokens.title', // 远程合入的 API Token 管理页（/tokens）
+	'user.settings.apiTokens.title', // API Token 管理页（/tokens）：修正为真实 key 路径
 ];
 
 describe('AppShell 骨架', () => {

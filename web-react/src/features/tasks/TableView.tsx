@@ -134,7 +134,7 @@ export function TableView({ projectId, viewId }: { projectId: number; viewId: nu
 					<div className="min-h-0 flex-1 overflow-auto" data-testid="table-scroll">
 						<table className="w-full text-sm" data-testid="task-table">
 							<thead className="sticky top-0 bg-card">
-								<tr className="border-b text-left">
+								<tr className="border-b border-border text-left">
 									{columns.map((column) => (
 										<HeaderCell
 											key={column.id}
@@ -145,9 +145,14 @@ export function TableView({ projectId, viewId }: { projectId: number; viewId: nu
 									))}
 								</tr>
 							</thead>
-							<tbody className="divide-y">
+							<tbody className="divide-border divide-y">
 								{query.data.items.map((task) => (
-									<tr key={task.id} data-testid="task-table-row" data-task-id={task.id}>
+									<tr
+										key={task.id}
+										data-testid="task-table-row"
+										data-task-id={task.id}
+										className="transition-colors hover:bg-accent/50"
+									>
 										{columns.map((column) => (
 											<td
 												key={column.id}
@@ -221,7 +226,7 @@ function HeaderCell({
 			<th
 				scope="col"
 				data-column={column.id}
-				className="whitespace-nowrap px-3 py-2 font-medium text-muted-foreground"
+				className="whitespace-nowrap px-3 py-2 text-xs font-medium uppercase tracking-wide text-muted-foreground"
 			>
 				{t(column.labelKey)}
 			</th>
@@ -234,7 +239,7 @@ function HeaderCell({
 			aria-sort={ariaSort}
 			data-column={column.id}
 			className={cn(
-				'whitespace-nowrap px-3 py-2 font-medium',
+				'whitespace-nowrap px-3 py-2 text-xs font-medium uppercase tracking-wide text-muted-foreground',
 				column.align === 'right' && 'text-right',
 			)}
 		>
@@ -271,7 +276,7 @@ function ColumnPicker({
 			<summary className="inline-flex cursor-pointer list-none items-center text-sm text-muted-foreground hover:text-foreground">
 				列配置（{visibleIds.length}/{TASK_COLUMNS.length}）
 			</summary>
-			<div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 rounded-md border bg-card p-3">
+			<div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 rounded-md border border-border bg-card p-3">
 				{TASK_COLUMNS.map((column) => (
 					<label key={column.id} className="inline-flex items-center gap-2 text-sm">
 						<input

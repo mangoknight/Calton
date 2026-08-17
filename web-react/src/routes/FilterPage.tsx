@@ -33,7 +33,7 @@ export function FilterPage() {
 	if (filterId === null) {
 		return (
 			<section className="p-6" data-testid="invalid-filter-route">
-				<h1 className="text-lg font-semibold text-foreground">无效的筛选器</h1>
+				<h1 className="ink-heading text-2xl">无效的筛选器</h1>
 				<p role="alert" className="mt-2 text-sm text-muted-foreground">
 					地址里的筛选器 ID「{params.filterId}」不是有效的正整数。
 				</p>
@@ -135,7 +135,7 @@ function FilterDetail({ filterId }: { filterId: number }) {
 					</form>
 				) : (
 					<>
-						<h1 className="flex-1 text-xl font-semibold text-foreground">{filter.title}</h1>
+						<h1 className="ink-heading flex-1 text-2xl">{filter.title}</h1>
 						<Button
 							type="button"
 							size="sm"

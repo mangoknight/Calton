@@ -85,7 +85,7 @@ export function SavedFilterFormDialog({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent data-testid="saved-filter-form">
-				<DialogTitle>{t('filters.create.title')}</DialogTitle>
+				<DialogTitle className="ink-heading text-lg">{t('filters.create.title')}</DialogTitle>
 				<DialogDescription>{t('filters.create.description')}</DialogDescription>
 
 				<form onSubmit={submit} className="mt-4 space-y-4" noValidate>

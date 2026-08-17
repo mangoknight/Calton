@@ -58,7 +58,7 @@ export function AssigneeSelector({
 
 	return (
 		<section className="space-y-2" data-testid="assignee-selector">
-			<h2 className="text-sm font-medium text-foreground">{t('task.attributes.assignees')}</h2>
+			<h2 className="ink-heading text-base">{t('task.attributes.assignees')}</h2>
 
 			<ul className="flex flex-wrap gap-2" data-testid="assigned-users">
 				{assignedUsers.length === 0 ? (

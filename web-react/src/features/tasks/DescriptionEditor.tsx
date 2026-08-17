@@ -97,7 +97,7 @@ export function DescriptionEditor({
 	return (
 		<div className="space-y-2" data-testid="description-field">
 			<div className="flex items-center justify-between">
-				<span className="text-sm font-medium text-foreground">
+				<span className="ink-heading text-base">
 					{t('task.attributes.description')}
 				</span>
 				<Button

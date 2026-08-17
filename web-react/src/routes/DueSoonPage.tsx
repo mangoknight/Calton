@@ -23,7 +23,7 @@ export function DueSoonPage() {
 
 	return (
 		<section className="flex h-full flex-col gap-5 overflow-y-auto p-6" data-testid="due-soon-page">
-			<h1 className="text-xl font-semibold text-foreground">即将到期</h1>
+			<h1 className="ink-heading text-2xl">即将到期</h1>
 
 			{tasksQuery.isPending ? (
 				<p className="text-sm text-muted-foreground">加载中…</p>
@@ -33,9 +33,9 @@ export function DueSoonPage() {
 				</p>
 			) : (
 				<>
-					<div className="rounded-lg border border-xyz-gray-3 bg-white">
-				<div className="flex items-baseline justify-between border-b border-xyz-gray-3 px-4 py-2.5">
-					<h2 className="text-sm font-medium text-red-600">逾期</h2>
+					<div className="ink-card">
+				<div className="flex items-baseline justify-between border-b border-border px-4 py-2.5">
+					<h2 className="ink-heading text-base text-red-600">逾期</h2>
 					<span className="text-xs text-muted-foreground">{overdue.length} 条</span>
 				</div>
 				<div className="p-4">
@@ -43,9 +43,9 @@ export function DueSoonPage() {
 				</div>
 			</div>
 
-			<div className="rounded-lg border border-xyz-gray-3 bg-white">
-				<div className="flex items-baseline justify-between border-b border-xyz-gray-3 px-4 py-2.5">
-					<h2 className="text-sm font-medium text-xyz-orange-6">未来 7 天</h2>
+			<div className="ink-card">
+				<div className="flex items-baseline justify-between border-b border-border px-4 py-2.5">
+					<h2 className="ink-heading text-base text-xyz-orange-6">未来 7 天</h2>
 					<span className="text-xs text-muted-foreground">{soon.length} 条</span>
 				</div>
 					<div className="p-4">

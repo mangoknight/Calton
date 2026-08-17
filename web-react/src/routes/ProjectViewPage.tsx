@@ -139,7 +139,7 @@ function ViewBody({
 function InvalidState({ title, children }: { title: string; children: React.ReactNode }) {
 	return (
 		<section className="p-6" data-testid="invalid-view-route">
-			<h1 className="text-lg font-semibold text-foreground">{title}</h1>
+			<h1 className="ink-heading text-2xl">{title}</h1>
 			<p role="alert" className="mt-2 text-sm text-muted-foreground">
 				{children}
 			</p>

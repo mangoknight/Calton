@@ -749,6 +749,8 @@
   },
   "navigation": {
     "overview": "Overview",
+    "dashboard": "Dashboard",
+    "board": "Board",
     "upcoming": "Upcoming",
     "settings": "Settings",
     "imprint": "Imprint",

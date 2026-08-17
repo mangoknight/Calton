@@ -33,7 +33,7 @@ export function ProjectsPage() {
 	return (
 		<section className="p-6" data-testid="projects-page">
 			<div className="flex items-center justify-between">
-				<h1 className="text-lg font-semibold text-foreground">{t('project.projects')}</h1>
+				<h1 className="ink-heading text-2xl">{t('project.projects')}</h1>
 				<Button size="sm" data-testid="new-project" onClick={openCreate}>
 					<Plus aria-hidden />
 					{t('project.create.header')}
@@ -91,7 +91,7 @@ function CycleWarning({ cycles }: { cycles: { id: number; title: string }[] }) {
 		<div
 			role="alert"
 			data-testid="cycle-warning"
-			className="border border-xyz-amber-5 bg-xyz-amber-1 p-3"
+			className="rounded-md border border-xyz-amber-5 bg-xyz-amber-1 p-3"
 		>
 			<p className="flex items-center gap-2 text-sm font-medium text-xyz-amber-7">
 				<AlertTriangle className="size-4" aria-hidden />有 {cycles.length}{' '}

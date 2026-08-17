@@ -52,7 +52,7 @@ export function CommentSection({
 
 	return (
 		<section className="space-y-4" data-testid="comment-section">
-			<h2 className="text-sm font-medium text-foreground">{t('task.comment.title')}</h2>
+			<h2 className="ink-heading text-base">{t('task.comment.title')}</h2>
 
 			{query.isPending ? <p className="text-sm text-muted-foreground">加载中…</p> : null}
 
@@ -157,7 +157,7 @@ function CommentItem({
 
 	return (
 		<li
-			className="rounded-md border bg-card p-3"
+			className="rounded-md border border-border bg-card p-3"
 			data-testid="comment-item"
 			data-comment-id={comment.id}
 		>

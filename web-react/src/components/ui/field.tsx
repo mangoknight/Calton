@@ -23,7 +23,7 @@ export function Field({
 
 	return (
 		<div className={cn('space-y-1.5', className)}>
-			<label htmlFor={htmlFor} className="text-sm font-medium text-foreground">
+			<label htmlFor={htmlFor} className="text-sm font-medium text-muted-foreground">
 				{label}
 			</label>
 			{children}

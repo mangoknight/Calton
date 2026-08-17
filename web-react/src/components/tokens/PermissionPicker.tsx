@@ -163,7 +163,7 @@ export function PermissionPicker({ value, onChange, error }: PermissionPickerPro
 				const selectedCount = (value[groupDef.group] ?? []).length;
 
 				return (
-					<div key={groupDef.group} className="border border-border bg-card" data-testid={`perm-group-${groupDef.group}`}>
+					<div key={groupDef.group} className="overflow-hidden rounded-md border border-border bg-card" data-testid={`perm-group-${groupDef.group}`}>
 						<button
 							type="button"
 							data-testid={`perm-group-toggle-${groupDef.group}`}

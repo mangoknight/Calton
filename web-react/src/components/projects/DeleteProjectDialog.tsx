@@ -42,7 +42,7 @@ export function DeleteProjectDialog({
 	return (
 		<Dialog open onOpenChange={onOpenChange}>
 			<DialogContent data-testid="project-delete-dialog">
-				<DialogTitle>{t('project.delete.header')}</DialogTitle>
+				<DialogTitle className="ink-heading text-lg">{t('project.delete.header')}</DialogTitle>
 				<DialogDescription>
 					确定删除「{project.title}」吗？项目下的任务将被永久删除，不可恢复（没有回收站）。
 					{descendants.length > 0
@@ -54,7 +54,7 @@ export function DeleteProjectDialog({
 					<div
 						role="alert"
 						data-testid="foreign-owner-warning"
-						className="mt-3 border border-xyz-red-5 bg-xyz-red-1 p-3"
+						className="mt-3 rounded-md border border-xyz-red-5 bg-xyz-red-1 p-3"
 					>
 						<p className="flex items-center gap-2 text-sm font-medium text-xyz-red-7">
 							<AlertTriangle className="size-4" aria-hidden />

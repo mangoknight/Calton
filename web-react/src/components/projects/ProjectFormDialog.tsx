@@ -98,7 +98,9 @@ export function ProjectFormDialog({ open, onOpenChange, project, candidates }: P
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent data-testid="project-form">
-				<DialogTitle>{isEdit ? t('project.edit.header') : t('project.create.header')}</DialogTitle>
+				<DialogTitle className="ink-heading text-lg">
+						{isEdit ? t('project.edit.header') : t('project.create.header')}
+					</DialogTitle>
 				<DialogDescription>
 					{isEdit ? t('project.edit.titlePlaceholder') : t('project.create.titlePlaceholder')}
 				</DialogDescription>
@@ -138,7 +140,7 @@ export function ProjectFormDialog({ open, onOpenChange, project, candidates }: P
 							id="project-parent"
 							data-testid="project-parent-select"
 							disabled={!reparentAllowed}
-							className="flex h-9 w-full border border-input bg-background px-3 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+							className="flex h-9 w-full rounded-md border border-input bg-background px-3 text-sm disabled:cursor-not-allowed disabled:opacity-50"
 							{...register('parent')}
 						>
 							{/* 实测定案：省略 = 不改，传数字 = 设值（0 即顶层），所以只有两态 */}

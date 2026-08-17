@@ -177,9 +177,9 @@ export function BoardPage() {
 	return (
 		<section className="flex h-full flex-col gap-4 p-6" data-testid="board-page">
 			<header className="flex flex-wrap items-center gap-3">
-				<h1 className="text-xl font-semibold text-foreground">看板</h1>
+				<h1 className="ink-heading text-2xl">看板</h1>
 				{/* 分组方式切换 */}
-				<div className="flex rounded-md border border-xyz-gray-4 p-0.5" data-testid="board-groupby">
+				<div className="flex rounded-md border border-border p-0.5" data-testid="board-groupby">
 					{(
 						[
 							['person', '按人'],
@@ -195,8 +195,8 @@ export function BoardPage() {
 							className={cn(
 								'rounded px-3 py-1 text-sm transition-colors',
 								groupBy === key
-									? 'bg-xyz-blue-6 text-white'
-									: 'text-xyz-gray-6 hover:bg-xyz-gray-2',
+									? 'bg-primary text-primary-foreground'
+									: 'text-muted-foreground hover:bg-accent',
 							)}
 						>
 							{label}
@@ -306,8 +306,8 @@ function Chip({
 			className={cn(
 				'rounded-full border px-2.5 py-0.5 text-xs transition-colors',
 				active
-					? 'border-xyz-blue-6 bg-xyz-blue-6 text-white'
-					: 'border-xyz-gray-4 text-xyz-gray-6 hover:bg-xyz-gray-2',
+					? 'border-primary/40 bg-accent text-primary'
+					: 'border-border text-muted-foreground hover:bg-accent',
 			)}
 		>
 			{children}
@@ -331,12 +331,12 @@ function Column({
 			data-testid="board-column"
 			data-column-key={column.key}
 			className={cn(
-				'flex w-64 shrink-0 flex-col rounded-lg border border-xyz-gray-3 bg-xyz-gray-1',
-				isOver && 'ring-2 ring-xyz-blue-6',
+				'ink-card flex w-64 shrink-0 flex-col',
+				isOver && 'ring-2 ring-primary',
 			)}
 		>
-			<div className="flex items-center justify-between border-b border-xyz-gray-3 px-3 py-2">
-				<span className="truncate text-sm font-medium text-foreground">{column.label}</span>
+			<div className="flex items-center justify-between border-b border-border px-3 py-2">
+				<span className="ink-heading truncate text-sm">{column.label}</span>
 				<span className="text-xs text-muted-foreground">{tasks.length}</span>
 			</div>
 			<div className="flex min-h-16 flex-1 flex-col gap-2 overflow-y-auto p-2">
@@ -366,7 +366,7 @@ function TaskCard({
 			data-testid="board-card"
 			data-task-id={task.id}
 			className={cn(
-				'rounded-md border border-xyz-gray-3 bg-white p-2 text-sm shadow-sm',
+				'rounded-md border border-border bg-card p-2 text-sm shadow-sm transition hover:shadow',
 				task.done && 'opacity-60',
 				isDragging && 'opacity-50',
 			)}

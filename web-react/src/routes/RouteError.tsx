@@ -10,9 +10,9 @@ export function RouteError() {
 			: '未知错误';
 
 	return (
-		<section className="p-6" data-testid="route-error" role="alert">
-			<h1 className="text-lg font-semibold text-foreground">出错了</h1>
-			<p className="mt-2 text-sm text-muted-foreground">{message}</p>
+		<section className="mx-auto max-w-md px-6 py-20 text-center" data-testid="route-error" role="alert">
+			<h1 className="ink-heading text-2xl">出错了</h1>
+			<p className="mt-3 text-sm text-muted-foreground">{message}</p>
 		</section>
 	);
 }

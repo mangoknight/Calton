@@ -32,7 +32,7 @@ export function HomePage() {
 
 	return (
 		<section className="p-6" data-testid="home-page">
-			<h1 className="text-lg font-semibold text-foreground">{t('navigation.overview')}</h1>
+			<h1 className="ink-heading text-2xl">{t('navigation.overview')}</h1>
 
 			<div className="mt-4 space-y-6">
 				<Section
@@ -84,7 +84,7 @@ function Section({
 }) {
 	return (
 		<section data-testid={testId}>
-			<h2 data-testid={`${testId}-title`} className="text-sm font-medium text-foreground">
+			<h2 data-testid={`${testId}-title`} className="ink-heading ink-tick pl-3 text-base">
 				{title}
 			</h2>
 
@@ -94,7 +94,7 @@ function Section({
 				) : query.isError && query.error ? (
 					<TaskQueryError error={query.error} />
 				) : query.data && query.data.items.length > 0 ? (
-					<ul className="divide-y border-t" data-testid={`${testId}-list`}>
+					<ul className="divide-border divide-y border-t border-border" data-testid={`${testId}-list`}>
 						{query.data.items.map((task) => (
 							<TaskRow key={task.id} task={task} />
 						))}
@@ -148,7 +148,7 @@ function TaskRow({ task }: { task: Task }) {
 	const due = formatApiDate(task.due_date);
 
 	return (
-		<li className="flex items-center gap-3 py-2">
+		<li className="flex items-center gap-3 rounded-md px-2 py-2 transition-colors hover:bg-accent/60">
 			{task.is_favorite ? (
 				<Star className="size-4 shrink-0 text-xyz-orange-6" aria-label="已收藏" />
 			) : null}

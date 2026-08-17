@@ -64,7 +64,9 @@ export function BucketFormDialog({
 			<DialogContent data-testid="bucket-form">
 				{/* ⚠️ 上游只有"新建"这个 key（`addBucket`），**没有编辑桶的标题 key**，
 				    所以编辑那侧留中文。不为了对称去编一个上游没有的 key。 */}
-				<DialogTitle>{isEdit ? '编辑列' : t('project.kanban.addBucket')}</DialogTitle>
+				<DialogTitle className="ink-heading text-lg">
+					{isEdit ? '编辑列' : t('project.kanban.addBucket')}
+				</DialogTitle>
 				<form onSubmit={submit} className="mt-4 space-y-4">
 					<Field label={t('project.title')} htmlFor="bucket-title" error={titleError ?? undefined}>
 						<Input
@@ -138,7 +140,7 @@ export function DeleteBucketDialog({
 	return (
 		<Dialog open onOpenChange={onOpenChange}>
 			<DialogContent data-testid="bucket-delete-dialog">
-				<DialogTitle>{t('project.kanban.deleteHeaderBucket')}</DialogTitle>
+				<DialogTitle className="ink-heading text-lg">{t('project.kanban.deleteHeaderBucket')}</DialogTitle>
 				<DialogDescription>
 					{isLastBucket
 						? t('project.kanban.deleteLast')

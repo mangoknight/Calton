@@ -39,7 +39,7 @@ export function TaskDetailPage() {
 	if (taskId === null) {
 		return (
 			<section className="p-6" data-testid="invalid-task-route">
-				<h1 className="text-lg font-semibold text-foreground">无效的任务</h1>
+				<h1 className="ink-heading text-2xl">无效的任务</h1>
 				<p role="alert" className="mt-2 text-sm text-muted-foreground">
 					地址里的任务 ID「{params.taskId}」不是有效的数字。
 				</p>
@@ -99,7 +99,7 @@ function TaskDetail({ taskId }: { taskId: number }) {
 				<div className="min-w-0 flex-1">
 					<h1
 						className={cn(
-							'text-xl font-semibold',
+							'ink-heading text-2xl',
 							task.done ? 'text-muted-foreground line-through' : 'text-foreground',
 						)}
 					>
@@ -118,7 +118,7 @@ function TaskDetail({ taskId }: { taskId: number }) {
 				</p>
 			) : null}
 
-			<dl className="grid max-w-md grid-cols-[8rem_1fr] gap-y-3 text-sm">
+			<dl className="ink-card grid max-w-md grid-cols-[8rem_1fr] gap-y-3 p-5 text-sm">
 				<dt className="text-muted-foreground">状态</dt>
 				<dd data-testid="detail-done">
 					<StatusPicker
@@ -165,7 +165,7 @@ function TaskDetail({ taskId }: { taskId: number }) {
 					你对该任务只有只读权限，不能修改。
 				</p>
 			) : (
-				<div className="grid max-w-md gap-4">
+				<div className="ink-card grid max-w-md gap-4 p-5">
 					<Field label={t('task.attributes.priority')} htmlFor="task-priority">
 						<select
 							id="task-priority"
@@ -225,7 +225,7 @@ function StatusPicker({
 		return { done: false, percent_done: pd && pd > 0 && pd < 100 ? pd : 50 };
 	}
 	return (
-		<div className="inline-flex rounded-md border border-xyz-gray-4 p-0.5" role="group" aria-label="任务状态">
+		<div className="inline-flex rounded-md border border-border p-0.5" role="group" aria-label="任务状态">
 			{STATUS_OPTIONS.map(({ key, label }) => (
 				<button
 					key={key}
@@ -239,8 +239,8 @@ function StatusPicker({
 					className={cn(
 						'rounded px-2.5 py-0.5 text-xs transition-colors',
 						current === key
-							? 'bg-xyz-blue-6 text-white'
-							: 'text-xyz-gray-6 hover:bg-xyz-gray-2 disabled:opacity-50',
+							? 'bg-primary text-primary-foreground'
+							: 'text-muted-foreground hover:bg-accent disabled:opacity-50',
 					)}
 				>
 					{label}

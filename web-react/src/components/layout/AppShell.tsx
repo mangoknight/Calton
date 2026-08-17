@@ -21,7 +21,7 @@ import { TopBar } from './TopBar';
  */
 export function AppShell() {
 	return (
-		<div className="flex h-screen flex-col overflow-hidden bg-xyz-gray-2">
+		<div className="flex h-screen flex-col overflow-hidden bg-background">
 			<TopBar />
 			<div className="flex min-h-0 flex-1">
 				<Sidebar />

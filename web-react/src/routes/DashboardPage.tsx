@@ -50,14 +50,14 @@ export function DashboardPage() {
 	return (
 		<section className="flex h-full flex-col gap-5 overflow-y-auto p-6" data-testid="dashboard-page">
 			<header className="flex flex-wrap items-center gap-3">
-				<h1 className="text-xl font-semibold text-foreground">管理面板</h1>
+				<h1 className="ink-heading text-2xl">管理面板</h1>
 				{tasksQuery.data.truncated ? (
 					<span className="text-xs text-xyz-orange-6">任务较多，统计基于前 {tasks.length} 条</span>
 				) : null}
 			</header>
 
 			{/* 指标卡 */}
-			<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6" data-testid="dashboard-metrics">
+			<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6" data-testid="dashboard-metrics">
 				<Metric label="总任务" value={s.total} />
 				<Metric label="待办" value={s.todo} />
 				<Metric label="进行中" value={s.doing} tone="blue" />
@@ -120,7 +120,7 @@ export function DashboardPage() {
 }
 
 const TONE: Record<string, string> = {
-	blue: 'text-xyz-blue-6',
+	blue: 'text-primary',
 	green: 'text-green-600',
 	red: 'text-red-600',
 	orange: 'text-xyz-orange-6',
@@ -129,18 +129,18 @@ const TONE: Record<string, string> = {
 
 function Metric({ label, value, tone = 'default' }: { label: string; value: number; tone?: string }) {
 	return (
-		<div className="rounded-lg border border-xyz-gray-3 bg-white p-3" data-testid="dashboard-metric">
+		<div className="ink-card p-4" data-testid="dashboard-metric">
 			<div className="text-xs text-muted-foreground">{label}</div>
-			<div className={cn('mt-1 text-2xl font-semibold', TONE[tone])}>{value}</div>
+			<div className={cn('ink-figure mt-1 text-3xl', TONE[tone])}>{value}</div>
 		</div>
 	);
 }
 
 function Panel({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
 	return (
-		<div className="flex flex-col rounded-lg border border-xyz-gray-3 bg-white">
-			<div className="flex items-baseline justify-between border-b border-xyz-gray-3 px-4 py-2.5">
-				<h2 className="text-sm font-medium text-foreground">{title}</h2>
+		<div className="ink-card flex flex-col">
+			<div className="flex items-baseline justify-between border-b border-border px-4 py-2.5">
+				<h2 className="ink-heading text-base">{title}</h2>
 				{hint ? <span className="text-xs text-muted-foreground">{hint}</span> : null}
 			</div>
 			<div className="p-4">{children}</div>
@@ -154,12 +154,12 @@ function Empty({ children }: { children: React.ReactNode }) {
 
 function WorkloadRow({ p, max }: { p: PersonLoad; max: number }) {
 	return (
-		<tr className="border-t border-xyz-gray-2" data-testid="workload-row" data-user-id={p.id}>
+		<tr className="border-t border-border" data-testid="workload-row" data-user-id={p.id}>
 			<td className="py-1.5">
 				<div className="truncate text-foreground">{p.name}</div>
-				<div className="mt-1 h-1.5 w-full rounded-full bg-xyz-gray-2">
+				<div className="mt-1 h-1.5 w-full rounded-full bg-muted">
 					<div
-						className="h-1.5 rounded-full bg-xyz-blue-6"
+						className="h-1.5 rounded-full bg-primary"
 						style={{ width: `${Math.round((p.open / max) * 100)}%` }}
 					/>
 				</div>
@@ -175,7 +175,7 @@ function WorkloadRow({ p, max }: { p: PersonLoad; max: number }) {
 
 function ProjectRow({ r }: { r: ProjectProgress }) {
 	return (
-		<tr className="border-t border-xyz-gray-2 first:border-t-0" data-testid="project-row" data-project-id={r.id}>
+		<tr className="border-t border-border first:border-t-0" data-testid="project-row" data-project-id={r.id}>
 			<td className="py-2">
 				<div className="flex items-baseline justify-between">
 					<span className="truncate text-foreground">{r.title}</span>
@@ -185,7 +185,7 @@ function ProjectRow({ r }: { r: ProjectProgress }) {
 					</span>
 				</div>
 				<div className="mt-1 flex items-center gap-2">
-					<div className="h-1.5 flex-1 rounded-full bg-xyz-gray-2">
+					<div className="h-1.5 flex-1 rounded-full bg-muted">
 						<div className="h-1.5 rounded-full bg-green-500" style={{ width: `${r.pct}%` }} />
 					</div>
 					<span className="w-9 text-right text-xs text-muted-foreground">{r.pct}%</span>

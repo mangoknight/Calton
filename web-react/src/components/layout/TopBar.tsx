@@ -18,7 +18,7 @@ export function TopBar() {
 	return (
 		<header
 			data-testid="app-topbar"
-			className="flex h-14 shrink-0 items-center gap-3 border-b bg-card px-4"
+			className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card px-4"
 		>
 			<Button
 				variant="ghost"
@@ -29,7 +29,8 @@ export function TopBar() {
 			>
 				<PanelLeft aria-hidden />
 			</Button>
-			<Link to="/" className="text-base font-semibold text-foreground">
+			{/* 品牌名用展示衬线 Fraunces（font-display），显编辑气质 */}
+			<Link to="/" className="font-display text-lg font-semibold tracking-tight text-foreground">
 				Calton
 			</Link>
 			<div className="flex-1" />
@@ -53,7 +54,9 @@ export function TopBar() {
 			</Button>
 			{user ? (
 				<>
-					<span className="text-sm text-muted-foreground">{user.name || user.username}</span>
+					<span className="hidden text-sm font-medium text-foreground sm:inline">
+						{user.name || user.username}
+					</span>
 					<Button
 						variant="ghost"
 						size="icon"

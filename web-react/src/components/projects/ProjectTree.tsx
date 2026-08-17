@@ -50,7 +50,7 @@ function ProjectTreeItem({ node, onEdit, onDelete }: { node: ProjectNode } & Tre
 	return (
 		<li role="treeitem" aria-expanded={hasChildren ? expanded : undefined}>
 			<div
-				className="flex items-center gap-1 py-1"
+				className="flex items-center gap-1 rounded-md py-1 pr-1 transition-colors hover:bg-accent/60"
 				// 缩进用内联 padding：层级是运行时算出来的，Tailwind 的静态类名覆盖不到任意深度
 				style={{ paddingLeft: `${node.depth * 16}px` }}
 			>

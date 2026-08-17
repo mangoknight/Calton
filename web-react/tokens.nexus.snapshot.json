@@ -1,286 +1,308 @@
 {
-	"_provenance": {
-		"source": "Nexus web/default/tailwind.colors.js + tailwind.config.js + src/global.css",
-		"snapshot_date": "2026-08-03",
-		"note": "F01 验收基线，两层都锁：① tailwind.config.ts 的 theme.extend 顶层键集合与 colors/borderRadius/fontFamily/maxWidth 四组逐键逐值；② index.css 里 :root 与 .dark 的 CSS 变量逐条取值（只锁①的话，值全是 var(--color-*) 引用，改掉变量的 hex 测试照样绿）。改动 token 必须同步改本文件，并在 commit message 里说明为什么偏离 Nexus。品牌 logo 色（Claude/VSCode/Cursor）按 Nexus 约定不进 token。"
-	},
-	"colors": {
-		"xyz-blue": {
-			"1": "var(--color-blue-1)",
-			"2": "var(--color-blue-2)",
-			"3": "var(--color-blue-3)",
-			"4": "var(--color-blue-4)",
-			"5": "var(--color-blue-5)",
-			"6": "var(--color-blue-6)",
-			"6h": "var(--color-blue-6h, #3451e6)",
-			"7": "var(--color-blue-7)",
-			"8": "var(--color-blue-8)",
-			"9": "var(--color-blue-9)",
-			"10": "var(--color-blue-10)"
-		},
-		"xyz-gray": {
-			"1": "var(--color-gray-1)",
-			"2": "var(--color-gray-2)",
-			"3": "var(--color-gray-3)",
-			"4": "var(--color-gray-4)",
-			"5": "var(--color-gray-5)",
-			"6": "var(--color-gray-6)",
-			"7": "var(--color-gray-7)",
-			"8": "var(--color-gray-8)",
-			"9": "var(--color-gray-9)",
-			"10": "var(--color-gray-10)",
-			"11": "var(--color-gray-11)"
-		},
-		"xyz-white": {
-			"1": "rgba(255, 255, 255, 0.08)",
-			"2": "rgba(255, 255, 255, 0.10)",
-			"3": "rgba(255, 255, 255, 0.20)",
-			"4": "rgba(255, 255, 255, 0.30)",
-			"5": "rgba(255, 255, 255, 0.40)",
-			"6": "rgba(255, 255, 255, 0.50)",
-			"7": "rgba(255, 255, 255, 0.60)",
-			"8": "rgba(255, 255, 255, 0.80)",
-			"9": "rgba(255, 255, 255, 0.90)",
-			"10": "#ffffff"
-		},
-		"xyz-orange": {
-			"5": "#f97316",
-			"6": "var(--color-orange-6)",
-			"warn": "#ff921c"
-		},
-		"xyz-emerald": {
-			"6": "#10b981",
-			"7": "#059669"
-		},
-		"xyz-cyan": {
-			"1": "#e6fffb",
-			"3": "#87e8de",
-			"5": "#06b6d4",
-			"6": "#13c2c2",
-			"7": "#08979c"
-		},
-		"xyz-green": {
-			"1": "#f6ffed",
-			"5": "#b7eb8f",
-			"6": "#52c41a",
-			"7": "#389e0d",
-			"500": "#22c55e",
-			"semantic": "#21ba45"
-		},
-		"xyz-red": {
-			"1": "#fff2f0",
-			"5": "#ffccc7",
-			"6": "#ef4444",
-			"7": "#dc2626",
-			"warn": "#ff4d4f",
-			"danger": "#ff3212",
-			"accent": "#ff6321"
-		},
-		"xyz-amber": {
-			"1": "#fffbe6",
-			"5": "#ffe58f",
-			"6": "#f59e0b",
-			"7": "#d97706",
-			"warn": "#faad14"
-		},
-		"xyz-purple": {
-			"1": "#f9f0ff",
-			"3": "#d3adf7",
-			"6": "#8b5cf6",
-			"7": "#722ed1",
-			"500": "#a855f7"
-		},
-		"xyz-pink": {
-			"6": "#ec4899"
-		},
-		"xyz-rose": {
-			"6": "#f43f5e"
-		},
-		"xyz-fuchsia": {
-			"6": "#d946ef"
-		},
-		"xyz-indigo": {
-			"6": "#6366f1"
-		},
-		"xyz-teal": {
-			"6": "#14b8a6"
-		},
-		"xyz-violet": {
-			"5": "#a78bfa"
-		},
-		"xyz-blue-soft": "#597ef7",
-		"xyz-blue-tag": "#1677ff",
-		"xyz-blue-brand": "#3b82f6",
-		"xyz-blue-accent": "#2563eb",
-		"xyz-blue-link": "#2185d0",
-		"xyz-chart-axis": "#A3AED0",
-		"xyz-disabled": "#d9d9d9",
-		"xyz-code-bg": "#0a0f1a",
-		"xyz-marketing-deep": "#1e2a4a",
-		"border": "hsl(var(--border))",
-		"input": "hsl(var(--input))",
-		"ring": "hsl(var(--ring))",
-		"background": "hsl(var(--background))",
-		"foreground": "hsl(var(--foreground))",
-		"primary": {
-			"DEFAULT": "hsl(var(--primary))",
-			"foreground": "hsl(var(--primary-foreground))"
-		},
-		"secondary": {
-			"DEFAULT": "hsl(var(--secondary))",
-			"foreground": "hsl(var(--secondary-foreground))"
-		},
-		"destructive": {
-			"DEFAULT": "hsl(var(--destructive))",
-			"foreground": "hsl(var(--destructive-foreground))"
-		},
-		"muted": {
-			"DEFAULT": "hsl(var(--muted))",
-			"foreground": "hsl(var(--muted-foreground))"
-		},
-		"accent": {
-			"DEFAULT": "hsl(var(--accent))",
-			"foreground": "hsl(var(--accent-foreground))"
-		},
-		"popover": {
-			"DEFAULT": "hsl(var(--popover))",
-			"foreground": "hsl(var(--popover-foreground))"
-		},
-		"card": {
-			"DEFAULT": "hsl(var(--card))",
-			"foreground": "hsl(var(--card-foreground))"
-		},
-		"sidebar": {
-			"DEFAULT": "hsl(var(--sidebar-background))",
-			"foreground": "hsl(var(--sidebar-foreground))",
-			"primary": "hsl(var(--sidebar-primary))",
-			"primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-			"accent": "hsl(var(--sidebar-accent))",
-			"accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-			"border": "hsl(var(--sidebar-border))",
-			"ring": "hsl(var(--sidebar-ring))"
-		}
-	},
-	"borderRadius": {
-		"lg": "var(--radius)",
-		"md": "calc(var(--radius) - 2px)",
-		"sm": "calc(var(--radius) - 4px)"
-	},
-	"fontFamily": {
-		"mono": ["'JetBrains Mono'", "monospace"],
-		"code": ["'Courier Prime'", "'JetBrains Mono'", "monospace"]
-	},
-	"maxWidth": {
-		"xyz": "1460px"
-	},
-	"cssVariables": {
-		":root": {
-			"--color-blue-1": "#f0f5ff",
-			"--color-blue-2": "#e6edff",
-			"--color-blue-3": "#bdceff",
-			"--color-blue-4": "#94adff",
-			"--color-blue-5": "#6b89ff",
-			"--color-blue-6": "#4362ff",
-			"--color-blue-6h": "#3451e6",
-			"--color-blue-7": "#2e44d9",
-			"--color-blue-8": "#1d2cb3",
-			"--color-blue-9": "#0f188c",
-			"--color-blue-10": "#0a0d66",
-			"--color-gray-1": "#f8fafc",
-			"--color-gray-2": "#f1f5f9",
-			"--color-gray-3": "#e1e7ef",
-			"--color-gray-4": "#c8d5e5",
-			"--color-gray-5": "#9eacbf",
-			"--color-gray-6": "#65758b",
-			"--color-gray-7": "#48566a",
-			"--color-gray-8": "#344256",
-			"--color-gray-9": "#0f1728",
-			"--color-gray-10": "#090e1a",
-			"--color-gray-11": "#060a10",
-			"--color-orange-6": "#ff8400",
-			"--color-surface-1": "#ffffff",
-			"--background": "0 0% 100%",
-			"--foreground": "222 47% 7%",
-			"--card": "0 0% 100%",
-			"--card-foreground": "222 47% 7%",
-			"--popover": "0 0% 100%",
-			"--popover-foreground": "222 47% 7%",
-			"--primary": "231 100% 63%",
-			"--primary-foreground": "0 0% 100%",
-			"--secondary": "210 40% 96%",
-			"--secondary-foreground": "222 47% 11%",
-			"--muted": "210 40% 96%",
-			"--muted-foreground": "215 16% 55%",
-			"--accent": "220 60% 97%",
-			"--accent-foreground": "222 47% 11%",
-			"--destructive": "0 72% 51%",
-			"--destructive-foreground": "0 0% 100%",
-			"--border": "214 27% 83%",
-			"--input": "214 27% 83%",
-			"--ring": "231 100% 63%",
-			"--radius": "0px",
-			"--sidebar-background": "0 0% 100%",
-			"--sidebar-foreground": "222 47% 7%",
-			"--sidebar-primary": "231 100% 63%",
-			"--sidebar-primary-foreground": "0 0% 100%",
-			"--sidebar-accent": "220 60% 97%",
-			"--sidebar-accent-foreground": "222 47% 11%",
-			"--sidebar-border": "214 27% 83%",
-			"--sidebar-ring": "231 100% 63%"
-		},
-		".dark": {
-			"--color-gray-1": "#1a2332",
-			"--color-gray-2": "#0c101c",
-			"--color-gray-3": "#242e3c",
-			"--color-gray-4": "#313b48",
-			"--color-gray-5": "#5e6d81",
-			"--color-gray-6": "#8a9ab1",
-			"--color-gray-7": "#b1c0d2",
-			"--color-gray-8": "#d3dce7",
-			"--color-gray-9": "#e2eaf2",
-			"--color-gray-10": "#f8fafc",
-			"--color-gray-11": "#feffff",
-			"--color-blue-1": "#15182c",
-			"--color-blue-2": "#1b2045",
-			"--color-blue-3": "#222b5b",
-			"--color-blue-4": "#29377e",
-			"--color-blue-5": "#3347ad",
-			"--color-blue-6": "#3c56dc",
-			"--color-blue-6h": "#627de8",
-			"--color-blue-7": "#627de8",
-			"--color-blue-8": "#8ea5f3",
-			"--color-blue-9": "#b8c8f8",
-			"--color-blue-10": "#e2e9fa",
-			"--color-orange-6": "#dc7303",
-			"--color-surface-1": "#111827",
-			"--background": "225 40% 8%",
-			"--foreground": "210 40% 98%",
-			"--card": "225 40% 8%",
-			"--card-foreground": "210 40% 98%",
-			"--popover": "218 28% 15%",
-			"--popover-foreground": "210 40% 98%",
-			"--primary": "231 65% 55%",
-			"--primary-foreground": "0 0% 100%",
-			"--secondary": "215 25% 15%",
-			"--secondary-foreground": "210 30% 90%",
-			"--muted": "215 25% 15%",
-			"--muted-foreground": "213 16% 44%",
-			"--accent": "215 25% 15%",
-			"--accent-foreground": "210 40% 98%",
-			"--destructive": "0 65% 52%",
-			"--destructive-foreground": "0 0% 100%",
-			"--border": "213 16% 24%",
-			"--input": "213 16% 24%",
-			"--ring": "231 65% 55%",
-			"--radius": "0px",
-			"--sidebar-background": "225 40% 8%",
-			"--sidebar-foreground": "210 40% 98%",
-			"--sidebar-primary": "231 65% 55%",
-			"--sidebar-primary-foreground": "0 0% 100%",
-			"--sidebar-accent": "215 25% 15%",
-			"--sidebar-accent-foreground": "210 40% 98%",
-			"--sidebar-border": "213 16% 24%",
-			"--sidebar-ring": "231 65% 55%"
-		}
-	}
+  "_provenance": {
+    "source": "Nexus web/default/tailwind.colors.js + tailwind.config.js + src/global.css",
+    "snapshot_date": "2026-08-03",
+    "note": "F01 验收基线，两层都锁：① tailwind.config.ts 的 theme.extend 顶层键集合与 colors/borderRadius/fontFamily/maxWidth 四组逐键逐值；② index.css 里 :root 与 .dark 的 CSS 变量逐条取值（只锁①的话，值全是 var(--color-*) 引用，改掉变量的 hex 测试照样绿）。改动 token 必须同步改本文件，并在 commit message 里说明为什么偏离 Nexus。品牌 logo 色（Claude/VSCode/Cursor）按 Nexus 约定不进 token。"
+  },
+  "colors": {
+    "xyz-blue": {
+      "1": "var(--color-blue-1)",
+      "2": "var(--color-blue-2)",
+      "3": "var(--color-blue-3)",
+      "4": "var(--color-blue-4)",
+      "5": "var(--color-blue-5)",
+      "6": "var(--color-blue-6)",
+      "6h": "var(--color-blue-6h, #3451e6)",
+      "7": "var(--color-blue-7)",
+      "8": "var(--color-blue-8)",
+      "9": "var(--color-blue-9)",
+      "10": "var(--color-blue-10)"
+    },
+    "xyz-gray": {
+      "1": "var(--color-gray-1)",
+      "2": "var(--color-gray-2)",
+      "3": "var(--color-gray-3)",
+      "4": "var(--color-gray-4)",
+      "5": "var(--color-gray-5)",
+      "6": "var(--color-gray-6)",
+      "7": "var(--color-gray-7)",
+      "8": "var(--color-gray-8)",
+      "9": "var(--color-gray-9)",
+      "10": "var(--color-gray-10)",
+      "11": "var(--color-gray-11)"
+    },
+    "xyz-white": {
+      "1": "rgba(255, 255, 255, 0.08)",
+      "2": "rgba(255, 255, 255, 0.10)",
+      "3": "rgba(255, 255, 255, 0.20)",
+      "4": "rgba(255, 255, 255, 0.30)",
+      "5": "rgba(255, 255, 255, 0.40)",
+      "6": "rgba(255, 255, 255, 0.50)",
+      "7": "rgba(255, 255, 255, 0.60)",
+      "8": "rgba(255, 255, 255, 0.80)",
+      "9": "rgba(255, 255, 255, 0.90)",
+      "10": "#ffffff"
+    },
+    "xyz-orange": {
+      "5": "#f97316",
+      "6": "var(--color-orange-6)",
+      "warn": "#ff921c"
+    },
+    "xyz-emerald": {
+      "6": "#10b981",
+      "7": "#059669"
+    },
+    "xyz-cyan": {
+      "1": "#e6fffb",
+      "3": "#87e8de",
+      "5": "#06b6d4",
+      "6": "#13c2c2",
+      "7": "#08979c"
+    },
+    "xyz-green": {
+      "1": "#f6ffed",
+      "5": "#b7eb8f",
+      "6": "#52c41a",
+      "7": "#389e0d",
+      "500": "#22c55e",
+      "semantic": "#21ba45"
+    },
+    "xyz-red": {
+      "1": "#fff2f0",
+      "5": "#ffccc7",
+      "6": "#ef4444",
+      "7": "#dc2626",
+      "warn": "#ff4d4f",
+      "danger": "#ff3212",
+      "accent": "#ff6321"
+    },
+    "xyz-amber": {
+      "1": "#fffbe6",
+      "5": "#ffe58f",
+      "6": "#f59e0b",
+      "7": "#d97706",
+      "warn": "#faad14"
+    },
+    "xyz-purple": {
+      "1": "#f9f0ff",
+      "3": "#d3adf7",
+      "6": "#8b5cf6",
+      "7": "#722ed1",
+      "500": "#a855f7"
+    },
+    "xyz-pink": {
+      "6": "#ec4899"
+    },
+    "xyz-rose": {
+      "6": "#f43f5e"
+    },
+    "xyz-fuchsia": {
+      "6": "#d946ef"
+    },
+    "xyz-indigo": {
+      "6": "#6366f1"
+    },
+    "xyz-teal": {
+      "6": "#14b8a6"
+    },
+    "xyz-violet": {
+      "5": "#a78bfa"
+    },
+    "xyz-blue-soft": "#597ef7",
+    "xyz-blue-tag": "#1677ff",
+    "xyz-blue-brand": "#3b82f6",
+    "xyz-blue-accent": "#2563eb",
+    "xyz-blue-link": "#2185d0",
+    "xyz-chart-axis": "#A3AED0",
+    "xyz-disabled": "#d9d9d9",
+    "xyz-code-bg": "#0a0f1a",
+    "xyz-marketing-deep": "#1e2a4a",
+    "border": "hsl(var(--border))",
+    "input": "hsl(var(--input))",
+    "ring": "hsl(var(--ring))",
+    "background": "hsl(var(--background))",
+    "foreground": "hsl(var(--foreground))",
+    "primary": {
+      "DEFAULT": "hsl(var(--primary))",
+      "foreground": "hsl(var(--primary-foreground))"
+    },
+    "secondary": {
+      "DEFAULT": "hsl(var(--secondary))",
+      "foreground": "hsl(var(--secondary-foreground))"
+    },
+    "destructive": {
+      "DEFAULT": "hsl(var(--destructive))",
+      "foreground": "hsl(var(--destructive-foreground))"
+    },
+    "muted": {
+      "DEFAULT": "hsl(var(--muted))",
+      "foreground": "hsl(var(--muted-foreground))"
+    },
+    "accent": {
+      "DEFAULT": "hsl(var(--accent))",
+      "foreground": "hsl(var(--accent-foreground))"
+    },
+    "popover": {
+      "DEFAULT": "hsl(var(--popover))",
+      "foreground": "hsl(var(--popover-foreground))"
+    },
+    "card": {
+      "DEFAULT": "hsl(var(--card))",
+      "foreground": "hsl(var(--card-foreground))"
+    },
+    "sidebar": {
+      "DEFAULT": "hsl(var(--sidebar-background))",
+      "foreground": "hsl(var(--sidebar-foreground))",
+      "primary": "hsl(var(--sidebar-primary))",
+      "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+      "accent": "hsl(var(--sidebar-accent))",
+      "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+      "border": "hsl(var(--sidebar-border))",
+      "ring": "hsl(var(--sidebar-ring))"
+    }
+  },
+  "borderRadius": {
+    "lg": "var(--radius)",
+    "md": "calc(var(--radius) - 2px)",
+    "sm": "calc(var(--radius) - 4px)"
+  },
+  "fontFamily": {
+    "sans": [
+      "'Instrument Sans'",
+      "system-ui",
+      "-apple-system",
+      "'PingFang SC'",
+      "'Microsoft YaHei'",
+      "sans-serif"
+    ],
+    "display": [
+      "'Fraunces'",
+      "'PingFang SC'",
+      "'Songti SC'",
+      "Georgia",
+      "serif"
+    ],
+    "mono": [
+      "'JetBrains Mono'",
+      "monospace"
+    ],
+    "code": [
+      "'Courier Prime'",
+      "'JetBrains Mono'",
+      "monospace"
+    ]
+  },
+  "maxWidth": {
+    "xyz": "1460px"
+  },
+  "cssVariables": {
+    ":root": {
+      "--color-blue-1": "#eeeefb",
+      "--color-blue-2": "#e0e0f7",
+      "--color-blue-3": "#c3c2ef",
+      "--color-blue-4": "#9b9ae3",
+      "--color-blue-5": "#6f6dd6",
+      "--color-blue-6": "#4b48c9",
+      "--color-blue-6h": "#403dbf",
+      "--color-blue-7": "#3835a8",
+      "--color-blue-8": "#2c2a85",
+      "--color-blue-9": "#201f63",
+      "--color-blue-10": "#161547",
+      "--color-gray-1": "#faf7f1",
+      "--color-gray-2": "#f4efe6",
+      "--color-gray-3": "#e9e2d5",
+      "--color-gray-4": "#ddd4c4",
+      "--color-gray-5": "#a89e8d",
+      "--color-gray-6": "#6f675b",
+      "--color-gray-7": "#554e44",
+      "--color-gray-8": "#3a352d",
+      "--color-gray-9": "#211d18",
+      "--color-gray-10": "#17140f",
+      "--color-gray-11": "#0d0b08",
+      "--color-orange-6": "#b5691f",
+      "--color-surface-1": "#fdfbf6",
+      "--background": "37 38% 93%",
+      "--foreground": "33 14% 11%",
+      "--card": "42 50% 98%",
+      "--card-foreground": "33 14% 11%",
+      "--popover": "42 50% 98%",
+      "--popover-foreground": "33 14% 11%",
+      "--primary": "241 47% 53%",
+      "--primary-foreground": "42 50% 98%",
+      "--secondary": "39 33% 89%",
+      "--secondary-foreground": "33 14% 14%",
+      "--muted": "39 33% 89%",
+      "--muted-foreground": "34 11% 40%",
+      "--accent": "244 42% 94%",
+      "--accent-foreground": "241 45% 32%",
+      "--destructive": "6 63% 46%",
+      "--destructive-foreground": "42 50% 98%",
+      "--border": "39 30% 85%",
+      "--input": "39 30% 85%",
+      "--ring": "241 47% 53%",
+      "--radius": "8px",
+      "--sidebar-background": "41 44% 96%",
+      "--sidebar-foreground": "33 14% 11%",
+      "--sidebar-primary": "241 47% 53%",
+      "--sidebar-primary-foreground": "42 50% 98%",
+      "--sidebar-accent": "244 42% 94%",
+      "--sidebar-accent-foreground": "241 45% 32%",
+      "--sidebar-border": "39 30% 85%",
+      "--sidebar-ring": "241 47% 53%"
+    },
+    ".dark": {
+      "--color-gray-1": "#211d17",
+      "--color-gray-2": "#17140f",
+      "--color-gray-3": "#2a251d",
+      "--color-gray-4": "#38322a",
+      "--color-gray-5": "#6b6353",
+      "--color-gray-6": "#9c9382",
+      "--color-gray-7": "#c0b7a4",
+      "--color-gray-8": "#ddd4c3",
+      "--color-gray-9": "#ece5d7",
+      "--color-gray-10": "#faf7f1",
+      "--color-gray-11": "#fffdf8",
+      "--color-blue-1": "#16152a",
+      "--color-blue-2": "#1c1b3d",
+      "--color-blue-3": "#242353",
+      "--color-blue-4": "#302e78",
+      "--color-blue-5": "#4d4ac8",
+      "--color-blue-6": "#6663e0",
+      "--color-blue-6h": "#837fe9",
+      "--color-blue-7": "#837fe9",
+      "--color-blue-8": "#a6a2f0",
+      "--color-blue-9": "#c8c5f6",
+      "--color-blue-10": "#e7e6fb",
+      "--color-orange-6": "#cf8134",
+      "--color-surface-1": "#1c1811",
+      "--background": "34 18% 8%",
+      "--foreground": "40 30% 94%",
+      "--card": "34 18% 8%",
+      "--card-foreground": "40 30% 94%",
+      "--popover": "32 16% 14%",
+      "--popover-foreground": "40 30% 94%",
+      "--primary": "243 60% 64%",
+      "--primary-foreground": "40 40% 96%",
+      "--secondary": "32 14% 16%",
+      "--secondary-foreground": "40 24% 88%",
+      "--muted": "32 14% 16%",
+      "--muted-foreground": "36 12% 52%",
+      "--accent": "32 14% 16%",
+      "--accent-foreground": "40 30% 94%",
+      "--destructive": "6 60% 52%",
+      "--destructive-foreground": "40 40% 96%",
+      "--border": "33 12% 22%",
+      "--input": "33 12% 22%",
+      "--ring": "243 60% 64%",
+      "--radius": "8px",
+      "--sidebar-background": "34 18% 8%",
+      "--sidebar-foreground": "40 30% 94%",
+      "--sidebar-primary": "243 60% 64%",
+      "--sidebar-primary-foreground": "40 40% 96%",
+      "--sidebar-accent": "32 14% 16%",
+      "--sidebar-accent-foreground": "40 30% 94%",
+      "--sidebar-border": "33 12% 22%",
+      "--sidebar-ring": "243 60% 64%"
+    }
+  }
 }

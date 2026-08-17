@@ -57,8 +57,8 @@ export function RegisterPage() {
 	const error = registerUser.error ?? login.error;
 
 	return (
-		<form onSubmit={onSubmit} className="space-y-4" data-testid="register-page" noValidate>
-			<h1 className="text-lg font-semibold text-foreground">{t('user.auth.createAccount')}</h1>
+		<form onSubmit={onSubmit} className="space-y-5" data-testid="register-page" noValidate>
+			<h1 className="ink-heading text-2xl">{t('user.auth.createAccount')}</h1>
 
 			<Field
 				label={t('user.auth.username')}

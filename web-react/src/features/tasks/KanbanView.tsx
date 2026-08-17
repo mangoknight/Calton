@@ -146,12 +146,12 @@ function BucketColumn({
 			data-bucket-id={bucket.id}
 			data-full={full || undefined}
 			className={cn(
-				'flex w-72 shrink-0 flex-col rounded-md border bg-muted/30',
+				'flex w-72 shrink-0 flex-col rounded-lg border border-border bg-muted/30',
 				full && 'border-xyz-red-5',
 				isOver && 'ring-2 ring-primary',
 			)}
 		>
-			<header className="flex shrink-0 items-center gap-2 border-b px-3 py-2">
+			<header className="flex shrink-0 items-center gap-2 border-b border-border px-3 py-2">
 				<h3 className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
 					{bucket.title}
 				</h3>
@@ -240,7 +240,7 @@ function TaskCard({ task }: { task: Task }) {
 		>
 			<Link
 				to={`/tasks/${task.id}`}
-				className="block rounded border bg-card p-2 text-sm hover:border-primary"
+				className="block rounded-md border border-border bg-card p-2 text-sm shadow-sm transition-colors hover:border-primary hover:bg-accent/50"
 			>
 				<span className={cn('block', task.done && 'text-muted-foreground line-through')}>
 					{task.title}

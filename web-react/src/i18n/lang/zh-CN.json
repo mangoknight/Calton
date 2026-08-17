@@ -537,6 +537,8 @@
 	},
 	"navigation": {
 		"overview": "概览",
+		"dashboard": "管理面板",
+		"board": "看板",
 		"upcoming": "即将开始",
 		"settings": "设置",
 		"imprint": "版权信息",

@@ -43,7 +43,7 @@ export function LabelSelector({
 
 	return (
 		<section className="space-y-2" data-testid="label-selector">
-			<h2 className="text-sm font-medium text-foreground">{t('task.attributes.labels')}</h2>
+			<h2 className="ink-heading text-base">{t('task.attributes.labels')}</h2>
 
 			<ul className="flex flex-wrap gap-2" data-testid="attached-labels">
 				{attachedLabels.length === 0 ? (

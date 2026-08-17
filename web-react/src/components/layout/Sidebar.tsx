@@ -28,12 +28,12 @@ const NAV: {
 	label?: string;
 }[] = [
 	{ to: '/', labelKey: 'navigation.overview', icon: Home, end: true },
-	{ to: '/dashboard', label: '管理面板', icon: LayoutDashboard, end: false },
+	{ to: '/dashboard', labelKey: 'navigation.dashboard', icon: LayoutDashboard, end: false },
 	{ to: '/projects', labelKey: 'project.projects', icon: FolderTree, end: false },
-	{ to: '/board', label: '看板', icon: Columns3, end: false },
+	{ to: '/board', labelKey: 'navigation.board', icon: Columns3, end: false },
 	{ to: '/tasks/by/upcoming', labelKey: 'navigation.upcoming', icon: CalendarClock, end: false },
 	{ to: '/labels', labelKey: 'label.title', icon: Tags, end: false },
-	{ to: '/tokens', labelKey: 'user.apiTokens.title', icon: KeyRound, end: false },
+	{ to: '/tokens', labelKey: 'user.settings.apiTokens.title', icon: KeyRound, end: false },
 ];
 
 export function Sidebar() {
@@ -67,8 +67,11 @@ export function Sidebar() {
 							end={end}
 							className={({ isActive }) =>
 								cn(
-									'flex items-center gap-3 px-3 py-2 text-sm text-sidebar-foreground hover:bg-sidebar-accent',
-									isActive && 'bg-sidebar-accent font-medium text-sidebar-primary',
+									// 靛蓝激活态：左侧竖条指示（before 伪元素，不挤压内容）+ 暖灰非激活态
+									'relative flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
+									isActive
+										? 'bg-accent font-medium text-primary before:absolute before:inset-y-1.5 before:left-0 before:w-0.5 before:rounded-full before:bg-primary'
+										: 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
 								)
 							}
 						>
@@ -100,7 +103,13 @@ function SavedFilterNav({ collapsed }: { collapsed: boolean }) {
 
 	return (
 		<div className="mt-4 border-t border-sidebar-border pt-4" data-testid="saved-filter-nav">
-			<p className={cn('px-3 pb-1 text-xs text-muted-foreground', collapsed && 'sr-only')}>
+			<p
+				className={cn(
+					// 分区小标题：小号大写 + 加宽字距，编辑感
+					'px-3 pb-1 text-xs uppercase tracking-wider text-muted-foreground',
+					collapsed && 'sr-only',
+				)}
+			>
 				{/*
 				 * ⚠️ 用 `filters.title` 而不是语义更贴的 `navigation.savedFilters`：
 				 * 后者**上游 zh-CN 缺翻译**，会退回英文 "Saved filters"，
@@ -119,8 +128,10 @@ function SavedFilterNav({ collapsed }: { collapsed: boolean }) {
 							data-project-id={entry.projectId}
 							className={({ isActive }) =>
 								cn(
-									'flex items-center gap-3 px-3 py-2 text-sm text-sidebar-foreground hover:bg-sidebar-accent',
-									isActive && 'bg-sidebar-accent font-medium text-sidebar-primary',
+									'relative flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
+									isActive
+										? 'bg-accent font-medium text-primary before:absolute before:inset-y-1.5 before:left-0 before:w-0.5 before:rounded-full before:bg-primary'
+										: 'text-muted-foreground hover:bg-accent/60 hover:text-foreground',
 								)
 							}
 						>

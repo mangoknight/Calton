@@ -46,7 +46,7 @@ export function TokensPage() {
 		<section className="p-6" data-testid="tokens-page">
 			<div className="flex items-center justify-between">
 				<div>
-					<h1 className="text-lg font-semibold text-foreground">
+					<h1 className="ink-heading text-2xl">
 						{t('user.apiTokens.title') as string}
 					</h1>
 					<p className="mt-1 text-sm text-muted-foreground">
@@ -170,7 +170,7 @@ function TokenRow({
 		: '';
 
 	return (
-		<li className="flex items-center gap-3 border border-border bg-card p-3" data-testid={`token-row-${token.id}`}>
+		<li className="ink-card flex items-center gap-3 p-3 transition-colors hover:bg-accent/40" data-testid={`token-row-${token.id}`}>
 			<KeyRound className="size-6 shrink-0 text-muted-foreground" aria-hidden />
 
 			<div className="min-w-0 flex-1">
