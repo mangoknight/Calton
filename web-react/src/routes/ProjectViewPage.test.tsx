@@ -90,7 +90,9 @@ describe('视图容器：四种 kind 共用一个容器', () => {
 		expect(await screen.findByTestId('list-view')).toBeInTheDocument();
 		expect(calls()).toBe(1);
 
-		await userEvent.click(screen.getByRole('link', { name: '看板' }));
+		// 收窄到「视图切换」导航：侧栏全局看板入口也叫「看板」，整屏查会撞名
+		const nav = await screen.findByRole('navigation', { name: '视图切换' });
+		await userEvent.click(within(nav).getByRole('link', { name: '看板' }));
 
 		expect(await screen.findByTestId('kanban-view')).toBeInTheDocument();
 		expect(calls()).toBe(1);

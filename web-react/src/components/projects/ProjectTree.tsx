@@ -1,10 +1,11 @@
-import { ChevronDown, ChevronRight, Folder, Pencil, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronRight, Folder, ListTodo, Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import type { Project } from '@/api/projects';
 import type { ProjectNode } from '@/features/projects/tree';
 import { cn } from '@/lib/utils';
+import { ProjectTasks } from './ProjectTasks';
 
 interface TreeActions {
 	onEdit: (project: Project) => void;
@@ -42,6 +43,8 @@ function ProjectTreeGroup({ nodes, onEdit, onDelete }: { nodes: ProjectNode[] } 
 
 function ProjectTreeItem({ node, onEdit, onDelete }: { node: ProjectNode } & TreeActions) {
 	const [expanded, setExpanded] = useState(true);
+	// 任务展开是独立于子项目展开的一档，默认收起：项目多时不一上来就把所有任务全拉了
+	const [tasksOpen, setTasksOpen] = useState(false);
 	const hasChildren = node.children.length > 0;
 
 	return (
@@ -88,6 +91,19 @@ function ProjectTreeItem({ node, onEdit, onDelete }: { node: ProjectNode } & Tre
 				<span className="ml-auto flex items-center gap-1">
 					<button
 						type="button"
+						data-testid={`project-tasks-toggle-${node.project.id}`}
+						aria-label={`${tasksOpen ? '收起' : '展开'}任务 ${node.project.title}`}
+						aria-pressed={tasksOpen}
+						onClick={() => setTasksOpen((v) => !v)}
+						className={cn(
+							'hover:text-foreground',
+							tasksOpen ? 'text-primary' : 'text-muted-foreground',
+						)}
+					>
+						<ListTodo className="size-4" aria-hidden />
+					</button>
+					<button
+						type="button"
 						data-testid={`project-edit-${node.project.id}`}
 						aria-label={`编辑 ${node.project.title}`}
 						onClick={() => onEdit(node.project)}
@@ -106,6 +122,8 @@ function ProjectTreeItem({ node, onEdit, onDelete }: { node: ProjectNode } & Tre
 					</button>
 				</span>
 			</div>
+
+			{tasksOpen ? <ProjectTasks projectId={node.project.id} baseDepth={node.depth + 1} /> : null}
 
 			{hasChildren && expanded ? (
 				<ProjectTreeGroup nodes={node.children} onEdit={onEdit} onDelete={onDelete} />

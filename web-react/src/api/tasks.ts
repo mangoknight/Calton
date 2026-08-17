@@ -51,6 +51,12 @@ export interface Task {
 	/** 唯一一个空集为 `[]` 而非 null 的关联字段。 */
 	assignees?: { id: number; username?: string; name?: string }[];
 	reminders?: unknown[] | null;
+	/**
+	 * 关联任务，按 relation kind 分组：子任务在 `subtask`、父任务在 `parenttask`
+	 *（还有 related/blocking/... 等 kind，这里只用到子/父）。列表接口就会带出来，
+	 * 不用逐个任务再拉。不带 `expand` 时同其它关联字段一样是 **null 不是 {}**。
+	 */
+	related_tasks?: Record<string, Task[]> | null;
 	created?: string;
 	updated?: string;
 }
