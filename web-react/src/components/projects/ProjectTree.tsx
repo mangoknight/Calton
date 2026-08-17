@@ -78,6 +78,21 @@ function ProjectTreeItem({ node, onEdit, onDelete }: { node: ProjectNode } & Tre
 					style={node.project.hex_color ? { color: `#${node.project.hex_color}` } : undefined}
 				/>
 
+				{/* 展开任务放在项目名前面：它是"看这个项目里的任务"的入口，紧挨名字更直觉 */}
+				<button
+					type="button"
+					data-testid={`project-tasks-toggle-${node.project.id}`}
+					aria-label={`${tasksOpen ? '收起' : '展开'}任务 ${node.project.title}`}
+					aria-pressed={tasksOpen}
+					onClick={() => setTasksOpen((v) => !v)}
+					className={cn(
+						'shrink-0 hover:text-foreground',
+						tasksOpen ? 'text-primary' : 'text-muted-foreground',
+					)}
+				>
+					<ListTodo className="size-4" aria-hidden />
+				</button>
+
 				<Link
 					to={`/projects/${node.project.id}/list`}
 					className={cn(
@@ -89,19 +104,6 @@ function ProjectTreeItem({ node, onEdit, onDelete }: { node: ProjectNode } & Tre
 				</Link>
 
 				<span className="ml-auto flex items-center gap-1">
-					<button
-						type="button"
-						data-testid={`project-tasks-toggle-${node.project.id}`}
-						aria-label={`${tasksOpen ? '收起' : '展开'}任务 ${node.project.title}`}
-						aria-pressed={tasksOpen}
-						onClick={() => setTasksOpen((v) => !v)}
-						className={cn(
-							'hover:text-foreground',
-							tasksOpen ? 'text-primary' : 'text-muted-foreground',
-						)}
-					>
-						<ListTodo className="size-4" aria-hidden />
-					</button>
 					<button
 						type="button"
 						data-testid={`project-edit-${node.project.id}`}
