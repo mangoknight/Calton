@@ -5,6 +5,7 @@ import type { Task } from '@/api/tasks';
 import { Button } from '@/components/ui/button';
 import { Field } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { statusOf, type BoardStatus } from '@/features/board/queries';
 import { AssigneeSelector } from '@/features/tasks/AssigneeSelector';
 import { CommentSection } from '@/features/tasks/CommentSection';
 import { LabelSelector } from '@/features/tasks/LabelSelector';
@@ -119,7 +120,13 @@ function TaskDetail({ taskId }: { taskId: number }) {
 
 			<dl className="grid max-w-md grid-cols-[8rem_1fr] gap-y-3 text-sm">
 				<dt className="text-muted-foreground">状态</dt>
-				<dd data-testid="detail-done">{task.done ? '已完成' : '进行中'}</dd>
+				<dd data-testid="detail-done">
+					<StatusPicker
+						task={task}
+						disabled={readOnly || update.isPending}
+						onPick={(patch) => update.mutate(patch)}
+					/>
+				</dd>
 
 				<dt className="text-muted-foreground">到期日</dt>
 				<dd data-testid="detail-due-date">{formatApiDate(task.due_date) ?? '未设置'}</dd>
@@ -187,6 +194,62 @@ function TaskDetail({ taskId }: { taskId: number }) {
  * 到期日。`<input type="date">` 收发的是 `YYYY-MM-DD`，
  * 而 API 要 RFC3339；清空要发**零值字符串**而不是 null（发 null 会 412）。
  */
+const STATUS_OPTIONS: { key: BoardStatus; label: string }[] = [
+	{ key: 'todo', label: '待办' },
+	{ key: 'doing', label: '进行中' },
+	{ key: 'done', label: '已完成' },
+];
+
+/**
+ * 三态状态控件（待办/进行中/已完成），与看板一致。task 没有独立状态字段，
+ * 由 done + percent_done 推导（`statusOf`），点击写回对应字段：
+ * - 待办：done=false, percent=0
+ * - 进行中：done=false，进度给个非零值（已在 1–99 之间则保留，否则 50）
+ * - 已完成：done=true
+ * 指派不会因此丢失 —— `useUpdateTask` 会把当前 assignees 一并回传。
+ */
+function StatusPicker({
+	task,
+	disabled,
+	onPick,
+}: {
+	task: Task;
+	disabled: boolean;
+	onPick: (patch: { done: boolean; percent_done?: number }) => void;
+}) {
+	const current = statusOf(task);
+	function patchFor(status: BoardStatus): { done: boolean; percent_done?: number } {
+		if (status === 'done') return { done: true };
+		if (status === 'todo') return { done: false, percent_done: 0 };
+		const pd = task.percent_done;
+		return { done: false, percent_done: pd && pd > 0 && pd < 100 ? pd : 50 };
+	}
+	return (
+		<div className="inline-flex rounded-md border border-xyz-gray-4 p-0.5" role="group" aria-label="任务状态">
+			{STATUS_OPTIONS.map(({ key, label }) => (
+				<button
+					key={key}
+					type="button"
+					data-testid="status-option"
+					data-status={key}
+					data-active={current === key}
+					aria-pressed={current === key}
+					disabled={disabled || current === key}
+					onClick={() => onPick(patchFor(key))}
+					className={cn(
+						'rounded px-2.5 py-0.5 text-xs transition-colors',
+						current === key
+							? 'bg-xyz-blue-6 text-white'
+							: 'text-xyz-gray-6 hover:bg-xyz-gray-2 disabled:opacity-50',
+					)}
+				>
+					{label}
+				</button>
+			))}
+		</div>
+	);
+}
+
 function DueDateField({
 	task,
 	disabled,

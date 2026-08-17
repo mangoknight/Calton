@@ -56,7 +56,17 @@ export function useUpdateTask(taskId: number) {
 				// 把其余字段清空。这是 AC-6 最容易被绕过的地方。
 				throw new Error('任务尚未加载完成，无法保存：全量替换需要完整对象');
 			}
-			return updateTask(taskId, buildTaskUpdatePayload(current, patch));
+			const payload = buildTaskUpdatePayload(current, patch);
+			// ⚠️ 全量替换会**清空 assignees**：它是被 acted-on 的字段，省略即清空
+			// （忠实对齐 Go 的 updateTaskAssignees，见 server task_service._apply_assignees）。
+			// buildTaskUpdatePayload 只含 tasks 表可写列、不含 assignees，所以这里把当前
+			// 指派原样回传 —— 否则改个 done/优先级/描述就把这个任务的指派清没了。
+			payload.assignees = (current.assignees ?? []).map((a) => ({
+				id: a.id,
+				username: a.username ?? '',
+				name: a.name ?? '',
+			}));
+			return updateTask(taskId, payload);
 		},
 
 		onMutate: async (patch) => {
