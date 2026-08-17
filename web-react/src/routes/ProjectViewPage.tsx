@@ -2,6 +2,7 @@ import { NavLink, useParams } from 'react-router-dom';
 
 import { isViewKind, VIEW_KINDS, type ProjectView, type ViewKind } from '@/api/views';
 import { FilterBar } from '@/features/tasks/FilterBar';
+import { GanttView } from '@/features/tasks/GanttView';
 import { KanbanView } from '@/features/tasks/KanbanView';
 import { ListView } from '@/features/tasks/ListView';
 import { TableView } from '@/features/tasks/TableView';
@@ -119,14 +120,7 @@ function ViewBody({
 }) {
 	switch (kind) {
 		case 'gantt':
-			// Gantt 排在 P3，这里如实占位。**不是报错**——用户点进来看到的是
-			// "还没做"，而不是一个红色错误，否则会被当成故障上报。
-			return (
-				<div data-testid="gantt-placeholder" className="text-sm text-muted-foreground">
-					<p className="font-medium text-foreground">甘特图暂不支持</p>
-					<p className="mt-1">该视图计划在后续版本提供，当前可以先用列表或看板。</p>
-				</div>
-			);
+			return <GanttView projectId={projectId} viewId={view.id} />;
 		case 'list':
 			return <ListView projectId={projectId} viewId={view.id} />;
 		case 'table':

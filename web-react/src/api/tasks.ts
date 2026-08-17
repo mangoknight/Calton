@@ -221,3 +221,18 @@ export function listViewTasks(
 		query: { per_page: TASKS_PER_PAGE, ...params },
 	});
 }
+
+/**
+ * 新建任务。⚠️ v1 里 **PUT 才是新建**（见 `client.put`）。
+ *
+ * Vikunja `PUT /projects/{id}/tasks`：最小请求体就是 `{title}`，
+ * 桶（bucket）归属不用前端指定 —— 后端会把新任务落到该视图的**默认桶**。
+ * 这条和全量替换的 `POST /tasks/{id}`（updateTask）是两回事，别混。
+ */
+export function createTask(
+	projectId: number,
+	payload: { title: string },
+	client: CaltonClient = apiClient,
+): Promise<Task> {
+	return client.put<Task>(`/projects/${projectId}/tasks`, payload);
+}

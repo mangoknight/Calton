@@ -21,6 +21,7 @@ import { BucketFormDialog, DeleteBucketDialog } from './BucketDialogs';
 import { useBoard, useCreateBucket, useDeleteBucket, useUpdateBucket } from './bucket-queries';
 import { TaskQueryError } from './FilterError';
 import { useFilterParam } from './filter-param';
+import { QuickAddTask } from './QuickAddTask';
 import { useMoveTask } from './useMoveTask';
 
 /**
@@ -68,6 +69,9 @@ export function KanbanView({ projectId, viewId }: { projectId: number; viewId: n
 
 	return (
 		<div className="flex h-full flex-col gap-3" data-testid="kanban-view">
+			{/* 建任务入口：新任务落进看板默认桶，失效后重取即可见 */}
+			<QuickAddTask projectId={projectId} />
+
 			<div className="flex shrink-0 items-center justify-end gap-3">
 				{moveTask.isError ? (
 					<p role="alert" data-testid="move-error" className="text-sm text-xyz-red-6">

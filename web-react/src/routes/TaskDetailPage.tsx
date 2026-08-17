@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import type { Task } from '@/api/tasks';
@@ -96,19 +96,12 @@ function TaskDetail({ taskId }: { taskId: number }) {
 					className="mt-1.5 size-4 shrink-0"
 					onChange={(event) => update.mutate({ done: event.target.checked })}
 				/>
-				<div className="min-w-0 flex-1">
-					<h1
-						className={cn(
-							'ink-heading text-2xl',
-							task.done ? 'text-muted-foreground line-through' : 'text-foreground',
-						)}
-					>
-						{task.title}
-					</h1>
-					{task.identifier ? (
-						<p className="mt-1 text-sm text-muted-foreground">{task.identifier}</p>
-					) : null}
-				</div>
+				<TitleField
+					task={task}
+					readOnly={readOnly}
+					disabled={update.isPending}
+					onSave={(patch) => update.mutate(patch)}
+				/>
 			</header>
 
 			{update.isError ? (
@@ -187,6 +180,129 @@ function TaskDetail({ taskId }: { taskId: number }) {
 				</div>
 			)}
 		</section>
+	);
+}
+
+/**
+ * 标题：只读态是纯展示的 `<h1>`；非只读时右侧多一个铅笔按钮切到输入框。
+ *
+ * - 保存（Enter / 点保存）：trim 后**非空且与原值不同**才 `onSave({ title })`；
+ *   空标题或未改动直接忽略，不发请求（省一次全量替换）。
+ * - 取消（Escape / 失焦）：回到展示态，不保存。
+ * - 保存按钮用 `onMouseDown` 阻止默认，避免它抢在 onClick 前把 input 的 onBlur 触发、
+ *   把编辑态取消掉（失焦取消 + 点按钮保存的经典冲突）。
+ * - 只读时不渲染铅笔按钮，保持"没有编辑控件"的只读语义，别让用户改完吃 403。
+ */
+function TitleField({
+	task,
+	readOnly,
+	disabled,
+	onSave,
+}: {
+	task: Task;
+	readOnly: boolean;
+	disabled: boolean;
+	onSave: (patch: { title: string }) => void;
+}) {
+	const [editing, setEditing] = useState(false);
+	const [draft, setDraft] = useState('');
+
+	function startEdit() {
+		setDraft(task.title ?? '');
+		setEditing(true);
+	}
+
+	function commit() {
+		const next = draft.trim();
+		// 非空且与原值不同才保存；否则丢弃编辑、回展示态
+		if (next && next !== task.title) {
+			onSave({ title: next });
+		}
+		setEditing(false);
+	}
+
+	if (editing) {
+		return (
+			<div className="min-w-0 flex-1">
+				<div className="flex items-center gap-2">
+					<Input
+						autoFocus
+						data-testid="title-input"
+						aria-label="标题"
+						className="ink-heading h-auto py-1 text-2xl"
+						value={draft}
+						disabled={disabled}
+						onChange={(event) => setDraft(event.target.value)}
+						onKeyDown={(event) => {
+							if (event.key === 'Enter') {
+								event.preventDefault();
+								commit();
+							} else if (event.key === 'Escape') {
+								event.preventDefault();
+								setEditing(false); // Escape 取消，不保存
+							}
+						}}
+						onBlur={() => setEditing(false)} // 失焦取消
+					/>
+					<Button
+						type="button"
+						size="sm"
+						data-testid="title-save"
+						disabled={disabled}
+						onMouseDown={(event) => event.preventDefault()}
+						onClick={commit}
+					>
+						保存
+					</Button>
+				</div>
+				{task.identifier ? (
+					<p className="mt-1 text-sm text-muted-foreground">{task.identifier}</p>
+				) : null}
+			</div>
+		);
+	}
+
+	return (
+		<div className="min-w-0 flex-1">
+			<div className="flex items-center gap-2">
+				<h1
+					className={cn(
+						'ink-heading text-2xl',
+						task.done ? 'text-muted-foreground line-through' : 'text-foreground',
+					)}
+				>
+					{task.title}
+				</h1>
+				{readOnly ? null : (
+					<Button
+						type="button"
+						variant="ghost"
+						size="icon"
+						className="size-8 shrink-0 text-muted-foreground"
+						data-testid="title-edit"
+						aria-label="编辑标题"
+						onClick={startEdit}
+					>
+						{/* 铅笔图标 */}
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M12 20h9" />
+							<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
+						</svg>
+					</Button>
+				)}
+			</div>
+			{task.identifier ? (
+				<p className="mt-1 text-sm text-muted-foreground">{task.identifier}</p>
+			) : null}
+		</div>
 	);
 }
 

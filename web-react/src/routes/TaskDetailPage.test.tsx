@@ -354,6 +354,93 @@ describe('任务详情：乐观更新与错误', () => {
 	});
 });
 
+describe('任务详情：标题可编辑', () => {
+	it('编辑标题并保存，发出全量替换且 title 为新值、指派原样回传', async () => {
+		const mock = mockTask(task({ assignees: [{ id: 99, username: 'zoe' }] }));
+		renderApp(`/tasks/${TASK_ID}`);
+
+		await screen.findByRole('heading', { name: '写文档' });
+		await userEvent.click(screen.getByTestId('title-edit'));
+
+		const input = screen.getByTestId('title-input');
+		await userEvent.clear(input);
+		await userEvent.type(input, '写更好的文档');
+		await userEvent.click(screen.getByTestId('title-save'));
+
+		await waitFor(() => expect(mock.posts).toHaveLength(1));
+		const body = mock.posts[0]!;
+		expect(body.title).toBe('写更好的文档');
+		// 全量替换：其余可写列仍在，指派不被清空
+		for (const column of WRITABLE_TASK_COLUMNS) {
+			expect(body, `缺列 ${column} 会把它静默清成零值`).toHaveProperty(column);
+		}
+		expect(body.assignees).toEqual([{ id: 99, username: 'zoe', name: '' }]);
+		// 保存后回到展示态
+		await waitFor(() =>
+			expect(screen.queryByTestId('title-input')).not.toBeInTheDocument(),
+		);
+		expect(await screen.findByRole('heading', { name: '写更好的文档' })).toBeInTheDocument();
+	});
+
+	it('Enter 键保存标题', async () => {
+		const mock = mockTask();
+		renderApp(`/tasks/${TASK_ID}`);
+
+		await screen.findByRole('heading', { name: '写文档' });
+		await userEvent.click(screen.getByTestId('title-edit'));
+		const input = screen.getByTestId('title-input');
+		await userEvent.clear(input);
+		await userEvent.type(input, '新标题{Enter}');
+
+		await waitFor(() => expect(mock.posts).toHaveLength(1));
+		expect(mock.posts[0]!.title).toBe('新标题');
+	});
+
+	it('空标题不发请求', async () => {
+		const mock = mockTask();
+		renderApp(`/tasks/${TASK_ID}`);
+
+		await screen.findByRole('heading', { name: '写文档' });
+		await userEvent.click(screen.getByTestId('title-edit'));
+		const input = screen.getByTestId('title-input');
+		await userEvent.clear(input);
+		await userEvent.type(input, '   ');
+		await userEvent.click(screen.getByTestId('title-save'));
+
+		// 回到展示态、未发请求
+		await waitFor(() =>
+			expect(screen.queryByTestId('title-input')).not.toBeInTheDocument(),
+		);
+		expect(mock.posts).toHaveLength(0);
+		expect(screen.getByRole('heading', { name: '写文档' })).toBeInTheDocument();
+	});
+
+	it('Escape 取消编辑，不保存', async () => {
+		const mock = mockTask();
+		renderApp(`/tasks/${TASK_ID}`);
+
+		await screen.findByRole('heading', { name: '写文档' });
+		await userEvent.click(screen.getByTestId('title-edit'));
+		const input = screen.getByTestId('title-input');
+		await userEvent.clear(input);
+		await userEvent.type(input, '改了但取消{Escape}');
+
+		await waitFor(() =>
+			expect(screen.queryByTestId('title-input')).not.toBeInTheDocument(),
+		);
+		expect(mock.posts).toHaveLength(0);
+		expect(screen.getByRole('heading', { name: '写文档' })).toBeInTheDocument();
+	});
+
+	it('只读权限时不渲染标题编辑控件', async () => {
+		mockTask(task(), { maxPermission: '0' });
+		renderApp(`/tasks/${TASK_ID}`);
+
+		await screen.findByRole('heading', { name: '写文档' });
+		expect(screen.queryByTestId('title-edit')).not.toBeInTheDocument();
+	});
+});
+
 describe('任务详情：优先级选项走 i18n', () => {
 	/**
 	 * ★★★ 切到英文后**优先级选项真的变英文**。

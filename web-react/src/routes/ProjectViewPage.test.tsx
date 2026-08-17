@@ -99,14 +99,34 @@ describe('视图容器：四种 kind 共用一个容器', () => {
 	});
 });
 
-describe('★ Gantt 占位', () => {
-	it('渲染"暂不支持"占位，不报错', async () => {
+describe('★ Gantt 视图', () => {
+	/** gantt 也走 view/tasks 端点，给它一条带起止日期的任务，能铺到时间轴上。 */
+	function mockGanttTasks() {
+		server.use(
+			http.get(`${API}/projects/:projectId/views/:viewId/tasks`, () =>
+				HttpResponse.json(
+					[
+						{
+							id: 7,
+							title: '甘特任务',
+							start_date: '2026-08-01T00:00:00Z',
+							end_date: '2026-08-10T00:00:00Z',
+						},
+					],
+					{ headers: { 'x-pagination-result-count': '1', 'x-pagination-total-pages': '1' } },
+				),
+			),
+		);
+	}
+
+	it('渲染真实时间轴视图（有日期的任务落到时间条上）', async () => {
 		mockViews();
+		mockGanttTasks();
 		renderApp('/projects/12/gantt');
 
-		const placeholder = await screen.findByTestId('gantt-placeholder');
-		expect(placeholder).toHaveTextContent('甘特图暂不支持');
-		// 关键：这是"还没做"，不是故障。出现 alert 会被用户当成错误上报。
+		expect(await screen.findByTestId('gantt-view')).toBeInTheDocument();
+		expect(await screen.findByTestId('gantt-row')).toBeInTheDocument();
+		// 这是真实视图不是故障，不该冒出 alert
 		expect(screen.queryByRole('alert')).not.toBeInTheDocument();
 	});
 

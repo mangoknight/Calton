@@ -8,6 +8,7 @@ import { parsePageParam } from '@/lib/page-param';
 import { cn } from '@/lib/utils';
 import { TaskQueryError } from './FilterError';
 import { toFilterQuery, useFilterParam } from './filter-param';
+import { QuickAddTask } from './QuickAddTask';
 import { useViewTasks } from './queries';
 
 /**
@@ -44,6 +45,9 @@ export function ListView({ projectId, viewId }: { projectId: number; viewId: num
 
 	return (
 		<div className="flex h-full flex-col gap-3" data-testid="list-view">
+			{/* 建任务入口：放列表最上方，空态/分页下都可见 */}
+			<QuickAddTask projectId={projectId} />
+
 			{items.length === 0 ? (
 				<EmptyState page={page} onBackToFirstPage={() => goToPage(1)} />
 			) : (
