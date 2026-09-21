@@ -32,7 +32,7 @@ from collections.abc import Sequence
 from datetime import datetime, timedelta
 from typing import Any
 
-from sqlalchemy import func, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -44,6 +44,7 @@ from calton.models.file import File
 from calton.models.task import Task, base_task_query
 from calton.models.task_assignee import TaskAssignee
 from calton.models.task_comment import TaskAttachment
+from calton.models.task_position import TaskBucket, TaskPosition
 from calton.models.task_relation import TaskRelation
 from calton.models.task_reminder import TaskReminder
 from calton.permissions.project import NO_PERMISSION, max_permissions_for_projects
@@ -55,7 +56,7 @@ from calton.schemas.task import (
     TaskWriteResponse,
 )
 from calton.schemas.user import UserRead
-from calton.services import assignee_service
+from calton.services import assignee_service, task_placement
 
 #: ``models.FavoriteKindTask`` (favorites.go). Favourites are keyed by (entity, user, kind).
 FAVORITE_KIND_TASK = 1
@@ -1217,6 +1218,11 @@ def create_task(
     had_assignees = _apply_assignees(session, task_id=task.id, project_id=project_id, data=data)
     reminders = _apply_reminders(session, task, data)
 
+    # `setTasksInBucketInViews`. Without it the task has no `task_buckets` row, and a
+    # manual Kanban lists tasks through that table — the board shows empty columns while
+    # the list view shows the task. Same transaction, so it cannot half-happen.
+    task_placement.place_new_task(session, task)
+
     session.commit()
     session.refresh(task)
 
@@ -1344,7 +1350,8 @@ def apply_update(
     task.percent_done = data.percent_done
     task.cover_image_attachment_id = data.cover_image_attachment_id
 
-    if target_project_id != task.project_id:
+    moved_project = target_project_id != task.project_id
+    if moved_project:
         # Moving projects re-allocates the index, because it is unique per project and the
         # old number is almost certainly taken in the destination. Measured: a task at
         # index 6 in one project arrives at index 1 in an empty one.
@@ -1362,6 +1369,18 @@ def apply_update(
     reminders = _apply_reminders(session, task, data)
 
     session.flush()
+
+    # Keep the board in step (tasks.go:1376-1436). The views — and so the buckets — belong
+    # to a project, which is why a move drops the old rows and places the task afresh,
+    # while a plain `done` flip only shuffles it into or out of the done bucket. A
+    # repeating task never gets here as done: completing it reopened it above.
+    if moved_project:
+        session.execute(delete(TaskBucket).where(TaskBucket.task_id == task.id))
+        session.execute(delete(TaskPosition).where(TaskPosition.task_id == task.id))
+        task_placement.place_new_task(session, task)
+    elif bool(task.done) != was_done:
+        task_placement.move_for_done_change(session, task)
+
     session.refresh(task)
 
     return _write_view(
