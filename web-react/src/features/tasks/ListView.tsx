@@ -6,6 +6,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { formatApiDate } from '@/lib/datetime';
 import { parsePageParam } from '@/lib/page-param';
 import { cn } from '@/lib/utils';
+import { useToggleTaskDone } from './done-queries';
 import { TaskQueryError } from './FilterError';
 import { toFilterQuery, useFilterParam } from './filter-param';
 import { QuickAddTask } from './QuickAddTask';
@@ -44,16 +45,60 @@ export function ListView({ projectId, viewId }: { projectId: number; viewId: num
 	const { items, resultCount, totalPages } = query.data;
 
 	return (
+		<ListBody
+			projectId={projectId}
+			page={page}
+			items={items}
+			resultCount={resultCount}
+			totalPages={totalPages}
+			goToPage={goToPage}
+			busy={query.isFetching}
+		/>
+	);
+}
+
+/** 拆出来是因为勾选的 mutation 是个 hook，不能放在上面那几个提前 return 之后。 */
+function ListBody({
+	projectId,
+	page,
+	items,
+	resultCount,
+	totalPages,
+	goToPage,
+	busy,
+}: {
+	projectId: number;
+	page: number;
+	items: Task[];
+	resultCount: number;
+	totalPages: number;
+	goToPage: (next: number) => void;
+	busy: boolean;
+}) {
+	const toggle = useToggleTaskDone();
+
+	return (
 		<div className="flex h-full flex-col gap-3" data-testid="list-view">
 			{/* 建任务入口：放列表最上方，空态/分页下都可见 */}
 			<QuickAddTask projectId={projectId} />
+
+			{toggle.isError ? (
+				<p role="alert" data-testid="list-toggle-error" className="text-sm text-xyz-red-6">
+					{toggle.error.message}
+				</p>
+			) : null}
 
 			{items.length === 0 ? (
 				<EmptyState page={page} onBackToFirstPage={() => goToPage(1)} />
 			) : (
 				<ul className="min-h-0 flex-1 divide-border divide-y overflow-y-auto" data-testid="task-list">
 					{items.map((task) => (
-						<TaskRow key={task.id} task={task} />
+						<TaskRow
+							key={task.id}
+							task={task}
+							disabled={toggle.isPending}
+							onToggle={(done) => toggle.mutate({ task, done })}
+						/>
 					))}
 				</ul>
 			)}
@@ -64,7 +109,7 @@ export function ListView({ projectId, viewId }: { projectId: number; viewId: num
 				resultCount={resultCount}
 				onPageChange={goToPage}
 				// keepPreviousData 下翻页时 isPending 是 false，用 isFetching 才拦得住连点
-				busy={query.isFetching}
+				busy={busy}
 			/>
 		</div>
 	);
@@ -110,7 +155,15 @@ const PRIORITY_LABELS: Record<number, string> = {
 	5: '马上做',
 };
 
-function TaskRow({ task }: { task: Task }) {
+function TaskRow({
+	task,
+	disabled,
+	onToggle,
+}: {
+	task: Task;
+	disabled: boolean;
+	onToggle: (done: boolean) => void;
+}) {
 	// ⚠️ 到期日的零值是 "0001-01-01T00:00:00Z"，直接 new Date() 会渲染成公元 1 年
 	const dueDate = formatApiDate(task.due_date);
 	const priority = task.priority ?? 0;
@@ -121,16 +174,16 @@ function TaskRow({ task }: { task: Task }) {
 			data-testid="task-row"
 			data-task-id={task.id}
 		>
-			{/* 勾选框此处只读：改 done 是 F08a 的事，这里给个假的可点控件会让人以为已经能改 */}
+			{/* 就地完成/重开：走全量替换并回传 assignees，见 done-queries.ts */}
 			<input
 				type="checkbox"
 				checked={task.done ?? false}
-				readOnly
-				disabled
+				disabled={disabled}
+				onChange={(event) => onToggle(event.target.checked)}
 				data-testid={`task-done-${task.id}`}
 				data-done={task.done ? 'true' : 'false'}
 				aria-label={task.done ? '已完成' : '未完成'}
-				className="size-4 shrink-0"
+				className="size-4 shrink-0 cursor-pointer"
 			/>
 
 			<Link

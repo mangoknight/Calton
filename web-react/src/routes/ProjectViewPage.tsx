@@ -1,4 +1,4 @@
-import { NavLink, useParams } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
 
 import { isViewKind, VIEW_KINDS, type ProjectView, type ViewKind } from '@/api/views';
 import { FilterBar } from '@/features/tasks/FilterBar';
@@ -6,6 +6,7 @@ import { GanttView } from '@/features/tasks/GanttView';
 import { KanbanView } from '@/features/tasks/KanbanView';
 import { ListView } from '@/features/tasks/ListView';
 import { TableView } from '@/features/tasks/TableView';
+import { useProjects } from '@/features/projects/queries';
 import { useProjectViews } from '@/features/views/queries';
 import { parseRouteId } from '@/lib/route-params';
 import { cn } from '@/lib/utils';
@@ -52,9 +53,26 @@ function ResolvedProjectView({ projectId, kind }: { projectId: number; kind: Vie
 	const views = query.data?.items ?? [];
 	const view = views.find((item) => item.view_kind === kind);
 
+	// 项目名从项目列表缓存里取：侧栏已经用同一个 key（`useProjects()`）拉过，
+	// 这里不会多发请求。拿不到（还在加载/无权限）就只显示面包屑的「项目」一级。
+	const project = useProjects().data?.items.find((item) => item.id === projectId);
+
 	return (
 		<section className="flex h-full flex-col" data-testid="view-container">
 			<header className="shrink-0 border-b bg-card px-6 py-4">
+				{/* 没有这一行时，页面上没有任何地方说明「现在看的是哪个项目」 */}
+				<div className="mb-3 flex items-baseline gap-2" data-testid="project-header">
+					<Link to="/projects" className="text-sm text-muted-foreground hover:text-primary">
+						项目
+					</Link>
+					<span className="text-sm text-muted-foreground" aria-hidden>
+						/
+					</span>
+					<h1 className="ink-heading truncate text-xl" data-testid="project-title">
+						{project?.title ?? `#${projectId}`}
+					</h1>
+				</div>
+
 				<nav aria-label="视图切换" className="flex gap-1">
 					{VIEW_KINDS.map((candidate) => (
 						<NavLink

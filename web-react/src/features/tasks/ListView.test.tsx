@@ -111,15 +111,46 @@ describe('List 视图：渲染', () => {
 		expect(screen.queryByText(/0001-01-01/)).not.toBeInTheDocument();
 	});
 
-	it('done 的任务勾上且带删除线样式，勾选框是只读的（改 done 归 F08a）', async () => {
+	it('done 的任务勾上且带删除线样式', async () => {
 		mockViewTasks([task(1, { done: true }), task(2, { done: false })]);
 		renderList();
 
 		await screen.findAllByTestId('task-row');
 		// 按 testid 取那一行的复选框；完成态看 data-done，不看 aria-label 文案
-		const doneBox = screen.getByTestId('task-done-1');
-		expect(doneBox).toBeChecked();
-		expect(doneBox).toBeDisabled();
+		expect(screen.getByTestId('task-done-1')).toBeChecked();
+		expect(screen.getByTestId('task-done-2')).not.toBeChecked();
+	});
+
+	it('★ 就地勾选完成：发全量替换且回传 assignees（省略 = 清空指派）', async () => {
+		mockViewTasks([
+			task(2, {
+				done: false,
+				title: '要完成的',
+				priority: 3,
+				project_id: PROJECT_ID,
+				assignees: [{ id: 7, username: 'zoe' }],
+			}),
+		]);
+		let body: Record<string, unknown> | null = null;
+		server.use(
+			http.post(`${API}/tasks/2`, async ({ request }) => {
+				body = (await request.json()) as Record<string, unknown>;
+				return HttpResponse.json({ id: 2, title: '要完成的', done: true });
+			}),
+		);
+		renderList();
+
+		await userEvent.click(await screen.findByTestId('task-done-2'));
+
+		await waitFor(() => expect(body).not.toBeNull());
+		expect(body).toMatchObject({
+			done: true,
+			// 其余列原样带回：只发 {done} 会把标题清空、project_id 归零
+			title: '要完成的',
+			priority: 3,
+			project_id: PROJECT_ID,
+			assignees: [{ id: 7, username: 'zoe', name: '' }],
+		});
 	});
 
 	it('标签与优先级有值才渲染', async () => {

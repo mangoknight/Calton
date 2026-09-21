@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
+import { useUIStore } from '@/store/ui';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 
@@ -19,7 +21,20 @@ import { TopBar } from './TopBar';
  * 但代价是全站 sticky 失效，而且**没有任何单测会红**：jsdom 没有排版，这些几何量全是 0。
  * 守它的是 `e2e/test_table_layout.py`。
  */
+/** 窄于这个宽度时侧栏默认收成图标条：展开态 224px 在手机上会吃掉一多半屏幕。 */
+const NARROW_SCREEN = '(max-width: 767px)';
+
 export function AppShell() {
+	// 只在**进入时**收一次，不监听 resize：用户在窄屏上手动展开后应当保持展开，
+	// 监听的话每次转屏/弹键盘都会把他刚打开的侧栏又收回去。
+	useEffect(() => {
+		// jsdom 没有 matchMedia
+		if (typeof window.matchMedia !== 'function') return;
+		if (!window.matchMedia(NARROW_SCREEN).matches) return;
+		const { sidebarCollapsed, toggleSidebar } = useUIStore.getState();
+		if (!sidebarCollapsed) toggleSidebar();
+	}, []);
+
 	return (
 		<div className="flex h-screen flex-col overflow-hidden bg-background">
 			<TopBar />
